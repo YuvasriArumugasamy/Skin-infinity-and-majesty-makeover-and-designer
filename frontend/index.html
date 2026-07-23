@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skin Infinity & Majesty | Luxury Beauty Salon & Designer Studio</title>
+    <meta name="description" content="Premium Beauty Salon, Skin Care, Hair Care, Hydra Facial, Microblading, Mehendi & Designer Aari Studio in Tirunelveli - Ramayanpatti by S. Mahalakshmi." />
+    <script>
+      (function() {
+        const img = new Image();
+        img.src = '/logo.png';
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const size = 128;
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext('2d');
+          
+          ctx.beginPath();
+          ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+          ctx.closePath();
+          ctx.clip();
+          
+          const minDim = Math.min(img.width, img.height);
+          const sx = (img.width - minDim) / 2;
+          const sy = (img.height - minDim) / 2;
+          ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+          
+          const link = document.querySelector("link[rel~='icon']");
+          if (link) {
+            link.href = canvas.toDataURL('image/png');
+          }
+        };
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
