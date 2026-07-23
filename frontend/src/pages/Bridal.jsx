@@ -1,6 +1,7 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FiCheck, FiCalendar, FiPlay, FiAward, FiHeart, FiStar, FiUsers, FiClock, FiShield } from 'react-icons/fi';
+import { FiCheck, FiCalendar, FiAward, FiHeart, FiStar, FiUsers, FiClock, FiShield } from 'react-icons/fi';
 
 const Bridal = () => {
   const packages = [
@@ -18,6 +19,7 @@ const Bridal = () => {
     {
       title: 'BRIDAL MAKEUP',
       img: '/bride1.jpg',
+      popular: true,
       features: [
         'HD/Airbrush Makeup',
         'Hairstyling with Accessories',
@@ -39,91 +41,109 @@ const Bridal = () => {
       ]
     },
     {
-      title: 'COMPLETE BRIDAL PACKAGE',
+      title: 'PRE-BRIDAL CARE',
       img: '/bride1.jpg',
-      popular: true,
       features: [
-        'Engagement Makeup',
-        'Bridal Makeup',
-        'Reception Makeup',
-        'Hairstyling (3 Looks)',
-        'Saree / Lehenga Draping',
-        'Jewellery Draping',
-        'Touch-up Makeup'
+        'Facial',
+        'Hair Spa',
+        'Manicure & Pedicure',
+        'Body Polishing',
+        'Threading & Waxing'
       ]
     }
   ];
 
-  const transformations = [
-    { before: '/shop1.png', after: '/bride1.jpg' },
-    { before: '/shop2.png', after: '/bride2.jpg' },
-    { before: '/shop3.png', after: '/bride1.jpg' },
-    { before: '/shop4.png', after: '/bride2.jpg' }
-  ];
-
   return (
-    <div className="bg-white min-h-screen">
-      
-      {/* 1. HERO BANNER WITH bg1.png */}
-      <section className="relative overflow-hidden min-h-[360px] sm:min-h-[460px] flex items-center justify-center border-b border-pink-100">
-        <img 
-          src="/bg1.png" 
-          alt="Bridal Hero Background" 
-          className="absolute inset-0 w-full h-full object-cover object-right sm:object-center z-0"
-        />
-        {/* Soft white-pink overlay for perfect readability on mobile & desktop */}
-        <div className="absolute inset-0 bg-white/45 sm:bg-gradient-to-r sm:from-white/80 sm:via-white/50 sm:to-transparent z-10"></div>
+    <div className="bg-white">
+      {/* 1. HERO BANNER SECTION WITH VIDEO BACKGROUND */}
+      <section className="relative overflow-hidden min-h-[460px] sm:min-h-[520px] flex items-center justify-center border-b border-pink-100 py-16">
+        {/* Background Video */}
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        >
+          <source src="/ithu_than_crt_face_please_crt.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
 
-        <div className="relative z-20 max-w-7xl mx-auto px-4 md:px-8 w-full">
-          <div className="max-w-md sm:max-w-xl space-y-4 text-center sm:text-left">
-            <h1 className="text-4xl md:text-5xl font-serif-luxury font-bold text-gray-900 leading-tight text-glow">
-              Bridal <span className="text-[#C57488] italic font-serif-luxury font-medium">Beauty</span><br />
-              That Makes You Shine
-            </h1>
-            
-            {/* Gold Divider */}
-            <div className="flex items-center justify-center sm:justify-start gap-1.5 text-amber-500 my-1">
-              <div className="w-10 h-[1.5px] bg-amber-400"></div>
-              <span className="text-[10px]">✿</span>
-              <div className="w-10 h-[1.5px] bg-amber-400"></div>
-            </div>
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-[#1e1317]/65 z-10"></div>
 
-            <p className="text-gray-800 text-xs sm:text-sm leading-relaxed max-w-md text-glow font-semibold">
-              Your special day deserves the perfect look. Our bridal makeup and styling services ensure you look radiant, elegant & unforgettable.
-            </p>
-
-            <Link
-              to="/book-appointment"
-              className="inline-flex items-center gap-2 bg-[#C57488] hover:bg-[#B35F74] text-white px-6 py-3.5 rounded-xl text-xs font-bold tracking-wider shadow transition uppercase mt-2"
-            >
-              <FiCalendar /> BOOK BRIDAL APPOINTMENT
-            </Link>
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-20 max-w-7xl mx-auto px-4 md:px-8 text-center space-y-4"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-pink-200 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] shadow-lg">
+            <FiStar className="text-amber-300 animate-pulse text-xs fill-amber-300" />
+            <span>BRIDAL & MAKEOVER STUDIO</span>
           </div>
-        </div>
+
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display-luxury font-bold text-white leading-tight drop-shadow-lg tracking-tight">
+            Bridal <span className="font-script text-5xl sm:text-6xl lg:text-7xl font-normal text-[#F5D77F] drop-shadow-[0_2px_10px_rgba(0,0,0,0.6)] px-1 inline-block transform -rotate-1">Services</span>
+          </h1>
+
+          <div className="flex items-center justify-center gap-2 my-2 text-amber-300">
+            <div className="w-10 h-[1.5px] bg-gradient-to-r from-amber-300 to-transparent"></div>
+            <span className="text-xs">✦</span>
+            <div className="w-14 h-[1.5px] bg-amber-300"></div>
+            <span className="text-xs">✦</span>
+            <div className="w-10 h-[1.5px] bg-gradient-to-l from-amber-300 to-transparent"></div>
+          </div>
+
+          <p className="text-pink-100 text-xs sm:text-sm md:text-base max-w-xl mx-auto drop-shadow-md font-medium leading-relaxed">
+            Exquisite HD Bridal Makeovers & Custom Designer Couture by Mrs. S. Mahalakshmi
+          </p>
+
+          <div className="pt-2">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-xs text-pink-200 font-semibold tracking-wider shadow-md">
+              <Link to="/" className="hover:text-amber-300 transition">HOME</Link>
+              <span className="text-amber-400">/</span>
+              <span className="text-white font-bold">BRIDAL</span>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
-      {/* 2. BRIDAL PACKAGES */}
-      <section className="py-16 bg-[#FFFDFE]">
+      {/* 2. BRIDAL PACKAGES GRID SECTION */}
+      <motion.section 
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.7 }}
+        className="py-20 bg-[#FAF3F5]"
+      >
         <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12">
           
-          <div className="text-center">
-            <h2 className="text-2xl sm:text-3xl font-serif-luxury font-bold text-[#C57488] tracking-wide">
-              OUR BRIDAL PACKAGES
+          <div className="text-center max-w-xl mx-auto">
+            <span className="text-[11px] font-bold tracking-[0.2em] text-[#C57488] uppercase">EXCLUSIVE PACKAGES</span>
+            <h2 className="text-3xl sm:text-4xl font-serif-luxury font-bold text-[#2C2225] mt-1">
+              Bridal & Pre-Bridal Packages
             </h2>
-            <div className="flex items-center justify-center gap-2 mt-2 text-[#C57488]/70">
-              <div className="w-12 h-0.5 bg-[#C57488]/30"></div>
-              <span className="text-[10px]">◆</span>
-              <div className="w-12 h-0.5 bg-[#C57488]/30"></div>
+            <div className="flex items-center justify-center gap-2 my-2 text-[#C57488]">
+              <div className="w-12 h-0.5 bg-[#C57488]"></div>
+              <span className="text-xs">◆</span>
+              <div className="w-12 h-0.5 bg-[#C57488]"></div>
             </div>
           </div>
 
+          {/* 4 Packages Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {packages.map((pkg, idx) => (
-              <div 
+              <motion.div 
                 key={idx} 
-                className={`relative bg-[#FFF8FA] rounded-2xl overflow-hidden border ${
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.08 }}
+                whileHover={{ y: -6 }}
+                className={`relative bg-white rounded-2xl overflow-hidden border ${
                   pkg.popular ? 'border-2 border-[#C57488] shadow-md' : 'border-pink-100/60 shadow-sm'
-                } flex flex-col justify-between group hover:shadow-md transition duration-300`}
+                } flex flex-col justify-between group hover:shadow-xl transition duration-300`}
               >
                 {pkg.popular && (
                   <span className="absolute top-3 right-3 bg-[#C57488] text-white text-[9px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider z-10 shadow-sm">
@@ -133,7 +153,7 @@ const Bridal = () => {
 
                 <div className="h-44 sm:h-48 overflow-hidden relative">
                   <img src={pkg.img} alt={pkg.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#FFF8FA] via-transparent to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
                 </div>
 
                 <div className="p-6 pt-3 flex-1 flex flex-col justify-between space-y-4">
@@ -165,15 +185,21 @@ const Bridal = () => {
                     BOOK NOW
                   </Link>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
 
         </div>
-      </section>
+      </motion.section>
 
       {/* 3. SPLIT BOTTOM GRID SECTION */}
-      <section className="py-16 bg-white border-t border-pink-100/50">
+      <motion.section 
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.7 }}
+        className="py-16 bg-white border-t border-pink-100/50"
+      >
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             
@@ -189,110 +215,58 @@ const Bridal = () => {
 
               <div className="flex flex-col gap-4">
                 {[
-                  { title: 'Professional & Certified Bridal Experts', icon: FiAward },
-                  { title: 'Premium Quality Products', icon: FiHeart },
-                  { title: 'Personalized Look for Every Bride', icon: FiUsers },
-                  { title: 'Advanced Techniques & Latest Trends', icon: FiStar },
-                  { title: 'Hygienic & Safe Environment', icon: FiShield },
-                  { title: 'Timely Service & Complete Satisfaction', icon: FiClock }
+                  { title: 'Certified Cosmetologist & Expert', desc: 'Over 10+ years of professional bridal makeover experience.', icon: FiAward },
+                  { title: 'Premium Products Only', desc: 'High-end dermatologically approved makeup brands for long-lasting glow.', icon: FiShield },
+                  { title: 'Tailored Bridal Packages', desc: 'Customized packages designed specifically for your outfit & theme.', icon: FiHeart }
                 ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3.5">
-                    <div className="w-8 h-8 rounded-full bg-pink-50 text-[#C57488] flex items-center justify-center shrink-0">
-                      <item.icon className="text-sm" />
+                  <motion.div 
+                    key={i} 
+                    whileHover={{ scale: 1.02 }}
+                    className="p-4 rounded-xl bg-pink-50/40 border border-pink-100/60 flex items-start gap-3.5"
+                  >
+                    <div className="w-9 h-9 rounded-full bg-white text-[#C57488] border border-pink-100 flex items-center justify-center shrink-0 shadow-sm">
+                      <item.icon className="text-base" />
                     </div>
-                    <span className="text-xs text-gray-700 font-semibold leading-tight">{item.title}</span>
-                  </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-gray-800">{item.title}</h4>
+                      <p className="text-[11px] text-gray-500 mt-0.5 leading-snug">{item.desc}</p>
+                    </div>
+                  </motion.div>
                 ))}
               </div>
             </div>
 
-            {/* Center: Transformation Video/Image */}
-            <div className="lg:col-span-4 space-y-4">
-              <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white group">
-                <img 
-                  src="/bride1.jpg" 
-                  alt="Bridal Makeover Transformation" 
-                  className="w-full h-[320px] object-cover group-hover:scale-102 transition duration-500"
-                />
-                {/* Play Button Overlay */}
-                <div className="absolute inset-0 bg-[#2C2225]/30 flex flex-col items-center justify-center text-white p-6 text-center">
-                  <div className="w-14 h-14 rounded-full bg-[#C57488]/90 text-white flex items-center justify-center shadow-2xl mb-4 group-hover:scale-110 transition duration-300 cursor-pointer">
-                    <FiPlay className="text-xl fill-white ml-1" />
-                  </div>
-                  <h4 className="font-serif-luxury text-sm font-bold uppercase tracking-widest bg-[#C57488] px-4 py-1.5 rounded-full shadow-md mt-2">
-                    BRIDAL MAKEUP TRANSFORMATION
-                  </h4>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Transformations before/after */}
-            <div className="lg:col-span-4 space-y-5">
-              <div>
-                <h3 className="text-lg font-serif-luxury font-bold text-[#C57488] uppercase tracking-wide flex items-center gap-2">
-                  BRIDAL TRANSFORMATIONS
+            {/* Right: Book Consultation CTA Card */}
+            <div className="lg:col-span-8 bg-gradient-to-br from-[#C57488] to-[#9e4a5e] text-white p-8 sm:p-10 rounded-3xl shadow-xl flex flex-col justify-between space-y-6 relative overflow-hidden">
+              <div className="relative z-10 space-y-3">
+                <span className="text-[11px] font-bold tracking-[0.25em] text-pink-200 uppercase">FREE CONSULTATION</span>
+                <h3 className="text-2xl sm:text-3xl font-serif-luxury font-bold leading-snug">
+                  Book Your Trial & Bridal Consultation Today
                 </h3>
-                <div className="w-12 h-0.5 bg-[#C57488] mt-1.5"></div>
+                <p className="text-xs sm:text-sm text-pink-100 max-w-lg leading-relaxed">
+                  Let us create the perfect look for your wedding day. Schedule a private consultation with Mrs. S. Mahalakshmi and discuss your trial makeover, saree draping, and hairstyle preferences.
+                </p>
               </div>
 
-              {/* Before/After pairs grid */}
-              <div className="grid grid-cols-2 gap-4">
-                {transformations.map((pair, i) => (
-                  <div key={i} className="relative rounded-2xl overflow-hidden border border-pink-100 shadow-sm flex flex-col">
-                    <div className="grid grid-cols-2 h-20">
-                      <div className="relative overflow-hidden border-r border-white">
-                        <img src={pair.before} alt="Before" className="w-full h-full object-cover" />
-                        <span className="absolute bottom-1 left-1 bg-black/60 text-white text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">BEFORE</span>
-                      </div>
-                      <div className="relative overflow-hidden">
-                        <img src={pair.after} alt="After" className="w-full h-full object-cover" />
-                        <span className="absolute bottom-1 left-1 bg-[#C57488]/90 text-white text-[8px] font-bold px-1.5 py-0.5 rounded uppercase">AFTER</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="pt-2 text-center">
+              <div className="relative z-10 pt-2 flex flex-wrap items-center gap-4">
                 <Link
-                  to="/gallery"
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#C57488] hover:text-[#B35F74] transition uppercase tracking-wider"
+                  to="/book-appointment"
+                  className="bg-white text-[#C57488] hover:bg-pink-50 px-8 py-3.5 rounded-full text-xs font-bold tracking-wider uppercase shadow-md transition"
                 >
-                  VIEW MORE GALLERY <span>&gt;</span>
+                  BOOK APPOINTMENT NOW
                 </Link>
+                <a
+                  href="tel:6380850488"
+                  className="border border-white/40 text-white hover:bg-white/10 px-6 py-3.5 rounded-full text-xs font-bold tracking-wider uppercase transition"
+                >
+                  CALL US: 63808 50488
+                </a>
               </div>
             </div>
 
           </div>
         </div>
-      </section>
-
-      {/* 4. BOTTOM BANNER */}
-      <section className="bg-[#C57488] text-white py-10">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-          <div className="flex items-center gap-4 flex-col sm:flex-row">
-            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0 border border-white/20">
-              <FiCheck className="text-xl text-white" />
-            </div>
-            <div>
-              <h3 className="font-serif-luxury text-lg font-bold text-white leading-snug">
-                Book Your Bridal Appointment Today!
-              </h3>
-              <p className="text-xs text-pink-100 mt-0.5">
-                Let us make your special day even more beautiful.
-              </p>
-            </div>
-          </div>
-
-          <Link
-            to="/book-appointment"
-            className="bg-white text-[#C57488] hover:bg-pink-50 px-7 py-3.5 rounded-xl text-xs font-bold tracking-wider shadow transition uppercase shrink-0"
-          >
-            BOOK APPOINTMENT NOW
-          </Link>
-        </div>
-      </section>
-
+      </motion.section>
     </div>
   );
 };

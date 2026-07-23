@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FiCheck, FiAward, FiHeart, FiStar, FiUsers, FiScissors } from 'react-icons/fi';
 
@@ -51,23 +52,17 @@ const Services = () => {
       ]
     },
     {
-      title: 'BEAUTY CARE',
+      title: 'BODY & NAIL CARE',
       cards: [
         {
           title: 'Manicure & Pedicure',
-          desc: 'Perfect care for your hands and feet.',
+          desc: 'Pamper your hands and feet with our relaxing manicure & pedicure.',
           img: '/manicure & pedicure.png',
-          icon: FiStar
-        },
-        {
-          title: 'Mehendi Service',
-          desc: 'Beautiful mehendi designs for every occasion.',
-          img: '/ChatGPT Image Jul 22, 2026, 11_28_36 AM.png',
           icon: FiHeart
         },
         {
           title: 'Microblading',
-          desc: 'Perfect eyebrows that enhance your natural beauty.',
+          desc: 'Semi-permanent eyebrow embroidery for natural, fuller brows.',
           img: '/microblading.png',
           icon: FiStar
         }
@@ -77,65 +72,92 @@ const Services = () => {
 
   const designerCards = [
     {
-      title: 'Blouse Straight',
-      desc: 'Professional blouse stitching with perfect finish.',
-      img: '/ari work.png',
-      icon: FiScissors
+      title: 'Mehandi Service',
+      desc: 'Exquisite bridal & festive mehendi designs by professional artists.',
+      img: '/ChatGPT Image Jul 22, 2026, 11_28_36 AM.png',
+      icon: FiHeart
     },
     {
-      title: 'Aari Work',
-      desc: 'Exquisite aari work for traditional elegance.',
+      title: 'Blouse Stitching & Aari Work',
+      desc: 'Custom designer blouse stitching with intricate handcrafted Aari embroidery.',
       img: '/ari work.png',
       icon: FiAward
     },
     {
       title: 'Machine Embroidery Work',
-      desc: 'High-quality machine embroidery for all your needs.',
+      desc: 'Precision computer embroidery designs for blouses, sarees & lehengas.',
       img: '/Machine embroider work.png',
-      icon: FiAward
+      icon: FiStar
     }
   ];
 
   return (
-    <div className="bg-white min-h-screen">
-      
-      {/* 1. HERO BANNER WITH bg2.png */}
-      <section className="relative overflow-hidden h-[300px] sm:h-[380px] flex items-center justify-center border-b border-pink-100">
-        <img 
-          src="/bg2.png" 
-          alt="Services Hero Background" 
-          className="absolute inset-0 w-full h-full object-cover object-center z-0"
-        />
-        {/* Soft pink overlay for better text contrast if needed */}
-        <div className="absolute inset-0 bg-[#FFF5F7]/30 z-10"></div>
+    <div className="bg-white">
+      {/* 1. HERO BANNER SECTION WITH bg1.png BACKGROUND */}
+      <section className="relative overflow-hidden min-h-[380px] sm:min-h-[440px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-8 shadow-sm">
+        {/* Background Image - bg1.png */}
+        <div className="absolute inset-0 z-0 opacity-40">
+          <img 
+            src="/bg1.png" 
+            alt="Services Banner Background" 
+            className="w-full h-full object-cover object-center"
+          />
+        </div>
+        
+        {/* Luxury Soft Pink & Rose Gold Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FFF0F4]/92 via-[#FCE7EF]/88 to-[#FAF3F5] z-10"></div>
 
-        <div className="relative z-20 max-w-4xl mx-auto px-4 text-center space-y-3">
-          <h1 className="text-4xl sm:text-5xl font-serif-luxury font-bold text-[#2C2225] tracking-wide">
-            OUR <span className="text-[#C57488]">SERVICES</span>
-          </h1>
-          
-          {/* Gold Divider */}
-          <div className="flex items-center justify-center gap-1.5 text-amber-500 my-1">
-            <div className="w-10 h-[1.5px] bg-amber-400"></div>
-            <span className="text-[10px]">✿</span>
-            <div className="w-10 h-[1.5px] bg-amber-400"></div>
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-20 max-w-4xl mx-auto px-4 md:px-8 text-center space-y-4"
+        >
+          <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-pink-200 text-[#C57488] text-[11px] font-bold uppercase tracking-[0.25em] shadow-sm">
+            <FiStar className="text-amber-500 animate-pulse text-xs fill-amber-400" />
+            <span>OUR EXPERT OFFERINGS</span>
           </div>
 
-          <p className="text-gray-700 font-serif italic text-base sm:text-lg">
-            Beauty. Care. Perfection.
+          <h1 className="text-3xl sm:text-5xl font-serif-luxury font-bold text-[#2C2225] drop-shadow-sm leading-tight">
+            Our <span className="font-serif italic font-bold text-[#C57488] px-1 inline-block drop-shadow-[0_1px_3px_rgba(255,255,255,0.9)]">Services</span>
+          </h1>
+
+          {/* Luxury Rose Gold Ornament Divider */}
+          <div className="flex items-center justify-center gap-2 my-1 text-[#C57488]">
+            <div className="w-12 h-[1.5px] bg-[#C57488]"></div>
+            <span className="text-xs">✦</span>
+            <div className="w-16 h-[1.5px] bg-[#C57488]"></div>
+            <span className="text-xs">✦</span>
+            <div className="w-12 h-[1.5px] bg-[#C57488]"></div>
+          </div>
+
+          <p className="text-gray-700 text-xs sm:text-sm md:text-base max-w-xl mx-auto font-medium leading-relaxed">
+            Experience premium clinical skin treatments, hair care, and designer services by certified experts.
           </p>
-          <p className="text-gray-600 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
-            We offer a wide range of premium beauty treatments and designer services to bring out the best in you.
-          </p>
-        </div>
+
+          <div className="pt-2">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-pink-200 text-xs text-gray-700 font-semibold tracking-wider shadow-sm">
+              <Link to="/" className="hover:text-[#C57488] transition">HOME</Link>
+              <span className="text-[#C57488]">/</span>
+              <span className="text-[#C57488] font-bold">SERVICES</span>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
-      {/* 2. SERVICES CATEGORIES LIST */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-16">
+      {/* 2. SERVICES BY CATEGORY */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-20">
           
-          {sections.map((sec, sIdx) => (
-            <div key={sIdx} className="space-y-8">
+          {sections.map((sec, idx) => (
+            <motion.div 
+              key={idx} 
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.7 }}
+              className="space-y-8"
+            >
               {/* Category Title */}
               <div className="flex flex-col items-center">
                 <h2 className="text-lg font-bold text-[#C57488] tracking-widest uppercase flex items-center gap-3">
@@ -151,7 +173,15 @@ const Services = () => {
               {/* Cards Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                 {sec.cards.map((card, cIdx) => (
-                  <div key={cIdx} className="bg-[#FFF8FA] rounded-2xl overflow-hidden border border-pink-100/50 shadow-sm flex flex-col justify-between group hover:shadow-md transition duration-300">
+                  <motion.div 
+                    key={cIdx} 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: cIdx * 0.08 }}
+                    whileHover={{ y: -6 }}
+                    className="bg-[#FFF8FA] rounded-2xl overflow-hidden border border-pink-100/50 shadow-sm flex flex-col justify-between group hover:shadow-lg transition duration-300"
+                  >
                     <div className="relative h-48 sm:h-52 overflow-hidden">
                       <img 
                         src={card.img} 
@@ -178,14 +208,20 @@ const Services = () => {
                         </Link>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           ))}
 
           {/* DESIGNER SERVICES CATEGORY WITH WHY CHOOSE US SIDEBAR */}
-          <div className="space-y-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.7 }}
+            className="space-y-8"
+          >
             {/* Category Title */}
             <div className="flex flex-col items-center">
               <h2 className="text-lg font-bold text-[#C57488] tracking-widest uppercase flex items-center gap-3">
@@ -204,7 +240,15 @@ const Services = () => {
               {/* Designer cards: 9 columns */}
               <div className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {designerCards.map((card, cIdx) => (
-                  <div key={cIdx} className="bg-[#FFF8FA] rounded-2xl overflow-hidden border border-pink-100/50 shadow-sm flex flex-col justify-between group hover:shadow-md transition duration-300">
+                  <motion.div 
+                    key={cIdx} 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: cIdx * 0.08 }}
+                    whileHover={{ y: -6 }}
+                    className="bg-[#FFF8FA] rounded-2xl overflow-hidden border border-pink-100/50 shadow-sm flex flex-col justify-between group hover:shadow-lg transition duration-300"
+                  >
                     <div className="relative h-48 sm:h-52 overflow-hidden">
                       <img 
                         src={card.img} 
@@ -231,7 +275,7 @@ const Services = () => {
                         </Link>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
 
@@ -262,47 +306,22 @@ const Services = () => {
                     </ul>
                   </div>
 
-                  <Link 
-                    to="/book-appointment"
-                    className="w-full bg-[#C57488] hover:bg-[#B35F74] text-white py-3 rounded-xl text-center text-xs font-bold tracking-wider shadow-sm transition uppercase mt-6 flex items-center justify-center gap-1.5"
-                  >
-                    BOOK APPOINTMENT
-                  </Link>
+                  <div className="mt-8 pt-4 border-t border-pink-100">
+                    <Link
+                      to="/book-appointment"
+                      className="block w-full text-center bg-[#C57488] hover:bg-[#B35F74] text-white py-3 rounded-xl text-xs font-bold tracking-wider uppercase shadow-md transition"
+                    >
+                      BOOK APPOINTMENT
+                    </Link>
+                  </div>
                 </div>
               </div>
 
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </section>
-
-      {/* 3. BOTTOM BANNER */}
-      <section className="bg-[#FAF3F5] border-t border-pink-100 py-10">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-          <div className="flex items-center gap-4 flex-col sm:flex-row">
-            <div className="w-12 h-12 rounded-2xl bg-pink-100 text-[#C57488] flex items-center justify-center shrink-0">
-              <FiCheck className="text-xl" />
-            </div>
-            <div>
-              <h3 className="font-serif-luxury text-lg font-bold text-gray-800 leading-snug">
-                Book Your Appointment Today!
-              </h3>
-              <p className="text-[11px] text-gray-500 mt-0.5">
-                Pamper yourself with our premium beauty & designer services.
-              </p>
-            </div>
-          </div>
-
-          <Link
-            to="/book-appointment"
-            className="bg-[#C57488] hover:bg-[#B35F74] text-white px-7 py-3.5 rounded-xl text-xs font-bold tracking-wider shadow-sm transition uppercase shrink-0"
-          >
-            BOOK APPOINTMENT NOW
-          </Link>
-        </div>
-      </section>
-
     </div>
   );
 };

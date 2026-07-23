@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import FloatingContactButtons from './components/FloatingContactButtons';
 
 import Home from './pages/Home';
 import About from './pages/About';
@@ -30,8 +31,9 @@ function App() {
         <Route
           path="/*"
           element={
-            <div className="min-h-screen flex flex-col justify-between">
+            <div className="min-h-screen flex flex-col justify-between relative">
               <Navbar />
+              <FloatingContactButtons />
               <div className="flex-grow">
                 <Routes>
                   <Route path="/" element={<Home />} />

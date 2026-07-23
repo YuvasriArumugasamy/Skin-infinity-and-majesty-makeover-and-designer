@@ -59,95 +59,115 @@ const Home = () => {
   return (
     <div className="relative overflow-hidden bg-white text-gray-800">
 
-      {/* FLOATING STICKY CONTACT SIDEBAR ON RIGHT EDGE */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-2 shadow-2xl">
-        <a 
-          href="tel:0638050488" 
-          className="bg-white/90 backdrop-blur border border-pink-200 text-luxuryRoseGold hover:bg-luxuryRoseGold hover:text-white px-3 py-2.5 rounded-l-2xl shadow-lg flex items-center gap-2 text-xs font-semibold transition-all group"
-        >
-          <FiPhone className="text-base group-hover:scale-110 transition" />
-          <span className="hidden sm:inline">Call Us</span>
-        </a>
-        <a 
-          href="https://wa.me/91638050488" 
-          target="_blank" 
-          rel="noreferrer"
-          className="bg-emerald-500/95 text-white hover:bg-emerald-600 px-3 py-2.5 rounded-l-2xl shadow-lg flex items-center gap-2 text-xs font-semibold transition-all group"
-        >
-          <FaWhatsapp className="text-base group-hover:scale-110 transition" />
-          <span className="hidden sm:inline">WhatsApp</span>
-        </a>
-        <a 
-          href="https://maps.google.com/?q=Ramayanpatti,+Tirunelveli,+Tamil+Nadu+627358" 
-          target="_blank" 
-          rel="noreferrer"
-          className="bg-white/90 backdrop-blur border border-pink-200 text-rose-600 hover:bg-rose-600 hover:text-white px-3 py-2.5 rounded-l-2xl shadow-lg flex items-center gap-2 text-xs font-semibold transition-all group"
-        >
-          <FiMapPin className="text-base group-hover:scale-110 transition" />
-          <span className="hidden sm:inline">Location</span>
-        </a>
-      </div>
-
       {/* 1. HERO SECTION WITH bg5.png BACKGROUND */}
       <section 
-        className="relative min-h-[85vh] lg:min-h-[90vh] bg-cover bg-no-repeat bg-right lg:bg-center flex items-center py-12 lg:py-20"
+        className="relative min-h-[85vh] lg:min-h-[90vh] bg-cover bg-no-repeat bg-[92%_top] sm:bg-[85%_center] lg:bg-center flex items-start sm:items-center pt-6 pb-12 sm:py-12 lg:py-20"
         style={{ backgroundImage: `url('/bg5.png')` }}
       >
-        {/* Soft gradient overlay for text readability on mobile */}
-        <div className="absolute inset-0 bg-gradient-to-r from-pink-50/90 via-pink-50/70 to-transparent lg:via-transparent"></div>
+        {/* Soft, light gradient overlay - ensures text readability on left while keeping girl's face on right 100% sharp */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-pink-50/50 to-transparent sm:bg-gradient-to-r sm:from-white/80 sm:via-pink-50/40 sm:to-transparent"></div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 w-full">
-          <div className="max-w-xl lg:max-w-2xl space-y-6">
+          <div className="max-w-xl lg:max-w-2xl space-y-4 sm:space-y-5 text-center sm:text-left mx-auto sm:mx-0 flex flex-col items-center sm:items-start">
             
-            <span className="inline-block text-[11px] font-bold tracking-[0.25em] text-[#C57488] uppercase">
-              PROFESSIONAL BEAUTY CARE
-            </span>
+            {/* Animated Pill Tag */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="inline-flex items-center justify-center gap-2 px-4 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-pink-200/80 text-[#C57488] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] shadow-sm mx-auto sm:mx-0"
+            >
+              <FiStar className="text-amber-500 animate-pulse text-xs fill-amber-400" />
+              <span>PROFESSIONAL BEAUTY & DESIGNER CARE</span>
+            </motion.div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif-luxury font-bold text-[#2C2225] leading-tight">
-              Enhance Your <span className="font-serif italic font-normal text-[#C57488]">Beauty,</span><br />
-              Reveal Your <span className="font-serif italic font-normal text-[#C57488]">Confidence</span>
-            </h1>
+            {/* Main Headline */}
+            <motion.h1 
+              initial={{ opacity: 0, y: 45 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.3 }}
+              className="text-3xl sm:text-5xl lg:text-6xl font-display-luxury font-bold text-[#2C2225] leading-tight tracking-tight text-center sm:text-left"
+            >
+              Enhance Your <span className="font-serif italic font-bold text-[#C57488] px-1 inline-block drop-shadow-[0_1px_3px_rgba(255,255,255,0.9)]">Beauty,</span><br />
+              Reveal Your <span className="font-serif italic font-bold text-[#C57488] px-1 inline-block drop-shadow-[0_1px_3px_rgba(255,255,255,0.9)]">Confidence</span>
+            </motion.h1>
 
-            <p className="text-gray-700 text-sm sm:text-base leading-relaxed max-w-lg">
-              Experience premium beauty treatments and designer services by certified experts with the best technology.
-            </p>
+            {/* Gold Divider */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
+              className="flex items-center justify-center sm:justify-start gap-2 my-1 text-amber-400"
+            >
+              <div className="w-10 h-[1.5px] bg-gradient-to-r from-amber-400 to-transparent"></div>
+              <span className="text-xs">✦</span>
+              <div className="w-14 h-[1.5px] bg-amber-400"></div>
+              <span className="text-xs">✦</span>
+              <div className="w-10 h-[1.5px] bg-gradient-to-l from-amber-400 to-transparent"></div>
+            </motion.div>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            {/* Description Subtitle */}
+            <motion.p 
+              initial={{ opacity: 0, y: 35 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.55 }}
+              className="text-gray-700 text-xs sm:text-sm md:text-base leading-relaxed max-w-lg font-medium text-center sm:text-left mx-auto sm:mx-0"
+            >
+              Experience world-class clinical skin care, HD bridal makeovers, and handcrafted Aari designer creations by certified experts in Tirunelveli.
+            </motion.p>
+
+            {/* Action Buttons */}
+            <motion.div 
+              initial={{ opacity: 0, y: 35 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.65 }}
+              className="flex flex-wrap items-center justify-center sm:justify-start gap-3 pt-1"
+            >
               <Link
                 to="/book-appointment"
-                className="bg-[#C57488] hover:bg-[#B35F74] text-white px-8 py-3.5 rounded-full text-xs font-bold tracking-wider shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2 uppercase"
+                className="bg-gradient-to-r from-[#C57488] to-[#ab5b70] hover:from-[#ab5b70] hover:to-[#8c3d52] text-white px-7 py-3 rounded-2xl text-xs font-bold tracking-wider shadow-md shadow-pink-200/80 hover:shadow-lg hover:scale-105 transition-all flex items-center gap-2 uppercase"
               >
                 <FiCalendar className="text-sm" /> BOOK APPOINTMENT
               </Link>
               <Link
                 to="/services"
-                className="bg-white/90 backdrop-blur border border-[#C57488] text-[#C57488] hover:bg-[#C57488] hover:text-white px-8 py-3.5 rounded-full text-xs font-bold tracking-wider transition-all flex items-center gap-2 uppercase"
+                className="bg-white/90 backdrop-blur-md border border-[#C57488]/40 text-[#C57488] hover:bg-[#C57488] hover:text-white px-7 py-3 rounded-2xl text-xs font-bold tracking-wider transition-all flex items-center gap-2 uppercase shadow-sm"
               >
                 EXPLORE SERVICES <FiArrowRight />
               </Link>
-            </div>
+            </motion.div>
 
             {/* 4 Feature Badges at bottom of hero */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-pink-200/80">
+            <motion.div 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.75 }}
+              className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mt-8 sm:mt-12 pt-8 border-t border-pink-200/80 w-full"
+            >
               {[
-                { title: 'Certified Experts', icon: FiAward },
-                { title: 'Premium Products', icon: FaLeaf },
-                { title: 'Advanced Equipment', icon: FiSliders },
-                { title: 'Hygienic & Safe', icon: FiShield }
+                { title: 'Certified Experts', desc: 'Beauty Specialist', icon: FiAward },
+                { title: 'Premium Products', desc: 'Dermat-Approved', icon: FaLeaf },
+                { title: 'Advanced Tech', desc: 'Latest Equipment', icon: FiSliders },
+                { title: 'Hygienic & Safe', desc: 'Sanitized Studio', icon: FiShield }
               ].map((item, idx) => {
                 const IconComponent = item.icon;
                 return (
-                  <div key={idx} className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-white/90 border border-pink-200 text-[#C57488] flex items-center justify-center shrink-0 shadow-sm">
+                  <motion.div 
+                    key={idx} 
+                    whileHover={{ scale: 1.04 }}
+                    className="bg-white/80 backdrop-blur-md p-3.5 rounded-2xl border border-pink-100/80 shadow-sm flex items-center gap-3 group hover:shadow-md hover:border-pink-200 transition-all duration-300"
+                  >
+                    <div className="w-9 h-9 rounded-xl bg-pink-50 text-[#C57488] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                       <IconComponent className="text-base" />
                     </div>
-                    <span className="text-xs font-bold text-[#2C2225] leading-tight">
-                      {item.title}
-                    </span>
-                  </div>
+                    <div>
+                      <h4 className="text-[11px] font-bold text-gray-800 leading-tight">{item.title}</h4>
+                      <p className="text-[9px] text-gray-500 mt-0.5">{item.desc}</p>
+                    </div>
+                  </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
 
           </div>
         </div>
@@ -169,12 +189,12 @@ const Home = () => {
                 />
               </div>
 
-              {/* Secondary Overlapping Arched Photo: shop4.png */}
+              {/* Secondary Overlapping Arched Photo: maha1.png */}
               <div className="absolute -bottom-8 right-0 sm:-right-8 z-20 w-[55%] sm:w-3/5 rounded-[30px] overflow-hidden border-4 sm:border-6 border-white shadow-2xl bg-pink-50">
                 <img 
-                  src="/shop4.png" 
-                  alt="Beauty Technology Machine" 
-                  className="w-full h-[180px] sm:h-[250px] object-cover"
+                  src="/maha1.png" 
+                  alt="S. Mahalakshmi Bridal Makeover" 
+                  className="w-full h-[180px] sm:h-[250px] object-cover object-top"
                 />
               </div>
 

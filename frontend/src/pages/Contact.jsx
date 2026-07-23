@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { FiPhone, FiMapPin, FiClock, FiMail, FiSend } from 'react-icons/fi';
+import { FiPhone, FiMapPin, FiClock, FiMail, FiSend, FiStar } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 
 const Contact = () => {
@@ -31,20 +32,68 @@ const Contact = () => {
   };
 
   return (
-    <div className="py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12">
+    <div className="bg-[#FCF9FA] min-h-screen pb-20">
+      
+      {/* 1. HERO BANNER WITH bg.png BACKGROUND */}
+      <section className="relative overflow-hidden min-h-[380px] sm:min-h-[440px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-12 shadow-md">
         
-        {/* Banner matching uploaded contact page photo */}
-        <div className="text-center max-w-2xl mx-auto">
-          <span className="text-xs font-bold tracking-widest text-luxuryRoseGold uppercase">GET IN TOUCH</span>
-          <h1 className="text-3xl md:text-5xl font-serif-luxury font-bold text-luxuryDark mt-1">Contact Us</h1>
-          <p className="text-xs text-gray-500 mt-2">Have a question or want to book a session? We'd love to hear from you!</p>
+        {/* Background Image - bg.png */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="/bg.png" 
+            alt="Skin Infinity & Majesty Studio Storefront" 
+            className="w-full h-full object-cover object-center opacity-40"
+          />
         </div>
+        
+        {/* Luxury Soft Pink & Rose Gold Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FFF0F4]/92 via-[#FCE7EF]/88 to-[#FAF3F5] z-10"></div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-20 max-w-4xl mx-auto px-4 md:px-8 text-center space-y-4"
+        >
+          <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-pink-200 text-[#C57488] text-[11px] font-bold uppercase tracking-[0.25em] shadow-sm">
+            <FiStar className="text-amber-500 animate-pulse text-xs fill-amber-400" />
+            <span>GET IN TOUCH</span>
+          </div>
+
+          <h1 className="text-3xl sm:text-5xl font-serif-luxury font-bold text-[#2C2225] drop-shadow-sm leading-tight">
+            Contact <br className="hidden sm:block"/>
+            <span className="font-serif italic font-bold text-[#C57488] px-1 inline-block drop-shadow-[0_1px_3px_rgba(255,255,255,0.9)]">
+              Skin Infinity & Majesty
+            </span>
+          </h1>
+
+          {/* Luxury Rose Gold Ornament Divider */}
+          <div className="flex items-center justify-center gap-2 my-1 text-[#C57488]">
+            <div className="w-12 h-[1.5px] bg-[#C57488]"></div>
+            <span className="text-xs">✦</span>
+            <div className="w-16 h-[1.5px] bg-[#C57488]"></div>
+            <span className="text-xs">✦</span>
+            <div className="w-12 h-[1.5px] bg-[#C57488]"></div>
+          </div>
+
+          <p className="text-gray-700 text-xs sm:text-sm md:text-base max-w-xl mx-auto font-medium leading-relaxed">
+            Have a question, inquiry, or want to book a personalized salon & designer session? We’d love to hear from you!
+          </p>
+        </motion.div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12">
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
           {/* Left Column: Contact info */}
-          <div className="lg:col-span-5 space-y-8 bg-luxurySubtle/60 p-8 rounded-3xl border border-pink-100">
+          <motion.div 
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="lg:col-span-5 space-y-8 bg-luxurySubtle/60 p-8 rounded-3xl border border-pink-100 shadow-sm"
+          >
             <h3 className="font-serif-luxury text-2xl font-bold text-luxuryDark">Get In Touch</h3>
 
             <div className="space-y-6 text-xs text-gray-700">
@@ -64,7 +113,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-luxuryDark mb-1">Phone</h4>
-                  <a href="tel:0638050488" className="hover:text-luxuryRoseGold font-semibold">06380 50488</a>
+                  <a href="tel:6380850488" className="hover:text-luxuryRoseGold font-semibold">63808 50488</a>
                 </div>
               </div>
 
@@ -74,7 +123,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h4 className="font-bold text-luxuryDark mb-1">WhatsApp</h4>
-                  <a href="https://wa.me/91638050488" target="_blank" rel="noreferrer" className="hover:text-emerald-600 font-semibold">06380 50488</a>
+                  <a href="https://wa.me/916380850488?text=Hello%20Skin%20Infinity%20%26%20Majesty!%20I%20would%20like%20to%20inquire%20about%20your%20beauty%20%26%20designer%20services%20and%20book%20an%20appointment." target="_blank" rel="noreferrer" className="hover:text-emerald-600 font-semibold">63808 50488</a>
                 </div>
               </div>
 
@@ -90,7 +139,7 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Embedded Google Map iframe placeholder matching reference */}
+            {/* Embedded Google Map */}
             <div className="rounded-2xl overflow-hidden shadow-md h-48 border border-pink-200">
               <iframe
                 title="Salon Location Map"
@@ -101,83 +150,92 @@ const Contact = () => {
                 loading="lazy"
               ></iframe>
             </div>
-
-          </div>
+          </motion.div>
 
           {/* Right Column: Contact Form */}
-          <div className="lg:col-span-7 bg-white p-8 md:p-10 rounded-3xl border border-pink-200 shadow-card">
-            <h3 className="font-serif-luxury text-2xl font-bold text-luxuryDark mb-6">Send Us A Message</h3>
+          <motion.div 
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="lg:col-span-7 bg-white p-8 sm:p-10 rounded-3xl border border-pink-100 shadow-md space-y-6"
+          >
+            <div>
+              <h3 className="font-serif-luxury text-2xl font-bold text-luxuryDark">Send Us A Message</h3>
+              <p className="text-xs text-gray-500 mt-1">Fill in the details below and our team will get back to you shortly.</p>
+            </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-xs font-bold text-luxuryDark mb-1">Your Name *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Enter your name"
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5">Full Name *</label>
+                  <input 
+                    type="text" 
+                    required 
+                    placeholder="Your Name"
                     value={formData.fullName}
-                    onChange={e => setFormData({ ...formData, fullName: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-pink-200 text-xs focus:outline-none focus:border-luxuryRoseGold"
+                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                    className="w-full px-4 py-3 text-xs bg-pink-50/40 border border-pink-100 rounded-xl focus:outline-none focus:border-[#C57488]"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-luxuryDark mb-1">Phone Number *</label>
-                  <input
-                    type="tel"
-                    required
-                    placeholder="Enter phone number"
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5">Phone Number *</label>
+                  <input 
+                    type="tel" 
+                    required 
+                    placeholder="Your Phone Number"
                     value={formData.phone}
-                    onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-pink-200 text-xs focus:outline-none focus:border-luxuryRoseGold"
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full px-4 py-3 text-xs bg-pink-50/40 border border-pink-100 rounded-xl focus:outline-none focus:border-[#C57488]"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-xs font-bold text-luxuryDark mb-1">Email Address</label>
-                  <input
-                    type="email"
-                    placeholder="Enter email address"
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5">Email Address</label>
+                  <input 
+                    type="email" 
+                    placeholder="Your Email Address"
                     value={formData.email}
-                    onChange={e => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-pink-200 text-xs focus:outline-none focus:border-luxuryRoseGold"
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full px-4 py-3 text-xs bg-pink-50/40 border border-pink-100 rounded-xl focus:outline-none focus:border-[#C57488]"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-luxuryDark mb-1">Subject</label>
-                  <input
-                    type="text"
-                    placeholder="Subject inquiry"
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5">Subject</label>
+                  <input 
+                    type="text" 
+                    placeholder="Appointment / Inquiry"
                     value={formData.subject}
-                    onChange={e => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-pink-200 text-xs focus:outline-none focus:border-luxuryRoseGold"
+                    onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                    className="w-full px-4 py-3 text-xs bg-pink-50/40 border border-pink-100 rounded-xl focus:outline-none focus:border-[#C57488]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-luxuryDark mb-1">Your Message *</label>
-                <textarea
-                  rows={5}
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">Your Message *</label>
+                <textarea 
+                  rows="4" 
                   required
-                  placeholder="Type your message here..."
+                  placeholder="Tell us about the service you require..."
                   value={formData.message}
-                  onChange={e => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-pink-200 text-xs focus:outline-none focus:border-luxuryRoseGold"
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full px-4 py-3 text-xs bg-pink-50/40 border border-pink-100 rounded-xl focus:outline-none focus:border-[#C57488]"
                 ></textarea>
               </div>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 rounded-full bg-gradient-to-r from-[#D87093] to-luxuryRoseGold text-white font-bold text-xs tracking-wider shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
+                className="w-full bg-[#C57488] hover:bg-[#B35F74] text-white py-3.5 rounded-xl text-xs font-bold tracking-wider uppercase shadow-md transition flex items-center justify-center gap-2"
               >
-                <FiSend /> {loading ? 'SENDING...' : 'SEND MESSAGE'}
+                <FiSend className="text-sm" />
+                <span>{loading ? 'SENDING MESSAGE...' : 'SEND MESSAGE'}</span>
               </button>
             </form>
-          </div>
+          </motion.div>
 
         </div>
 

@@ -8,7 +8,8 @@ const TopBar = () => {
   const slides = [
     {
       icon: <FiMapPin className="text-[#C57488] text-sm shrink-0" />,
-      text: "Tirunelveli - Sankarankoil Rd, Ramayanpatti, Tirunelveli, Tamil Nadu 627358"
+      text: "Tirunelveli - Sankarankoil Rd, Ramayanpatti, Tirunelveli, Tamil Nadu 627358",
+      link: "https://maps.google.com/?q=Ramayanpatti,+Tirunelveli,+Tamil+Nadu+627358"
     },
     {
       icon: <FiClock className="text-[#C57488] text-sm shrink-0" />,
@@ -16,8 +17,8 @@ const TopBar = () => {
     },
     {
       icon: <FiPhone className="text-[#C57488] text-sm shrink-0" />,
-      text: "063808 50488",
-      link: "tel:06380850488"
+      text: "63808 50488",
+      link: "tel:6380850488"
     }
   ];
 
@@ -34,12 +35,17 @@ const TopBar = () => {
         
         {/* Desktop View (lg and up): Full Row */}
         <div className="hidden lg:flex justify-between items-center gap-6">
-          <div className="flex items-center gap-1.5 shrink-0">
-            <FiMapPin className="text-[#C57488] text-sm shrink-0" />
-            <span className="font-medium text-xs">
+          <a 
+            href="https://maps.google.com/?q=Ramayanpatti,+Tirunelveli,+Tamil+Nadu+627358"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-1.5 shrink-0 hover:text-[#C57488] transition group"
+          >
+            <FiMapPin className="text-[#C57488] text-sm shrink-0 group-hover:scale-110 transition" />
+            <span className="font-medium text-xs underline underline-offset-2 decoration-pink-300/60 group-hover:decoration-[#C57488]">
               Tirunelveli - Sankarankoil Rd, Ramayanpatti, Tirunelveli, Tamil Nadu 627358
             </span>
-          </div>
+          </a>
 
           <div className="flex items-center gap-6 shrink-0">
             <div className="flex items-center gap-1.5">
@@ -51,8 +57,8 @@ const TopBar = () => {
 
             <div className="flex items-center gap-1.5">
               <FiPhone className="text-[#C57488] text-sm shrink-0" />
-              <a href="tel:06380850488" className="font-medium text-xs hover:text-[#C57488] transition">
-                063808 50488
+              <a href="tel:6380850488" className="font-medium text-xs hover:text-[#C57488] transition">
+                63808 50488
               </a>
             </div>
 
@@ -74,7 +80,7 @@ const TopBar = () => {
                 <FiFacebook />
               </a>
               <a 
-                href="https://wa.me/916380850488" 
+                href="https://wa.me/916380850488?text=Hello%20Skin%20Infinity%20%26%20Majesty!%20I%20would%20like%20to%20inquire%20about%20your%20beauty%20%26%20designer%20services%20and%20book%20an%20appointment." 
                 target="_blank" 
                 rel="noreferrer" 
                 className="text-gray-600 hover:text-emerald-500 transition text-sm"
@@ -134,7 +140,7 @@ const TopBar = () => {
               <FiFacebook />
             </a>
             <a 
-              href="https://wa.me/916380850488" 
+              href="https://wa.me/916380850488?text=Hello%20Skin%20Infinity%20%26%20Majesty!%20I%20would%20like%20to%20inquire%20about%20your%20beauty%20%26%20designer%20services%20and%20book%20an%20appointment." 
               target="_blank" 
               rel="noreferrer" 
               className="text-gray-600 hover:text-emerald-500 transition text-base"
