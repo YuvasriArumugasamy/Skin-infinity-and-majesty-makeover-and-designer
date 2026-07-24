@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { 
-  FiGrid, FiCalendar, FiUsers, FiScissors, FiStar, 
-  FiMail, FiLogOut, FiCheck, FiX, FiRefreshCw,
+  FiGrid, FiCalendar, FiScissors, FiStar, 
+  FiLogOut, FiCheck, FiX, FiRefreshCw,
   FiPlus, FiSearch, FiClock, FiTrash2, FiMenu, FiDollarSign,
-  FiSend, FiHeart, FiFileText, FiImage, FiUpload, FiShare2, FiInbox
+  FiHeart, FiImage, FiUpload, FiInbox
 } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
