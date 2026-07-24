@@ -5,17 +5,12 @@ import {
   FiCalendar, 
   FiClock, 
   FiUser, 
-  FiPhone, 
-  FiMail, 
   FiCheckCircle, 
   FiStar, 
   FiSparkles, 
-  FiScissors, 
   FiHeart, 
-  FiShield, 
-  FiCheck 
+  FiShield 
 } from 'react-icons/fi';
-import { FaWhatsapp } from 'react-icons/fa';
 
 const BookAppointment = () => {
   const [formData, setFormData] = useState({
