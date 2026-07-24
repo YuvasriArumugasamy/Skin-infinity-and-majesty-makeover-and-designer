@@ -87,22 +87,22 @@ const AdminLogin = () => {
         <div className="blob-article p-5 sm:p-6 space-y-4">
 
           {/* Header Badge */}
-          <div className="text-center space-y-2">
-            <div className="w-20 h-20 mx-auto overflow-hidden rounded-2xl p-1 bg-white/95 border border-pink-200/80 shadow-sm flex items-center justify-center backdrop-blur-md">
+          <div className="text-center space-y-2.5">
+            <div className="w-20 h-20 mx-auto rounded-full overflow-hidden border-2 border-[#C57488] shadow-md p-0.5 bg-white shrink-0 flex items-center justify-center">
               <img 
                 src="/logo.png" 
                 alt="Skin Infinity & Majesty" 
-                className="w-full h-full object-contain"
+                className="w-full h-full object-cover rounded-full"
               />
             </div>
 
             <div>
-              <h1 className="font-serif text-xl font-bold text-luxuryDark tracking-tight">
+              <h1 className="font-serif-luxury text-xl font-bold text-luxuryDark tracking-tight uppercase">
                 Admin Portal Access
               </h1>
-              <p className="text-[11px] text-gray-600 font-medium mt-0.5">
-                Skin Infinity & Majesty Management System
-              </p>
+              <span className="block text-[9px] font-bold tracking-widest text-luxuryRoseGold uppercase mt-1">
+                SKIN INFINITY & MAJESTY MANAGEMENT
+              </span>
             </div>
           </div>
 
