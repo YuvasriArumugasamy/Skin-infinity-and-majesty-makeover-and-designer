@@ -822,24 +822,28 @@ const AdminDashboard = () => {
       <main className="flex-1 h-screen overflow-y-auto min-w-0">
         
         {/* Header */}
-        <header className="bg-white/80 backdrop-blur-md border-b border-pink-100/80 px-6 py-4 flex justify-between items-center sticky top-0 z-30 shadow-xs">
-          <div className="flex items-center gap-3">
+        <header className="bg-white/90 backdrop-blur-md border-b border-pink-100/80 px-3 sm:px-6 py-3 sm:py-4 flex justify-between items-center sticky top-0 z-30 shadow-xs">
+          <div className="flex items-center gap-2.5 min-w-0">
             <button 
               onClick={() => setMobileMenuOpen(true)} 
-              className="p-2 rounded-xl bg-pink-50 text-[#B76E79] md:hidden border border-pink-200"
+              className="p-2 rounded-xl bg-pink-50 text-[#B76E79] md:hidden border border-pink-200 shrink-0"
+              title="Open Navigation"
             >
               <FiMenu size={18} />
             </button>
-            <div>
-              <h2 className="font-serif text-lg md:text-xl font-bold text-[#2C2225]">Skin Infinity & Majesty Executive Suite ✨</h2>
-              <p className="text-xs text-gray-500">Live Booking & Studio Management Panel</p>
+            <div className="min-w-0">
+              <h2 className="font-serif text-sm sm:text-lg md:text-xl font-bold text-[#2C2225] leading-tight truncate sm:whitespace-normal">
+                <span className="hidden sm:inline">Skin Infinity & Majesty Executive Suite ✨</span>
+                <span className="sm:hidden">Executive Suite ✨</span>
+              </h2>
+              <p className="text-[10px] sm:text-xs text-gray-500 truncate hidden sm:block">Live Booking & Studio Management Panel</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button 
               onClick={fetchData} 
-              className="p-2.5 rounded-xl bg-pink-50 text-[#B76E79] text-xs font-bold hover:bg-pink-100 border border-pink-200 transition flex items-center gap-1.5"
+              className="p-2 sm:p-2.5 rounded-xl bg-pink-50 text-[#B76E79] text-xs font-bold hover:bg-pink-100 border border-pink-200 transition flex items-center gap-1.5"
               title="Refresh Live Data"
             >
               <FiRefreshCw className={`text-sm ${loading ? 'animate-spin' : ''}`} />
@@ -848,9 +852,10 @@ const AdminDashboard = () => {
 
             <button
               onClick={() => setBookingModalOpen(true)}
-              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white text-xs font-bold flex items-center gap-2 shadow-sm hover:opacity-95 transition"
+              className="px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white text-xs font-bold flex items-center gap-1.5 shadow-sm hover:opacity-95 transition"
+              title="New Booking"
             >
-              <FiPlus />
+              <FiPlus className="text-sm sm:text-xs" />
               <span className="hidden sm:inline">New Booking</span>
             </button>
           </div>
