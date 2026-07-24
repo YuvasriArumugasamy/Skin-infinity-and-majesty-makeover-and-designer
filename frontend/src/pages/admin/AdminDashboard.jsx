@@ -265,7 +265,7 @@ const AdminDashboard = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFF8FA] via-white to-[#FAF0F4] flex text-gray-800 font-sans relative">
+    <div className="h-screen overflow-hidden flex bg-gradient-to-br from-[#FFF8FA] via-white to-[#FAF0F4] text-gray-800 font-sans relative">
       
       {/* ========================================================================= */}
       {/* 👑 MODAL POPUP 1: NEW BOOKING MODAL */}
@@ -584,8 +584,8 @@ const AdminDashboard = () => {
         />
       )}
 
-      {/* Sidebar Navigation */}
-      <aside className={`fixed md:static top-0 left-0 bottom-0 z-40 w-72 bg-white/90 backdrop-blur-md border-r border-pink-100/80 p-6 flex flex-col justify-between shrink-0 shadow-lg md:shadow-none transition-transform duration-300 ${
+      {/* 📌 Fixed Left Sidebar Navigation (Stationary & Sticky) */}
+      <aside className={`fixed md:sticky top-0 left-0 bottom-0 h-screen z-40 w-72 bg-white/95 backdrop-blur-md border-r border-pink-100/80 p-6 flex flex-col justify-between shrink-0 shadow-sm transition-transform duration-300 ${
         mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
       }`}>
         <div className="space-y-8">
@@ -663,8 +663,8 @@ const AdminDashboard = () => {
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto min-w-0">
+      {/* 📜 Right Side Main Content Area (Independent Scroll Container) */}
+      <main className="flex-1 h-screen overflow-y-auto min-w-0">
         
         {/* Header */}
         <header className="bg-white/80 backdrop-blur-md border-b border-pink-100/80 px-6 py-4 flex justify-between items-center sticky top-0 z-30 shadow-xs">
