@@ -77,10 +77,12 @@ const AdminLogin = () => {
 
         {/* Header Badge */}
         <div className="text-center space-y-3">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-luxuryRoseGold to-luxuryGold p-0.5 mx-auto shadow-md flex items-center justify-center">
-            <div className="w-full h-full bg-white rounded-full flex items-center justify-center font-serif font-bold text-luxuryRoseGold text-2xl">
-              SM
-            </div>
+          <div className="w-24 h-24 mx-auto overflow-hidden rounded-2xl p-1 bg-white border border-pink-200 shadow-sm flex items-center justify-center">
+            <img 
+              src="/logo.png" 
+              alt="Skin Infinity & Majesty" 
+              className="w-full h-full object-contain"
+            />
           </div>
 
           <div>

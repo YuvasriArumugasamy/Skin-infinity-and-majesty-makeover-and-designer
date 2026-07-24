@@ -134,11 +134,11 @@ const AdminDashboard = () => {
           
           {/* Brand Logo */}
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#B76E79] to-amber-400 p-0.5 shadow-sm flex items-center justify-center">
-              <div className="w-full h-full bg-white rounded-full flex items-center justify-center font-serif font-bold text-[#B76E79] text-base">
-                SM
-              </div>
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="Skin Infinity & Majesty" 
+              className="h-11 w-auto object-contain shrink-0"
+            />
             <div>
               <h3 className="font-serif text-sm font-bold text-[#2C2225] leading-tight">SKIN INFINITY</h3>
               <span className="text-[9px] tracking-widest text-[#B76E79] uppercase font-semibold">ADMIN PANEL</span>
@@ -213,8 +213,8 @@ const AdminDashboard = () => {
               <FiRefreshCw />
             </button>
 
-            <div className="w-9 h-9 rounded-full bg-[#B76E79] text-white font-bold flex items-center justify-center text-xs shadow-sm">
-              SM
+            <div className="w-9 h-9 rounded-full overflow-hidden border border-pink-200 shadow-sm shrink-0">
+              <img src="/logo.png" alt="SM Admin" className="w-full h-full object-cover" />
             </div>
           </div>
         </header>
