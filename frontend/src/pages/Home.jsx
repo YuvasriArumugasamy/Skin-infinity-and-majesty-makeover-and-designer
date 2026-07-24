@@ -177,35 +177,43 @@ const Home = () => {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left: Overlapping Photo Collage */}
+          {/* Left: Overlapping Photo Collage with Designer Luxury Borders */}
           <div className="lg:col-span-6 relative flex justify-center">
             <div className="relative w-full max-w-md">
-              {/* Luxury Ambient Glow Effect */}
-              <div className="absolute -inset-3 bg-gradient-to-tr from-[#C57488]/20 via-amber-200/30 to-pink-200/30 rounded-[48px] rounded-tl-[108px] blur-xl opacity-70"></div>
+              
+              {/* Soft Ambient Luxury Glow behind the frames */}
+              <div className="absolute -inset-4 bg-gradient-to-tr from-[#C57488]/30 via-amber-200/40 to-pink-200/40 rounded-[52px] rounded-tl-[112px] blur-2xl opacity-75"></div>
 
-              {/* Main Arched Photo: shop3.png */}
-              <div className="relative z-10 rounded-[40px] rounded-tl-[100px] overflow-hidden shadow-[0_20px_45px_rgba(44,34,37,0.15)] bg-pink-100 border border-pink-100/60 group hover:shadow-[0_25px_50px_rgba(197,116,136,0.25)] transition-all duration-500">
-                <img 
-                  src="/shop3.png" 
-                  alt="Skin Infinity Salon Interior" 
-                  className="w-full h-[380px] sm:h-[420px] object-cover group-hover:scale-[1.03] transition-transform duration-700"
-                />
+              {/* Main Photo (shop3.png): Designer Multi-Layer White & Rose-Gold Luxury Frame */}
+              <div className="relative z-10 p-2.5 sm:p-3 bg-gradient-to-br from-[#F5D77F] via-white via-pink-100 to-[#C57488] rounded-[44px] rounded-tl-[104px] shadow-[0_22px_50px_rgba(44,34,37,0.22)] group hover:shadow-[0_30px_60px_rgba(197,116,136,0.35)] transition-all duration-500">
+                {/* Inner Pure White Thick Border Padding */}
+                <div className="bg-white p-2 sm:p-2.5 rounded-[36px] rounded-tl-[96px] overflow-hidden border-2 border-pink-100/80 shadow-sm">
+                  <img 
+                    src="/shop3.png" 
+                    alt="Skin Infinity Salon Interior" 
+                    className="w-full h-[370px] sm:h-[410px] object-cover rounded-[30px] rounded-tl-[90px] group-hover:scale-[1.03] transition-transform duration-700"
+                  />
+                </div>
               </div>
 
-              {/* Secondary Overlapping Arched Photo: maha1.png */}
-              <div className="absolute -bottom-8 right-0 sm:-right-6 z-20 w-[55%] sm:w-3/5 rounded-[30px] overflow-hidden shadow-[0_15px_35px_rgba(0,0,0,0.2)] bg-pink-50 border border-amber-200/80 group/sub hover:shadow-[0_20px_40px_rgba(197,116,136,0.3)] transition-all duration-500">
-                <img 
-                  src="/maha1.png" 
-                  alt="S. Mahalakshmi Bridal Makeover" 
-                  className="w-full h-[180px] sm:h-[250px] object-cover object-top group-hover/sub:scale-[1.04] transition-transform duration-700"
-                />
+              {/* Secondary Overlapping Photo (maha1.png): Designer Luxury White & Gold Border Frame */}
+              <div className="absolute -bottom-8 right-0 sm:-right-6 z-20 w-[58%] sm:w-3/5 p-2 bg-gradient-to-tr from-[#C57488] via-amber-300 via-white to-[#C57488] rounded-[34px] shadow-[0_20px_45px_rgba(0,0,0,0.25)] ring-4 ring-white group/sub hover:shadow-[0_25px_50px_rgba(197,116,136,0.4)] transition-all duration-500">
+                {/* Inner White Border Pad */}
+                <div className="bg-white p-1.5 sm:p-2 rounded-[28px] overflow-hidden border border-pink-200/60 shadow-inner">
+                  <img 
+                    src="/maha1.png" 
+                    alt="S. Mahalakshmi Bridal Makeover" 
+                    className="w-full h-[180px] sm:h-[240px] object-cover object-top rounded-[22px] group-hover/sub:scale-[1.04] transition-transform duration-700"
+                  />
+                </div>
               </div>
 
               {/* Floating Badge: 10+ Years Experience */}
-              <div className="absolute top-6 left-0 sm:-left-8 z-30 bg-gradient-to-r from-[#C57488] to-[#ab5b70] text-white px-4 py-3 sm:px-5 sm:py-4 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center backdrop-blur-md border border-white/20">
-                <span className="font-serif-luxury font-bold text-xl sm:text-3xl leading-none">10+</span>
-                <span className="text-[9px] sm:text-[10px] font-medium tracking-wide uppercase mt-1">Years of<br />Experience</span>
+              <div className="absolute top-6 left-0 sm:-left-8 z-30 bg-gradient-to-r from-[#C57488] via-[#ab5b70] to-[#8c3d52] text-white px-4 py-3 sm:px-5 sm:py-4 rounded-2xl shadow-[0_10px_25px_rgba(197,116,136,0.4)] flex flex-col items-center justify-center text-center backdrop-blur-md border border-white/30">
+                <span className="font-serif-luxury font-bold text-xl sm:text-3xl leading-none drop-shadow">10+</span>
+                <span className="text-[9px] sm:text-[10px] font-medium tracking-wide uppercase mt-1 drop-shadow-sm">Years of<br />Experience</span>
               </div>
+
             </div>
           </div>
 
