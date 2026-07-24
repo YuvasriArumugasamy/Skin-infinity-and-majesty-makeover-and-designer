@@ -63,6 +63,7 @@ const Bridal = () => {
           loop 
           muted 
           playsInline 
+          preload="metadata"
           className="absolute inset-0 w-full h-full object-cover z-0"
         >
           <source src="/ithu_than_crt_face_please_crt.mp4" type="video/mp4" />

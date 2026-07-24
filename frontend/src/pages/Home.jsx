@@ -227,6 +227,8 @@ const Home = () => {
                   <img 
                     src="/shop3.png" 
                     alt="Skin Infinity Salon Interior" 
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-[380px] sm:h-[420px] object-cover group-hover:scale-[1.03] transition-transform duration-700"
                   />
                 </div>
@@ -242,6 +244,8 @@ const Home = () => {
                   <img 
                     src="/maha1.png" 
                     alt="S. Mahalakshmi Bridal Makeover" 
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-[180px] sm:h-[250px] object-cover object-top group-hover/sub:scale-[1.04] transition-transform duration-700"
                   />
                 </div>
@@ -395,6 +399,8 @@ const Home = () => {
                   <img 
                     src={srv.img} 
                     alt={srv.title} 
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover rounded-full group-hover:scale-110 transition duration-500"
                   />
                 </div>

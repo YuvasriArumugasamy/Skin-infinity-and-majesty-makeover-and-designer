@@ -14,6 +14,7 @@ const About = () => {
           loop 
           muted 
           playsInline 
+          preload="metadata"
           className="absolute inset-0 w-full h-full object-cover z-0"
         >
           <source src="/nalla_d_video_ahh_panni_kudu.mp4" type="video/mp4" />

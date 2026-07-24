@@ -38,6 +38,7 @@ const Gallery = () => {
           loop 
           muted 
           playsInline 
+          preload="metadata"
           className="absolute inset-0 w-full h-full object-cover z-0"
         >
           <source src="/ithu_yellam_vachi_oru_super_ah.mp4" type="video/mp4" />
