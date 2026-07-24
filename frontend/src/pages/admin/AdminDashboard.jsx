@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   FiGrid, FiCalendar, FiScissors, FiStar, 
   FiLogOut, FiCheck, FiX, FiRefreshCw,
@@ -917,7 +918,7 @@ const AdminDashboard = () => {
               {/* Stat Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3">
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.05 }} whileHover={{ y: -6, scale: 1.02 }} className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3 cursor-pointer">
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Live Bookings</span>
                     <div className="w-9 h-9 rounded-xl bg-pink-50 text-[#B76E79] flex items-center justify-center font-bold">
@@ -928,9 +929,9 @@ const AdminDashboard = () => {
                     <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{appointments.length}</h3>
                     <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">Live Sync</span>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3">
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 }} whileHover={{ y: -6, scale: 1.02 }} className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3 cursor-pointer">
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Bridal Suites</span>
                     <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
@@ -941,9 +942,9 @@ const AdminDashboard = () => {
                     <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{bridalRecords.length}</h3>
                     <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-100">Bespoke</span>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3">
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.15 }} whileHover={{ y: -6, scale: 1.02 }} className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3 cursor-pointer">
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Portfolio Photos</span>
                     <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
@@ -954,9 +955,9 @@ const AdminDashboard = () => {
                     <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{gallery.length}</h3>
                     <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-100">Live</span>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3">
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.2 }} whileHover={{ y: -6, scale: 1.02 }} className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3 cursor-pointer">
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Studio Rating</span>
                     <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center font-bold">
@@ -967,12 +968,12 @@ const AdminDashboard = () => {
                     <h3 className="text-3xl font-serif font-bold text-[#2C2225]">4.9 ★</h3>
                     <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-100">Verified</span>
                   </div>
-                </div>
+                </motion.div>
 
               </div>
 
               {/* Today's Appointments List */}
-              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
+              <motion.div initial={{ opacity: 0, y: 35 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-pink-100 pb-4">
                   <div>
                     <h3 className="font-serif text-lg font-bold text-[#2C2225]">🌟 Live Customer Appointments</h3>
@@ -1004,8 +1005,8 @@ const AdminDashboard = () => {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {appointments.map((apt) => (
-                      <div key={apt._id} className="p-5 rounded-2xl bg-gradient-to-br from-[#FFF5F8] to-white border border-pink-200/80 shadow-xs space-y-4">
+                    {appointments.map((apt, index) => (
+                      <motion.div key={apt._id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.35, delay: index * 0.08 }} whileHover={{ scale: 1.03, y: -4 }} className="p-5 rounded-2xl bg-gradient-to-br from-[#FFF5F8] to-white border border-pink-200/80 shadow-xs space-y-4 cursor-pointer">
                         <div className="flex justify-between items-start">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-[#B76E79] text-white font-bold flex items-center justify-center text-sm shadow-sm">
@@ -1041,14 +1042,14 @@ const AdminDashboard = () => {
                             <FaWhatsapp /> Send WA
                           </button>
                         </div>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 )}
-              </div>
+              </motion.div>
 
               {/* Real Dynamic Revenue Area Chart */}
-              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-4">
+              <motion.div initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-4">
                 <div className="flex justify-between items-center">
                   <div>
                     <h3 className="font-serif text-lg font-bold text-[#2C2225]">Studio Revenue Trajectory</h3>
@@ -1083,7 +1084,7 @@ const AdminDashboard = () => {
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
-              </div>
+              </motion.div>
 
             </div>
           )}
@@ -1093,7 +1094,7 @@ const AdminDashboard = () => {
             <div className="space-y-8">
               
               {/* Real-time Time Slot Availability Grid */}
-              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-5">
+              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-5">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-pink-100 pb-4">
                   <div>
                     <h3 className="font-serif text-lg font-bold text-[#2C2225]">📅 Real-Time Slot Availability Grid</h3>
@@ -1115,12 +1116,14 @@ const AdminDashboard = () => {
                     const isSlotBooked = appointments.some(a => a.time === slot.time && a.date === selectedDate);
                     const bookedClient = appointments.find(a => a.time === slot.time && a.date === selectedDate);
                     return (
-                      <div 
+                      <motion.div 
                         key={idx}
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
                         className={`p-4 rounded-2xl border text-center space-y-1.5 transition-all duration-300 ${
                           isSlotBooked 
                             ? 'bg-rose-50/80 border-rose-200 text-rose-900 shadow-xs' 
-                            : 'bg-emerald-50/80 border-emerald-200 text-emerald-900 hover:scale-105 cursor-pointer shadow-sm'
+                            : 'bg-emerald-50/80 border-emerald-200 text-emerald-900 cursor-pointer shadow-sm'
                         }`}
                         onClick={() => {
                           if (!isSlotBooked) {
@@ -1135,14 +1138,14 @@ const AdminDashboard = () => {
                         }`}>
                           {isSlotBooked ? `Booked: ${bookedClient?.customerName || bookedClient?.name || 'Client'}` : 'Available +'}
                         </span>
-                      </div>
+                      </motion.div>
                     );
                   })}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Master Appointments Table */}
-              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
+              <motion.div initial={{ opacity: 0, y: 35 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div>
                     <h3 className="font-serif text-lg font-bold text-[#2C2225]">Appointments Management Table</h3>
@@ -1228,7 +1231,7 @@ const AdminDashboard = () => {
                     </table>
                   </div>
                 )}
-              </div>
+              </motion.div>
 
             </div>
           )}
