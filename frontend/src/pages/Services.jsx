@@ -93,19 +93,22 @@ const Services = () => {
 
   return (
     <div className="bg-white">
-      {/* 1. HERO BANNER SECTION WITH bg1.png BACKGROUND */}
-      <section className="relative overflow-hidden min-h-[380px] sm:min-h-[440px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-8 shadow-sm">
-        {/* Background Image - bg2.png */}
-        <div className="absolute inset-0 z-0 opacity-70">
-          <img 
-            src="/bg2.png" 
-            alt="Services Banner Background" 
-            className="w-full h-full object-cover object-[85%_center] sm:object-center"
-          />
-        </div>
+      {/* 1. HERO BANNER SECTION WITH VIDEO BACKGROUND */}
+      <section className="relative overflow-hidden min-h-[400px] sm:min-h-[460px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-8 shadow-sm">
+        {/* Background Video */}
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline 
+          preload="metadata"
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        >
+          <source src="/itha_vachi_aalakana_video_pann.mp4" type="video/mp4" />
+        </video>
         
-        {/* Luxury Soft Pink & Rose Gold Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-pink-50/75 to-white/50 z-10"></div>
+        {/* Luxury Soft Pink & Translucent Glass Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/75 to-white/90 backdrop-blur-[1px] z-10"></div>
 
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
