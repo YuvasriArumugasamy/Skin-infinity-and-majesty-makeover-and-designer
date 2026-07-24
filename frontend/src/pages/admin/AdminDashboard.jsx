@@ -100,7 +100,41 @@ const AdminDashboard = () => {
 
 
 
-  // Fetch real data from live backend & localStorage
+  // Calculate REAL Revenue Chart Data dynamically from active appointments
+  const realRevenueChartData = React.useMemo(() => {
+    if (!appointments || appointments.length === 0) {
+      return [
+        { name: 'Today', revenue: 0 }
+      ];
+    }
+
+    const dateMap = {};
+    const sorted = [...appointments].sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0));
+
+    sorted.forEach(apt => {
+      const rawAmt = (apt.amount || '0').replace(/[^0-9.]/g, '');
+      const amtNum = parseFloat(rawAmt) || 0;
+      
+      let dLabel = 'Recent';
+      if (apt.date) {
+        const dObj = new Date(apt.date);
+        if (!isNaN(dObj.getTime())) {
+          dLabel = dObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        } else {
+          dLabel = apt.date;
+        }
+      }
+      
+      dateMap[dLabel] = (dateMap[dLabel] || 0) + amtNum;
+    });
+
+    const result = Object.keys(dateMap).map(key => ({
+      name: key,
+      revenue: dateMap[key]
+    }));
+
+    return result.length > 0 ? result : [{ name: 'Today', revenue: 0 }];
+  }, [appointments]);
   const fetchData = async () => {
     setLoading(true);
     let localData = [];
@@ -991,9 +1025,34 @@ const AdminDashboard = () => {
                     ))}
                   </div>
                 )}
+              {/* Real Dynamic Revenue Area Chart */}
+              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-4">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">Studio Revenue Trajectory</h3>
+                    <p className="text-xs text-gray-500">Live dynamic revenue computed from real customer bookings</p>
+                  </div>
+                  <span className="px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-xs font-bold text-[#B76E79]">
+                    Live Real-Time Data
+                  </span>
+                </div>
+                <div className="h-64 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={realRevenueChartData}>
+                      <defs>
+                        <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#B76E79" stopOpacity={0.4}/>
+                          <stop offset="95%" stopColor="#B76E79" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <XAxis dataKey="name" stroke="#999" fontSize={11} />
+                      <YAxis stroke="#999" fontSize={11} tickFormatter={val => `₹${val >= 1000 ? (val/1000).toFixed(1) + 'k' : val}`} />
+                      <Tooltip formatter={(val) => [`₹${Number(val).toLocaleString()}`, 'Real Revenue']} />
+                      <Area type="monotone" dataKey="revenue" stroke="#B76E79" strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
-
-
 
             </div>
           )}
