@@ -1222,59 +1222,123 @@ const AdminDashboard = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs">
-                      <thead>
-                        <tr className="border-b border-pink-100 text-gray-400 uppercase font-bold">
-                          <th className="py-3.5 px-4">Client Name</th>
-                          <th className="py-3.5 px-4">Service</th>
-                          <th className="py-3.5 px-4">Date & Time</th>
-                          <th className="py-3.5 px-4">Status</th>
-                          <th className="py-3.5 px-4 text-right">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-pink-100/60 text-gray-700">
-                        {filteredAppointments.map((apt) => (
-                          <tr key={apt._id} className="hover:bg-pink-50/40 transition">
-                            <td className="py-3.5 px-4 font-bold text-[#2C2225]">{apt.customerName || apt.name}</td>
-                            <td className="py-3.5 px-4 text-[#B76E79] font-semibold">{apt.service}</td>
-                            <td className="py-3.5 px-4 text-gray-600">{apt.date} | {apt.time || '10:00 AM'}</td>
-                            <td className="py-3.5 px-4">
-                              <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                                apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
-                                apt.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
-                                'bg-amber-100 text-amber-800'
-                              }`}>
-                                {apt.status || 'Confirmed'}
-                              </span>
-                            </td>
-                            <td className="py-3.5 px-4 text-right">
-                              <div className="flex items-center justify-end gap-2">
-                                <button
-                                  onClick={() => handleSendWhatsApp(apt)}
-                                  className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold text-[11px] border border-emerald-200 transition flex items-center gap-1"
-                                >
-                                  <FaWhatsapp /> WA
-                                </button>
-                                <button
-                                  onClick={() => handleStatusChange(apt._id, 'Confirmed')}
-                                  className="w-7 h-7 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs transition"
-                                >
-                                  <FiCheck />
-                                </button>
-                                <button
-                                  onClick={() => handleDeleteAppointment(apt._id)}
-                                  className="w-7 h-7 rounded-full bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center text-xs transition"
-                                >
-                                  <FiTrash2 />
-                                </button>
-                              </div>
-                            </td>
+                  <>
+                    {/* 📱 Mobile Responsive Cards (Phone View - No Horizontal Scroll) */}
+                    <div className="block md:hidden space-y-4">
+                      {filteredAppointments.map((apt, index) => (
+                        <motion.div 
+                          key={apt._id}
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: index * 0.05 }}
+                          className="p-4.5 rounded-2xl bg-gradient-to-br from-[#FFF8FA] to-white border border-pink-200/80 shadow-xs space-y-3.5"
+                        >
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <h4 className="font-bold text-sm text-[#2C2225]">{apt.customerName || apt.name}</h4>
+                              <span className="text-xs text-[#B76E79] font-semibold block mt-0.5">{apt.service}</span>
+                            </div>
+                            <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${
+                              apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
+                              apt.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
+                              'bg-amber-100 text-amber-800'
+                            }`}>
+                              {apt.status || 'Confirmed'}
+                            </span>
+                          </div>
+
+                          <div className="p-3 rounded-xl bg-white border border-pink-100 text-xs flex justify-between items-center text-gray-600 gap-2">
+                            <div>
+                              <span className="block text-[10px] text-gray-400 font-bold uppercase">Date & Time</span>
+                              <strong className="text-gray-800 text-xs">{apt.date} | {apt.time || '10:00 AM'}</strong>
+                            </div>
+                            <strong className="text-[#2C2225] font-serif text-sm bg-pink-50/80 px-2.5 py-1 rounded-lg border border-pink-200/60">{apt.amount || '₹4,500'}</strong>
+                          </div>
+
+                          <div className="flex items-center justify-between pt-1 gap-2">
+                            <button
+                              onClick={() => handleSendWhatsApp(apt)}
+                              className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition"
+                            >
+                              <FaWhatsapp /> WhatsApp Client
+                            </button>
+
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => handleStatusChange(apt._id, 'Confirmed')}
+                                className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-700 font-bold text-xs border border-emerald-200 flex items-center justify-center transition"
+                                title="Mark Confirmed"
+                              >
+                                <FiCheck />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteAppointment(apt._id)}
+                                className="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 font-bold text-xs border border-rose-200 flex items-center justify-center transition"
+                                title="Delete Appointment"
+                              >
+                                <FiTrash2 />
+                              </button>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    {/* 💻 Desktop Table View (Tablet & Laptop View) */}
+                    <div className="hidden md:block overflow-x-auto">
+                      <table className="w-full text-left text-xs">
+                        <thead>
+                          <tr className="border-b border-pink-100 text-gray-400 uppercase font-bold">
+                            <th className="py-3.5 px-4">Client Name</th>
+                            <th className="py-3.5 px-4">Service</th>
+                            <th className="py-3.5 px-4">Date & Time</th>
+                            <th className="py-3.5 px-4">Status</th>
+                            <th className="py-3.5 px-4 text-right">Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody className="divide-y divide-pink-100/60 text-gray-700">
+                          {filteredAppointments.map((apt) => (
+                            <tr key={apt._id} className="hover:bg-pink-50/40 transition">
+                              <td className="py-3.5 px-4 font-bold text-[#2C2225]">{apt.customerName || apt.name}</td>
+                              <td className="py-3.5 px-4 text-[#B76E79] font-semibold">{apt.service}</td>
+                              <td className="py-3.5 px-4 text-gray-600">{apt.date} | {apt.time || '10:00 AM'}</td>
+                              <td className="py-3.5 px-4">
+                                <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                                  apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
+                                  apt.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
+                                  'bg-amber-100 text-amber-800'
+                                }`}>
+                                  {apt.status || 'Confirmed'}
+                                </span>
+                              </td>
+                              <td className="py-3.5 px-4 text-right">
+                                <div className="flex items-center justify-end gap-2">
+                                  <button
+                                    onClick={() => handleSendWhatsApp(apt)}
+                                    className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold text-[11px] border border-emerald-200 transition flex items-center gap-1"
+                                  >
+                                    <FaWhatsapp /> WA
+                                  </button>
+                                  <button
+                                    onClick={() => handleStatusChange(apt._id, 'Confirmed')}
+                                    className="w-7 h-7 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs transition"
+                                  >
+                                    <FiCheck />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteAppointment(apt._id)}
+                                    className="w-7 h-7 rounded-full bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center text-xs transition"
+                                  >
+                                    <FiTrash2 />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
                 )}
               </motion.div>
 
