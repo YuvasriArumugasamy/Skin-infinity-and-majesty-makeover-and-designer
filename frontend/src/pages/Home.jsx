@@ -175,7 +175,7 @@ const Home = () => {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.75 }}
-              className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mt-8 sm:mt-12 pt-8 border-t border-pink-200/80 w-full"
+              className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4 mt-12 sm:mt-20 pt-10 sm:pt-14 border-t border-pink-200/60 w-full"
             >
               {[
                 { title: 'Certified Experts', desc: 'Beauty Specialist', icon: FiAward },
@@ -187,15 +187,15 @@ const Home = () => {
                 return (
                   <motion.div 
                     key={idx} 
-                    whileHover={{ scale: 1.04 }}
-                    className="bg-white/80 backdrop-blur-md p-3.5 rounded-2xl border border-pink-100/80 shadow-sm flex items-center gap-3 group hover:shadow-md hover:border-pink-200 transition-all duration-300"
+                    whileHover={{ scale: 1.05, y: -4 }}
+                    className="bg-white/75 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-white/80 shadow-md flex items-center gap-3 group hover:shadow-xl hover:bg-white/95 transition-all duration-300"
                   >
-                    <div className="w-9 h-9 rounded-xl bg-pink-50 text-[#C57488] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-50 to-pink-100/90 text-[#C57488] border border-pink-200/60 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all shadow-xs">
                       <IconComponent className="text-base" />
                     </div>
                     <div>
-                      <h4 className="text-[11px] font-bold text-gray-800 leading-tight">{item.title}</h4>
-                      <p className="text-[9px] text-gray-500 mt-0.5">{item.desc}</p>
+                      <h4 className="text-[11px] sm:text-xs font-bold text-gray-800 leading-tight">{item.title}</h4>
+                      <p className="text-[9px] sm:text-[10px] text-gray-500 mt-0.5 font-medium">{item.desc}</p>
                     </div>
                   </motion.div>
                 );
