@@ -7,7 +7,6 @@ import {
   FiUser, 
   FiCheckCircle, 
   FiStar, 
-  FiSparkles, 
   FiHeart, 
   FiShield 
 } from 'react-icons/fi';
@@ -247,7 +246,7 @@ const BookAppointment = () => {
               <div className="flex items-center gap-2 mb-4 border-b border-pink-100 pb-3">
                 <span className="w-7 h-7 rounded-full bg-[#C57488]/10 text-[#C57488] font-bold text-xs flex items-center justify-center">2</span>
                 <h3 className="font-serif-luxury text-lg font-bold text-[#2C2225] flex items-center gap-2">
-                  <FiSparkles className="text-[#C57488]" /> Choose Service
+                  <FiStar className="text-[#C57488]" /> Choose Service
                 </h3>
               </div>
               
