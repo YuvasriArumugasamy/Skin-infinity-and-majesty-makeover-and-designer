@@ -198,10 +198,18 @@ const Home = () => {
                 />
               </div>
 
-              {/* Floating Badge: 10+ Years Experience */}
-              <div className="absolute top-6 left-0 sm:-left-8 z-30 bg-[#C57488] text-white px-4 py-3 sm:px-5 sm:py-4 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center">
-                <span className="font-serif-luxury font-bold text-xl sm:text-3xl leading-none">10+</span>
-                <span className="text-[9px] sm:text-[10px] font-medium tracking-wide uppercase mt-1">Years of<br />Experience</span>
+              {/* Floating Ultra-Unique Shiny Badge: 10+ Years Experience */}
+              <div className="absolute top-6 left-0 sm:-left-8 z-30 shiny-badge-board shiny-gold-border text-white px-5 py-4 sm:px-6 sm:py-5 rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col items-center justify-center text-center group cursor-pointer">
+                {/* Gold Sparkling Star Ornament */}
+                <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-gradient-to-tr from-amber-400 via-yellow-300 to-amber-100 flex items-center justify-center text-[11px] text-pink-950 font-black shadow-md border border-white/60 animate-pulse z-10">
+                  ✦
+                </div>
+                <span className="font-serif-luxury font-extrabold text-2xl sm:text-4xl leading-none gold-gradient-text tracking-tight">
+                  10+
+                </span>
+                <span className="text-[9.5px] sm:text-[11px] font-bold tracking-widest uppercase mt-1.5 text-amber-100 drop-shadow-sm">
+                  Years of<br />Experience
+                </span>
               </div>
             </div>
           </div>
