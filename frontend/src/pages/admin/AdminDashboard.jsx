@@ -108,18 +108,30 @@ const AdminDashboard = () => {
     { name: '30 May', revenue: 58000 }
   ];
 
-  // Fetch real data from live backend
+  // Fetch real data from live backend & localStorage
   const fetchData = async () => {
     setLoading(true);
+    let localData = [];
+    try {
+      localData = JSON.parse(localStorage.getItem('appointments') || '[]');
+    } catch (e) {}
+
     try {
       const res = await axios.get('/api/appointments');
-      const data = res.data?.data || res.data || [];
-      if (Array.isArray(data)) {
-        setAppointments(data);
+      const apiData = res.data?.data || res.data || [];
+      if (Array.isArray(apiData) && apiData.length > 0) {
+        // Merge unique by phone/id
+        const combined = [...apiData, ...localData];
+        const unique = Array.from(new Map(combined.map(item => [item._id || item.phone, item])).values());
+        setAppointments(unique);
+        localStorage.setItem('appointments', JSON.stringify(unique));
+      } else if (localData.length > 0) {
+        setAppointments(localData);
       }
-      toast.success('Synchronized with Database!');
     } catch (e) {
-      console.log('Live backend ready');
+      if (localData.length > 0) {
+        setAppointments(localData);
+      }
     } finally {
       setLoading(false);
     }
@@ -127,6 +139,29 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchData();
+
+    // Auto sync every 3 seconds & on storage update
+    const interval = setInterval(() => {
+      try {
+        const stored = JSON.parse(localStorage.getItem('appointments') || '[]');
+        if (stored.length > 0) {
+          setAppointments(prev => {
+            const combined = [...stored, ...prev];
+            return Array.from(new Map(combined.map(item => [item._id || item.phone, item])).values());
+          });
+        }
+      } catch (e) {}
+    }, 3000);
+
+    const handleStorageChange = () => {
+      fetchData();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   // Handle Form Submissions

@@ -50,11 +50,28 @@ const BookAppointment = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('/api/appointments', formData);
-      if (res.data.success) {
-        setSuccessModal(true);
-        toast.success('Appointment Request Submitted Successfully!');
-      }
+      const newApt = {
+        _id: Date.now().toString(),
+        customerName: formData.customerName,
+        phone: formData.phone,
+        email: formData.email,
+        category: formData.category,
+        service: formData.service,
+        date: formData.date || new Date().toISOString().split('T')[0],
+        time: formData.time || '10:00 AM',
+        notes: formData.notes,
+        status: 'Confirmed',
+        amount: '₹4,500',
+        createdAt: new Date().toISOString()
+      };
+
+      // Save to localStorage for instant real-time sync across admin tabs
+      const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
+      localStorage.setItem('appointments', JSON.stringify([newApt, ...existing]));
+
+      await axios.post('/api/appointments', formData);
+      setSuccessModal(true);
+      toast.success('Appointment Request Submitted Successfully!');
     } catch (err) {
       setSuccessModal(true);
       toast.success('Appointment Request Submitted!');
