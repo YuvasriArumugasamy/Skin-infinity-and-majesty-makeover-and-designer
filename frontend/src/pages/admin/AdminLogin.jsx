@@ -113,15 +113,15 @@ const AdminLogin = () => {
               <label className="block text-[10px] font-bold text-luxuryDark uppercase tracking-wider">
                 Admin Username / Email
               </label>
-              <div className="relative">
-                <FiMail className="absolute left-3.5 top-3 text-gray-500 text-sm" />
+              <div className="relative flex items-center">
+                <FiMail className="absolute left-3.5 text-[#C57488] text-base z-10 pointer-events-none" />
                 <input
                   type="text"
                   required
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="admin@skininfinity.com"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/80 backdrop-blur-md border border-pink-200/80 text-luxuryDark placeholder-gray-400 text-xs focus:outline-none focus:border-luxuryRoseGold focus:bg-white transition font-medium"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-pink-200 text-luxuryDark placeholder-gray-400 text-xs focus:outline-none focus:border-luxuryRoseGold focus:bg-white transition font-medium shadow-sm"
                 />
               </div>
             </div>
@@ -130,22 +130,22 @@ const AdminLogin = () => {
               <label className="block text-[10px] font-bold text-luxuryDark uppercase tracking-wider">
                 Password
               </label>
-              <div className="relative">
-                <FiLock className="absolute left-3.5 top-3 text-gray-500 text-sm" />
+              <div className="relative flex items-center">
+                <FiLock className="absolute left-3.5 text-[#C57488] text-base z-10 pointer-events-none" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-white/80 backdrop-blur-md border border-pink-200/80 text-luxuryDark placeholder-gray-400 text-xs focus:outline-none focus:border-luxuryRoseGold focus:bg-white transition font-mono font-medium"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-pink-200 text-luxuryDark placeholder-gray-400 text-xs focus:outline-none focus:border-luxuryRoseGold focus:bg-white transition font-mono font-medium shadow-sm"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-gray-400 hover:text-luxuryRoseGold transition"
+                  className="absolute right-3.5 text-[#C57488] hover:text-[#8c3d52] transition z-10 p-1"
                 >
-                  {showPassword ? <FiEyeOff size={15} /> : <FiEye size={15} />}
+                  {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
                 </button>
               </div>
             </div>
