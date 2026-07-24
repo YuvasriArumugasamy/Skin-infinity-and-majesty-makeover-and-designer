@@ -310,7 +310,7 @@ const AdminDashboard = () => {
   const handleSendWhatsApp = (apt) => {
     const cleanPhone = (apt.phone || '').replace(/[^0-9]/g, '');
     const fullPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
-    const msg = `Hello ${apt.customerName || 'Client'}! ✨ This is a reminder for your upcoming ${apt.service || 'Makeover'} appointment at Skin Infinity & Majesty on ${apt.date} at ${apt.time}. Assigned Stylist: ${apt.staff || 'Master Artist'}. See you soon! 👑`;
+    const msg = `Hello ${apt.customerName || 'Client'}! ✨ This is a reminder for your upcoming ${apt.service || 'Makeover'} appointment at Skin Infinity & Majesty on ${apt.date} at ${apt.time}. See you soon! 👑`;
     const waUrl = `https://wa.me/${fullPhone}?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
     toast.success(`Opening WhatsApp for ${apt.customerName}...`, { icon: '💬' });
@@ -433,19 +433,6 @@ const AdminDashboard = () => {
                     className="w-full px-3 py-2 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="block font-bold text-gray-700 mb-1">Assign Stylist / Master Artist</label>
-                <select 
-                  value={newBooking.staff}
-                  onChange={e => setNewBooking({ ...newBooking, staff: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
-                >
-                  {staffList.map((st, i) => (
-                    <option key={i} value={st}>{st}</option>
-                  ))}
-                </select>
               </div>
 
               <div className="pt-4 flex justify-end gap-3">
@@ -992,10 +979,6 @@ const AdminDashboard = () => {
                             <span>Date & Time:</span>
                             <strong className="text-gray-800">{apt.date} | {apt.time || '10:00 AM'}</strong>
                           </div>
-                          <div className="flex justify-between">
-                            <span>Assigned Stylist:</span>
-                            <strong className="text-[#B76E79]">{apt.staff || 'Master Artist'}</strong>
-                          </div>
                         </div>
 
                         <div className="flex items-center justify-between pt-1">
@@ -1094,8 +1077,8 @@ const AdminDashboard = () => {
               <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div>
-                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">Appointments & Staff Allocation Table</h3>
-                    <p className="text-xs text-gray-500">Manage client bookings and assign specialized artists</p>
+                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">Appointments Management Table</h3>
+                    <p className="text-xs text-gray-500">Manage client bookings and appointment statuses</p>
                   </div>
                   
                   <div className="flex items-center gap-2">
@@ -1130,7 +1113,6 @@ const AdminDashboard = () => {
                           <th className="py-3.5 px-4">Client Name</th>
                           <th className="py-3.5 px-4">Service</th>
                           <th className="py-3.5 px-4">Date & Time</th>
-                          <th className="py-3.5 px-4">Assigned Staff</th>
                           <th className="py-3.5 px-4">Status</th>
                           <th className="py-3.5 px-4 text-right">Actions</th>
                         </tr>
@@ -1141,17 +1123,6 @@ const AdminDashboard = () => {
                             <td className="py-3.5 px-4 font-bold text-[#2C2225]">{apt.customerName || apt.name}</td>
                             <td className="py-3.5 px-4 text-[#B76E79] font-semibold">{apt.service}</td>
                             <td className="py-3.5 px-4 text-gray-600">{apt.date} | {apt.time || '10:00 AM'}</td>
-                            <td className="py-3.5 px-4">
-                              <select
-                                value={apt.staff || staffList[0]}
-                                onChange={e => handleStaffAssign(apt._id, e.target.value)}
-                                className="px-2.5 py-1 rounded-lg border border-pink-200 bg-white text-[11px] text-gray-700 font-medium focus:outline-none focus:border-[#B76E79]"
-                              >
-                                {staffList.map((st, i) => (
-                                  <option key={i} value={st}>{st}</option>
-                                ))}
-                              </select>
-                            </td>
                             <td className="py-3.5 px-4">
                               <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
                                 apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
