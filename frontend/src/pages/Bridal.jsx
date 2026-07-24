@@ -42,7 +42,7 @@ const Bridal = () => {
     },
     {
       title: 'PRE-BRIDAL CARE',
-      img: '/bride1.jpg',
+      img: '/ChatGPT Image Jul 24, 2026, 09_01_31 PM.png',
       features: [
         'Facial',
         'Hair Spa',
