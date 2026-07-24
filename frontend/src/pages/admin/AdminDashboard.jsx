@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { 
   FiGrid, FiCalendar, FiScissors, FiStar, 
   FiLogOut, FiCheck, FiX, FiRefreshCw,
   FiPlus, FiSearch, FiClock, FiTrash2, FiMenu, FiDollarSign,
-  FiHeart, FiImage, FiUpload, FiInbox
+  FiHeart, FiImage, FiUpload, FiInbox, FiExternalLink
 } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
@@ -800,18 +800,20 @@ const AdminDashboard = () => {
 
         </div>
 
-        {/* User Info & Logout */}
-        <div className="pt-6 border-t border-pink-100/80 space-y-3">
-          <div className="flex items-center gap-3 p-2 bg-pink-50/60 rounded-xl border border-pink-100">
-            <img src="/logo.png" alt="Admin" className="w-8 h-8 rounded-full object-cover border border-pink-200" />
-            <div className="min-w-0 flex-1">
-              <span className="block text-xs font-bold text-[#2C2225] truncate">Yuvasri A.</span>
-              <span className="block text-[9px] text-[#B76E79] font-semibold uppercase">Super Admin</span>
-            </div>
-          </div>
+        {/* User Actions: View Website & Logout */}
+        <div className="pt-6 border-t border-pink-100/80 space-y-2.5">
+          <Link 
+            to="/"
+            target="_blank"
+            rel="noreferrer"
+            className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl text-xs font-bold text-[#B76E79] bg-pink-50 hover:bg-pink-100 border border-pink-200/80 shadow-xs transition group"
+          >
+            <FiExternalLink className="text-sm group-hover:scale-110 transition-transform" />
+            <span>View Website</span>
+          </Link>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition"
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-100 transition"
           >
             <FiLogOut /> Log Out
           </button>
