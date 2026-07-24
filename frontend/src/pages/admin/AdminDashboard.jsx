@@ -140,18 +140,13 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchData();
 
-    // Auto sync every 3 seconds & on storage update
+    // Auto sync on storage update & interval
     const interval = setInterval(() => {
       try {
         const stored = JSON.parse(localStorage.getItem('appointments') || '[]');
-        if (stored.length > 0) {
-          setAppointments(prev => {
-            const combined = [...stored, ...prev];
-            return Array.from(new Map(combined.map(item => [item._id || item.phone, item])).values());
-          });
-        }
+        setAppointments(stored);
       } catch (e) {}
-    }, 3000);
+    }, 2000);
 
     const handleStorageChange = () => {
       fetchData();
@@ -245,20 +240,37 @@ const AdminDashboard = () => {
   };
 
   const handleStatusChange = async (id, status) => {
+    setAppointments(prev => {
+      const updated = prev.map(a => a._id === id ? { ...a, status } : a);
+      localStorage.setItem('appointments', JSON.stringify(updated));
+      return updated;
+    });
     try {
       await axios.patch(`/api/appointments/${id}/status`, { status });
     } catch (e) {}
-    setAppointments(prev => prev.map(a => a._id === id ? { ...a, status } : a));
     toast.success(`Appointment marked as ${status}`);
   };
 
   const handleStaffAssign = (id, staffName) => {
-    setAppointments(prev => prev.map(a => a._id === id ? { ...a, staff: staffName } : a));
+    setAppointments(prev => {
+      const updated = prev.map(a => a._id === id ? { ...a, staff: staffName } : a);
+      localStorage.setItem('appointments', JSON.stringify(updated));
+      return updated;
+    });
     toast.success(`Assigned ${staffName}`);
   };
 
-  const handleDeleteAppointment = (id) => {
-    setAppointments(prev => prev.filter(a => a._id !== id));
+  const handleDeleteAppointment = async (id) => {
+    setAppointments(prev => {
+      const updated = prev.filter(a => a._id !== id);
+      localStorage.setItem('appointments', JSON.stringify(updated));
+      return updated;
+    });
+
+    try {
+      await axios.delete(`/api/appointments/${id}`);
+    } catch (e) {}
+
     toast.success('Appointment removed');
   };
 
