@@ -316,15 +316,6 @@ const AdminDashboard = () => {
     toast.success(`Opening WhatsApp for ${apt.customerName}...`, { icon: '💬' });
   };
 
-  const handleToggleGalleryStatus = (id) => {
-    setGallery(prev => prev.map(g => g._id === id ? { ...g, status: g.status === 'Published' ? 'Draft' : 'Published' } : g));
-    toast.success('Gallery Status Updated!');
-  };
-
-  const handleDeleteGalleryItem = (id) => {
-    setGallery(prev => prev.filter(g => g._id !== id));
-    toast.success('Photo removed');
-  };
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
