@@ -95,17 +95,17 @@ const Services = () => {
     <div className="bg-white">
       {/* 1. HERO BANNER SECTION WITH bg1.png BACKGROUND */}
       <section className="relative overflow-hidden min-h-[380px] sm:min-h-[440px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-8 shadow-sm">
-        {/* Background Image - bg1.png */}
-        <div className="absolute inset-0 z-0 opacity-40">
+        {/* Background Image - bg2.png */}
+        <div className="absolute inset-0 z-0 opacity-60">
           <img 
-            src="/bg1.png" 
+            src="/bg2.png" 
             alt="Services Banner Background" 
             className="w-full h-full object-cover object-center"
           />
         </div>
         
         {/* Luxury Soft Pink & Rose Gold Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FFF0F4]/92 via-[#FCE7EF]/88 to-[#FAF3F5] z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-pink-50/70 to-white/60 z-10"></div>
 
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
