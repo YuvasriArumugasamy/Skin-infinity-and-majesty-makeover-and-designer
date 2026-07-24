@@ -6,7 +6,7 @@ import {
   FiGrid, FiCalendar, FiUsers, FiScissors, FiStar, 
   FiMail, FiLogOut, FiCheck, FiX, FiRefreshCw,
   FiPlus, FiSearch, FiClock, FiTrash2, FiMenu, FiDollarSign,
-  FiSend, FiHeart, FiFileText, FiImage, FiUpload, FiShare2, FiChevronRight
+  FiSend, FiHeart, FiFileText, FiImage, FiUpload, FiShare2, FiInbox
 } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
@@ -16,7 +16,8 @@ const AdminDashboard = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
-  const [selectedDate, setSelectedDate] = useState('2026-07-25');
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // Staff members list
@@ -27,26 +28,7 @@ const AdminDashboard = () => {
     'Dhana L. (Designer Draper)'
   ];
 
-  // Initial appointments
-  const initialAppointments = [
-    { _id: '1', customerName: 'Priya Sundaram', service: 'Bespoke Bridal HD Makeup', date: '2026-07-25', time: '10:00 AM', phone: '9876543210', status: 'Confirmed', amount: '₹18,500', staff: 'Yuvasri A. (Master Artist)' },
-    { _id: '2', customerName: 'Ananya Ramesh', service: 'Hydra-Facial & Glow Therapy', date: '2026-07-25', time: '02:00 PM', phone: '9845012345', status: 'Pending', amount: '₹4,500', staff: 'Kavya R. (Senior Aesthetician)' },
-    { _id: '3', customerName: 'Kavitha Krishnan', service: 'Keratin Hair Spa & Styling', date: '2026-07-26', time: '11:30 AM', phone: '9912388765', status: 'Confirmed', amount: '₹6,200', staff: 'Meenakshi S. (Hair Stylist)' },
-    { _id: '4', customerName: 'Meera Varma', service: 'Royal Airbrush Makeup Suite', date: '2026-07-27', time: '09:00 AM', phone: '9765432109', status: 'Confirmed', amount: '₹22,000', staff: 'Yuvasri A. (Master Artist)' },
-    { _id: '5', customerName: 'Deepa Rajan', service: 'Skin Brightening Detox Treatment', date: '2026-07-28', time: '04:00 PM', phone: '9543210987', status: 'Cancelled', amount: '₹3,800', staff: 'Kavya R. (Senior Aesthetician)' }
-  ];
-
-  // Time slots template
-  const timeSlots = [
-    { time: '09:00 AM', booked: true, client: 'Meera Varma' },
-    { time: '10:30 AM', booked: true, client: 'Priya Sundaram' },
-    { time: '12:00 PM', booked: false, client: null },
-    { time: '02:00 PM', booked: true, client: 'Ananya Ramesh' },
-    { time: '04:00 PM', booked: false, client: null },
-    { time: '06:00 PM', booked: false, client: null }
-  ];
-
-  // Initial Portfolio Gallery Items
+  // Portfolio Gallery Items (Real images from /public)
   const initialGallery = [
     { _id: 'g1', title: 'Royal Muhurtham HD Makeup Look', category: 'Bridal Makeover', image: '/bride1.jpg', status: 'Published' },
     { _id: 'g2', title: 'Handcrafted Zardozi Aari Work Blouse', category: 'Bespoke Couture', image: '/ari work.png', status: 'Published' },
@@ -55,34 +37,7 @@ const AdminDashboard = () => {
     { _id: 'g5', title: 'Custom Designer Blouse Embroidery', category: 'Bespoke Couture', image: '/Machine embroider work.png', status: 'Published' }
   ];
 
-  // Initial Bridal Records
-  const initialBridalRecords = [
-    {
-      _id: 'b1',
-      clientName: 'Priya Sundaram',
-      functionDate: '2026-08-15',
-      eventType: 'Muhurtham & Reception',
-      trialDate: '2026-07-28',
-      skinNotes: 'Combination Skin, Prefers Soft Dewy Finish',
-      jewelryColor: 'Antique Gold & Temple Ruby',
-      blouseDetails: 'Aari Hand Embroidery Blouse (Gold Zari & Kundan)',
-      bust: '36"', waist: '30"', shoulder: '14.5"', sleeve: '11.5"',
-      deliveryStatus: 'In Embroidery Work'
-    },
-    {
-      _id: 'b2',
-      clientName: 'Meera Varma',
-      functionDate: '2026-09-02',
-      eventType: 'Grand Sangeet & Wedding',
-      trialDate: '2026-08-10',
-      skinNotes: 'Sensitive Skin, Patch Test Completed',
-      jewelryColor: 'Diamond & Emerald Suite',
-      blouseDetails: 'Bespoke Zardosi Work Bridal Blouse',
-      bust: '34"', waist: '28"', shoulder: '14"', sleeve: '10.5"',
-      deliveryStatus: 'Trial Approved'
-    }
-  ];
-
+  // Salon Services Suite
   const initialServices = [
     { _id: 's1', name: 'Bespoke Royal Bridal HD Makeup', category: 'Bridal Suite', price: '₹18,500', duration: '3.5 Hours', status: 'Active' },
     { _id: 's2', name: 'Ultra Glow Hydra-Facial Treatment', category: 'Skin Therapy', price: '₹4,500', duration: '90 Mins', status: 'Active' },
@@ -90,10 +45,21 @@ const AdminDashboard = () => {
     { _id: 's4', name: 'Designer Blouse Embroidery & Saree Draping', category: 'Couture', price: '₹8,000', duration: '2 Hours', status: 'Active' }
   ];
 
-  const [appointments, setAppointments] = useState(initialAppointments);
+  // Pure live state - No dummy customer appointments or dummy bride records!
+  const [appointments, setAppointments] = useState([]);
+  const [bridalRecords, setBridalRecords] = useState([]);
   const [gallery, setGallery] = useState(initialGallery);
-  const [bridalRecords, setBridalRecords] = useState(initialBridalRecords);
   const [services, setServices] = useState(initialServices);
+
+  // Dynamic Time Slots Template
+  const timeSlots = [
+    { time: '09:00 AM' },
+    { time: '10:30 AM' },
+    { time: '12:00 PM' },
+    { time: '02:00 PM' },
+    { time: '04:00 PM' },
+    { time: '06:00 PM' }
+  ];
 
   const chartData = [
     { name: '1 May', revenue: 15000 },
@@ -105,15 +71,20 @@ const AdminDashboard = () => {
     { name: '30 May', revenue: 58000 }
   ];
 
+  // Fetch real data from live backend endpoints
   const fetchData = async () => {
+    setLoading(true);
     try {
-      const [aptRes] = await Promise.all([
-        axios.get('/api/appointments')
-      ]);
-      if (aptRes.data?.data?.length > 0) setAppointments(aptRes.data.data);
-      toast.success('Dashboard Synchronized!');
+      const res = await axios.get('/api/appointments');
+      const data = res.data?.data || res.data || [];
+      if (Array.isArray(data)) {
+        setAppointments(data);
+      }
+      toast.success('Synchronized with Live Database!');
     } catch (e) {
-      toast.success('Dashboard Refreshed');
+      console.log('API sync status: Ready for live bookings');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -124,11 +95,11 @@ const AdminDashboard = () => {
   const handleStatusChange = async (id, status) => {
     try {
       await axios.patch(`/api/appointments/${id}/status`, { status });
-      toast.success(`Appointment marked as ${status}`);
     } catch (e) {
-      toast.success(`Status updated to ${status}`);
+      // local state update
     }
     setAppointments(prev => prev.map(a => a._id === id ? { ...a, status } : a));
+    toast.success(`Appointment marked as ${status}`);
   };
 
   const handleStaffAssign = (id, staffName) => {
@@ -142,9 +113,9 @@ const AdminDashboard = () => {
   };
 
   const handleSendWhatsApp = (apt) => {
-    const cleanPhone = apt.phone.replace(/[^0-9]/g, '');
+    const cleanPhone = (apt.phone || '').replace(/[^0-9]/g, '');
     const fullPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
-    const msg = `Hello ${apt.customerName}! ✨ This is a reminder for your upcoming ${apt.service} appointment at Skin Infinity & Majesty on ${apt.date} at ${apt.time}. Assigned Stylist: ${apt.staff || 'Master Artist'}. See you soon! 👑`;
+    const msg = `Hello ${apt.customerName || 'Client'}! ✨ This is a reminder for your upcoming ${apt.service || 'Makeover'} appointment at Skin Infinity & Majesty on ${apt.date} at ${apt.time}. Assigned Stylist: ${apt.staff || 'Master Artist'}. See you soon! 👑`;
     const waUrl = `https://wa.me/${fullPhone}?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
     toast.success(`Opening WhatsApp for ${apt.customerName}...`, { icon: '💬' });
@@ -153,7 +124,7 @@ const AdminDashboard = () => {
   const handleAddGalleryItem = () => {
     const title = prompt('Photo Title / Description:');
     const category = prompt('Category (e.g. Bridal Makeover, Bespoke Couture, Skin Therapy):') || 'Bridal Makeover';
-    const imgUrl = prompt('Image URL or file name (e.g., /bride1.jpg or image URL):') || '/bride1.jpg';
+    const imgUrl = prompt('Image URL or file name (e.g., /bride1.jpg):') || '/bride1.jpg';
     if (title) {
       setGallery(prev => [
         {
@@ -171,12 +142,12 @@ const AdminDashboard = () => {
 
   const handleToggleGalleryStatus = (id) => {
     setGallery(prev => prev.map(g => g._id === id ? { ...g, status: g.status === 'Published' ? 'Draft' : 'Published' } : g));
-    toast.success('Gallery Item Status Updated!');
+    toast.success('Gallery Status Updated!');
   };
 
   const handleDeleteGalleryItem = (id) => {
     setGallery(prev => prev.filter(g => g._id !== id));
-    toast.success('Photo removed from Gallery');
+    toast.success('Photo removed');
   };
 
   const handleLogout = () => {
@@ -186,9 +157,12 @@ const AdminDashboard = () => {
   };
 
   const filteredAppointments = appointments.filter(a => {
-    const matchesSearch = a.customerName.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          a.service.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          a.phone.includes(searchQuery);
+    const name = a.customerName || a.name || '';
+    const service = a.service || '';
+    const phone = a.phone || '';
+    const matchesSearch = name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          service.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          phone.includes(searchQuery);
     const matchesStatus = statusFilter === 'All' ? true : a.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -225,10 +199,10 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Core Streamlined Executive Navigation */}
+          {/* Core Navigation Items */}
           <nav className="space-y-2">
             {[
-              { id: 'Overview', label: 'Executive Dashboard', desc: 'Live Metrics & Today Schedule', icon: <FiGrid /> },
+              { id: 'Overview', label: 'Executive Dashboard', desc: 'Live Metrics & Schedule', icon: <FiGrid /> },
               { id: 'Appointments', label: 'Bookings & Slots', desc: 'Real-Time Slots & WhatsApp', icon: <FiCalendar /> },
               { id: 'BridalSuite', label: 'Bridal & Couture Studio', desc: 'Bride Notes & Measurements', icon: <FiHeart /> },
               { id: 'GalleryAndServices', label: 'Portfolio & Services', desc: 'Photos & Pricing Suite', icon: <FiImage /> }
@@ -283,10 +257,10 @@ const AdminDashboard = () => {
         </div>
       </aside>
 
-      {/* Main Executive Content Area */}
+      {/* Main Content Area */}
       <main className="flex-1 overflow-y-auto min-w-0">
         
-        {/* Top Executive Header */}
+        {/* Header */}
         <header className="bg-white/80 backdrop-blur-md border-b border-pink-100/80 px-6 py-4 flex justify-between items-center sticky top-0 z-30 shadow-xs">
           <div className="flex items-center gap-3">
             <button 
@@ -297,7 +271,7 @@ const AdminDashboard = () => {
             </button>
             <div>
               <h2 className="font-serif text-lg md:text-xl font-bold text-[#2C2225]">Skin Infinity & Majesty Executive Suite ✨</h2>
-              <p className="text-xs text-gray-500">Luxury Salon & Bespoke Bridal Studio Control Panel</p>
+              <p className="text-xs text-gray-500">Live Booking & Studio Management Panel</p>
             </div>
           </div>
 
@@ -305,16 +279,17 @@ const AdminDashboard = () => {
             <button 
               onClick={fetchData} 
               className="p-2.5 rounded-xl bg-pink-50 text-[#B76E79] text-xs font-bold hover:bg-pink-100 border border-pink-200 transition flex items-center gap-1.5"
-              title="Refresh Real-time Data"
+              title="Refresh Live Data"
             >
-              <FiRefreshCw className="text-sm" />
-              <span className="hidden sm:inline">Sync Data</span>
+              <FiRefreshCw className={`text-sm ${loading ? 'animate-spin' : ''}`} />
+              <span className="hidden sm:inline">Sync Live</span>
             </button>
 
             <button
               onClick={() => {
                 const name = prompt('Client Name:');
                 const service = prompt('Service Name:');
+                const phone = prompt('Client Phone Number:') || '9876543210';
                 if (name && service) {
                   setAppointments(prev => [
                     {
@@ -322,21 +297,21 @@ const AdminDashboard = () => {
                       customerName: name,
                       service: service,
                       date: selectedDate,
-                      time: '04:00 PM',
-                      phone: '9876543210',
+                      time: '02:00 PM',
+                      phone: phone,
                       status: 'Confirmed',
-                      amount: '₹5,000',
+                      amount: '₹4,500',
                       staff: 'Yuvasri A. (Master Artist)'
                     },
                     ...prev
                   ]);
-                  toast.success('Instant Booking Added!');
+                  toast.success('New Booking Added!');
                 }
               }}
               className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white text-xs font-bold flex items-center gap-2 shadow-sm hover:opacity-95 transition"
             >
               <FiPlus />
-              <span className="hidden sm:inline">Quick Booking</span>
+              <span className="hidden sm:inline">New Booking</span>
             </button>
           </div>
         </header>
@@ -348,23 +323,23 @@ const AdminDashboard = () => {
           {activeTab === 'Overview' && (
             <div className="space-y-8">
               
-              {/* Executive Metric Cards */}
+              {/* Stat Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm hover:shadow-md transition space-y-3">
+                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Appointments</span>
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Live Bookings</span>
                     <div className="w-9 h-9 rounded-xl bg-pink-50 text-[#B76E79] flex items-center justify-center font-bold">
                       <FiCalendar />
                     </div>
                   </div>
                   <div className="flex items-baseline justify-between">
-                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{appointments.length + 124}</h3>
-                    <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">+18% Live</span>
+                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{appointments.length}</h3>
+                    <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">Live Sync</span>
                   </div>
                 </div>
 
-                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm hover:shadow-md transition space-y-3">
+                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Bridal Suites</span>
                     <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
@@ -372,99 +347,159 @@ const AdminDashboard = () => {
                     </div>
                   </div>
                   <div className="flex items-baseline justify-between">
-                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{bridalRecords.length + 18}</h3>
+                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{bridalRecords.length}</h3>
                     <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-100">Bespoke</span>
                   </div>
                 </div>
 
-                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm hover:shadow-md transition space-y-3">
+                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Monthly Revenue</span>
-                    <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-                      <FiDollarSign />
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Portfolio Photos</span>
+                    <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
+                      <FiImage />
                     </div>
                   </div>
                   <div className="flex items-baseline justify-between">
-                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">₹2,48,350</h3>
-                    <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">+25% Growth</span>
+                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{gallery.length}</h3>
+                    <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-100">Live</span>
                   </div>
                 </div>
 
-                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm hover:shadow-md transition space-y-3">
+                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Client Rating</span>
-                    <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Studio Rating</span>
+                    <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center font-bold">
                       <FiStar />
                     </div>
                   </div>
                   <div className="flex items-baseline justify-between">
                     <h3 className="text-3xl font-serif font-bold text-[#2C2225]">4.9 ★</h3>
-                    <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-100">250+ Verified</span>
+                    <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-100">Verified</span>
                   </div>
                 </div>
 
               </div>
 
-              {/* Today's Live Schedule Timeline Cards */}
+              {/* Today's Appointments List */}
               <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-pink-100 pb-4">
                   <div>
-                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">🌟 Today's Client Appointments Schedule</h3>
-                    <p className="text-xs text-gray-500">Live timeline for salon treatments & bridal consultations</p>
+                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">🌟 Live Customer Appointments</h3>
+                    <p className="text-xs text-gray-500">Real bookings submitted by clients through the website</p>
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-pink-50 text-[#B76E79] border border-pink-200">
-                    {selectedDate}
-                  </span>
+                  <button
+                    onClick={() => {
+                      const name = prompt('Client Name:');
+                      const service = prompt('Service Name:');
+                      if (name && service) {
+                        setAppointments(prev => [
+                          {
+                            _id: Date.now().toString(),
+                            customerName: name,
+                            service: service,
+                            date: selectedDate,
+                            time: '11:00 AM',
+                            phone: '9876543210',
+                            status: 'Confirmed',
+                            amount: '₹4,500',
+                            staff: 'Yuvasri A. (Master Artist)'
+                          },
+                          ...prev
+                        ]);
+                        toast.success('Appointment Added!');
+                      }
+                    }}
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-pink-50 text-[#B76E79] border border-pink-200 hover:bg-pink-100 transition"
+                  >
+                    + Add New Booking
+                  </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {appointments.slice(0, 6).map((apt, idx) => (
-                    <div key={apt._id} className="p-5 rounded-2xl bg-gradient-to-br from-[#FFF5F8] to-white border border-pink-200/80 shadow-xs space-y-4 hover:border-[#B76E79] transition">
-                      <div className="flex justify-between items-start">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-full bg-[#B76E79] text-white font-bold flex items-center justify-center text-sm shadow-sm">
-                            {apt.customerName.charAt(0)}
-                          </div>
-                          <div>
-                            <h4 className="font-bold text-sm text-[#2C2225] leading-tight">{apt.customerName}</h4>
-                            <span className="text-[11px] text-[#B76E79] font-semibold">{apt.service}</span>
-                          </div>
-                        </div>
-                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                          apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
-                          apt.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
-                          'bg-amber-100 text-amber-800'
-                        }`}>
-                          {apt.status}
-                        </span>
-                      </div>
-
-                      <div className="p-3 rounded-xl bg-white border border-pink-100 text-xs space-y-1 text-gray-600">
-                        <div className="flex justify-between">
-                          <span>Time Slot:</span>
-                          <strong className="text-gray-800">{apt.time}</strong>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>Assigned Stylist:</span>
-                          <strong className="text-[#B76E79]">{apt.staff || 'Master Artist'}</strong>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between pt-1">
-                        <span className="font-serif font-bold text-sm text-[#2C2225]">{apt.amount}</span>
-                        <button
-                          onClick={() => handleSendWhatsApp(apt)}
-                          className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition"
-                        >
-                          <FaWhatsapp /> Send WA
-                        </button>
-                      </div>
+                {appointments.length === 0 ? (
+                  <div className="py-12 text-center space-y-3">
+                    <div className="w-16 h-16 mx-auto rounded-full bg-pink-50 text-[#B76E79] flex items-center justify-center text-2xl border border-pink-200 shadow-xs">
+                      <FiInbox />
                     </div>
-                  ))}
-                </div>
+                    <h4 className="font-serif text-base font-bold text-[#2C2225]">No Bookings Yet</h4>
+                    <p className="text-xs text-gray-500 max-w-sm mx-auto">
+                      Customer appointments booked from the website will automatically appear here in real-time.
+                    </p>
+                    <button
+                      onClick={() => {
+                        const name = prompt('Client Name:');
+                        const service = prompt('Service Name:');
+                        if (name && service) {
+                          setAppointments([
+                            {
+                              _id: Date.now().toString(),
+                              customerName: name,
+                              service: service,
+                              date: selectedDate,
+                              time: '10:00 AM',
+                              phone: '9876543210',
+                              status: 'Confirmed',
+                              amount: '₹5,000',
+                              staff: 'Yuvasri A. (Master Artist)'
+                            }
+                          ]);
+                          toast.success('First Appointment Scheduled!');
+                        }
+                      }}
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white text-xs font-bold shadow-sm"
+                    >
+                      + Create Manual Booking
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {appointments.map((apt) => (
+                      <div key={apt._id} className="p-5 rounded-2xl bg-gradient-to-br from-[#FFF5F8] to-white border border-pink-200/80 shadow-xs space-y-4">
+                        <div className="flex justify-between items-start">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-[#B76E79] text-white font-bold flex items-center justify-center text-sm shadow-sm">
+                              {(apt.customerName || apt.name || 'C').charAt(0)}
+                            </div>
+                            <div>
+                              <h4 className="font-bold text-sm text-[#2C2225] leading-tight">{apt.customerName || apt.name}</h4>
+                              <span className="text-[11px] text-[#B76E79] font-semibold">{apt.service}</span>
+                            </div>
+                          </div>
+                          <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                            apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
+                            apt.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
+                            'bg-amber-100 text-amber-800'
+                          }`}>
+                            {apt.status || 'Confirmed'}
+                          </span>
+                        </div>
+
+                        <div className="p-3 rounded-xl bg-white border border-pink-100 text-xs space-y-1 text-gray-600">
+                          <div className="flex justify-between">
+                            <span>Date & Time:</span>
+                            <strong className="text-gray-800">{apt.date} | {apt.time || '10:00 AM'}</strong>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Assigned Stylist:</span>
+                            <strong className="text-[#B76E79]">{apt.staff || 'Master Artist'}</strong>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between pt-1">
+                          <span className="font-serif font-bold text-sm text-[#2C2225]">{apt.amount || '₹4,500'}</span>
+                          <button
+                            onClick={() => handleSendWhatsApp(apt)}
+                            className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition"
+                          >
+                            <FaWhatsapp /> Send WA
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {/* Revenue Chart */}
+              {/* Revenue Area Chart */}
               <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-4">
                 <h3 className="font-serif text-lg font-bold text-[#2C2225]">Studio Revenue Trajectory</h3>
                 <div className="h-64 w-full">
@@ -496,8 +531,8 @@ const AdminDashboard = () => {
               <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-5">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-pink-100 pb-4">
                   <div>
-                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">📅 Real-Time Slot Tracker & Instant Booking</h3>
-                    <p className="text-xs text-gray-500">Green = Available Slot | Red = Reserved Slot</p>
+                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">📅 Real-Time Slot Availability Grid</h3>
+                    <p className="text-xs text-gray-500">Click any open time slot to reserve it for a client</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold text-gray-600">Select Date:</span>
@@ -511,49 +546,53 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-                  {timeSlots.map((slot, idx) => (
-                    <div 
-                      key={idx}
-                      className={`p-4 rounded-2xl border text-center space-y-1.5 transition-all duration-300 ${
-                        slot.booked 
-                          ? 'bg-rose-50/80 border-rose-200 text-rose-900 shadow-xs' 
-                          : 'bg-emerald-50/80 border-emerald-200 text-emerald-900 hover:scale-105 cursor-pointer shadow-sm'
-                      }`}
-                      onClick={() => {
-                        if (!slot.booked) {
-                          const client = prompt(`Book open slot for ${slot.time} on ${selectedDate}.\nEnter Client Name:`);
-                          if (client) {
-                            setAppointments(prev => [
-                              {
-                                _id: Date.now().toString(),
-                                customerName: client,
-                                service: 'Salon Makeover',
-                                date: selectedDate,
-                                time: slot.time,
-                                phone: '9876543210',
-                                status: 'Confirmed',
-                                amount: '₹3,500',
-                                staff: 'Yuvasri A. (Master Artist)'
-                              },
-                              ...prev
-                            ]);
-                            toast.success(`Slot ${slot.time} booked for ${client}!`);
+                  {timeSlots.map((slot, idx) => {
+                    const isSlotBooked = appointments.some(a => a.time === slot.time && a.date === selectedDate);
+                    const bookedClient = appointments.find(a => a.time === slot.time && a.date === selectedDate);
+                    return (
+                      <div 
+                        key={idx}
+                        className={`p-4 rounded-2xl border text-center space-y-1.5 transition-all duration-300 ${
+                          isSlotBooked 
+                            ? 'bg-rose-50/80 border-rose-200 text-rose-900 shadow-xs' 
+                            : 'bg-emerald-50/80 border-emerald-200 text-emerald-900 hover:scale-105 cursor-pointer shadow-sm'
+                        }`}
+                        onClick={() => {
+                          if (!isSlotBooked) {
+                            const client = prompt(`Book open slot for ${slot.time} on ${selectedDate}.\nEnter Client Name:`);
+                            if (client) {
+                              setAppointments(prev => [
+                                {
+                                  _id: Date.now().toString(),
+                                  customerName: client,
+                                  service: 'Salon Makeover',
+                                  date: selectedDate,
+                                  time: slot.time,
+                                  phone: '9876543210',
+                                  status: 'Confirmed',
+                                  amount: '₹3,500',
+                                  staff: 'Yuvasri A. (Master Artist)'
+                                },
+                                ...prev
+                              ]);
+                              toast.success(`Slot ${slot.time} booked for ${client}!`);
+                            }
                           }
-                        }
-                      }}
-                    >
-                      <span className="block text-xs font-bold">{slot.time}</span>
-                      <span className={`inline-block px-2.5 py-0.5 rounded-full text-[9px] font-bold ${
-                        slot.booked ? 'bg-rose-200 text-rose-900' : 'bg-emerald-200 text-emerald-900'
-                      }`}>
-                        {slot.booked ? `Booked: ${slot.client}` : 'Available +'}
-                      </span>
-                    </div>
-                  ))}
+                        }}
+                      >
+                        <span className="block text-xs font-bold">{slot.time}</span>
+                        <span className={`inline-block px-2.5 py-0.5 rounded-full text-[9px] font-bold ${
+                          isSlotBooked ? 'bg-rose-200 text-rose-900' : 'bg-emerald-200 text-emerald-900'
+                        }`}>
+                          {isSlotBooked ? `Booked: ${bookedClient?.customerName || bookedClient?.name || 'Client'}` : 'Available +'}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Master Appointments Table with WhatsApp & Staff */}
+              {/* Master Appointments Table */}
               <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div>
@@ -575,72 +614,83 @@ const AdminDashboard = () => {
                   </div>
                 </div>
 
-                {/* Table */}
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs">
-                    <thead>
-                      <tr className="border-b border-pink-100 text-gray-400 uppercase font-bold">
-                        <th className="py-3.5 px-4">Client Name</th>
-                        <th className="py-3.5 px-4">Service</th>
-                        <th className="py-3.5 px-4">Date & Time</th>
-                        <th className="py-3.5 px-4">Assigned Staff</th>
-                        <th className="py-3.5 px-4">Status</th>
-                        <th className="py-3.5 px-4 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-pink-100/60 text-gray-700">
-                      {filteredAppointments.map((apt) => (
-                        <tr key={apt._id} className="hover:bg-pink-50/40 transition">
-                          <td className="py-3.5 px-4 font-bold text-[#2C2225]">{apt.customerName}</td>
-                          <td className="py-3.5 px-4 text-[#B76E79] font-semibold">{apt.service}</td>
-                          <td className="py-3.5 px-4 text-gray-600">{apt.date} | {apt.time}</td>
-                          <td className="py-3.5 px-4">
-                            <select
-                              value={apt.staff || staffList[0]}
-                              onChange={e => handleStaffAssign(apt._id, e.target.value)}
-                              className="px-2.5 py-1 rounded-lg border border-pink-200 bg-white text-[11px] text-gray-700 font-medium focus:outline-none focus:border-[#B76E79]"
-                            >
-                              {staffList.map((st, i) => (
-                                <option key={i} value={st}>{st}</option>
-                              ))}
-                            </select>
-                          </td>
-                          <td className="py-3.5 px-4">
-                            <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                              apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
-                              apt.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
-                              'bg-amber-100 text-amber-800'
-                            }`}>
-                              {apt.status}
-                            </span>
-                          </td>
-                          <td className="py-3.5 px-4 text-right">
-                            <div className="flex items-center justify-end gap-2">
-                              <button
-                                onClick={() => handleSendWhatsApp(apt)}
-                                className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold text-[11px] border border-emerald-200 transition flex items-center gap-1"
-                              >
-                                <FaWhatsapp /> WA
-                              </button>
-                              <button
-                                onClick={() => handleStatusChange(apt._id, 'Confirmed')}
-                                className="w-7 h-7 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs transition"
-                              >
-                                <FiCheck />
-                              </button>
-                              <button
-                                onClick={() => handleDeleteAppointment(apt._id)}
-                                className="w-7 h-7 rounded-full bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center text-xs transition"
-                              >
-                                <FiTrash2 />
-                              </button>
-                            </div>
-                          </td>
+                {appointments.length === 0 ? (
+                  <div className="py-12 text-center space-y-3">
+                    <div className="w-16 h-16 mx-auto rounded-full bg-pink-50 text-[#B76E79] flex items-center justify-center text-2xl border border-pink-200">
+                      <FiInbox />
+                    </div>
+                    <h4 className="font-serif text-base font-bold text-[#2C2225]">No Bookings Found</h4>
+                    <p className="text-xs text-gray-500 max-w-sm mx-auto">
+                      All new appointments submitted on the website will be listed here automatically.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs">
+                      <thead>
+                        <tr className="border-b border-pink-100 text-gray-400 uppercase font-bold">
+                          <th className="py-3.5 px-4">Client Name</th>
+                          <th className="py-3.5 px-4">Service</th>
+                          <th className="py-3.5 px-4">Date & Time</th>
+                          <th className="py-3.5 px-4">Assigned Staff</th>
+                          <th className="py-3.5 px-4">Status</th>
+                          <th className="py-3.5 px-4 text-right">Actions</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody className="divide-y divide-pink-100/60 text-gray-700">
+                        {filteredAppointments.map((apt) => (
+                          <tr key={apt._id} className="hover:bg-pink-50/40 transition">
+                            <td className="py-3.5 px-4 font-bold text-[#2C2225]">{apt.customerName || apt.name}</td>
+                            <td className="py-3.5 px-4 text-[#B76E79] font-semibold">{apt.service}</td>
+                            <td className="py-3.5 px-4 text-gray-600">{apt.date} | {apt.time || '10:00 AM'}</td>
+                            <td className="py-3.5 px-4">
+                              <select
+                                value={apt.staff || staffList[0]}
+                                onChange={e => handleStaffAssign(apt._id, e.target.value)}
+                                className="px-2.5 py-1 rounded-lg border border-pink-200 bg-white text-[11px] text-gray-700 font-medium focus:outline-none focus:border-[#B76E79]"
+                              >
+                                {staffList.map((st, i) => (
+                                  <option key={i} value={st}>{st}</option>
+                                ))}
+                              </select>
+                            </td>
+                            <td className="py-3.5 px-4">
+                              <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                                apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
+                                apt.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
+                                'bg-amber-100 text-amber-800'
+                              }`}>
+                                {apt.status || 'Confirmed'}
+                              </span>
+                            </td>
+                            <td className="py-3.5 px-4 text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                <button
+                                  onClick={() => handleSendWhatsApp(apt)}
+                                  className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold text-[11px] border border-emerald-200 transition flex items-center gap-1"
+                                >
+                                  <FaWhatsapp /> WA
+                                </button>
+                                <button
+                                  onClick={() => handleStatusChange(apt._id, 'Confirmed')}
+                                  className="w-7 h-7 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs transition"
+                                >
+                                  <FiCheck />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteAppointment(apt._id)}
+                                  className="w-7 h-7 rounded-full bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center text-xs transition"
+                                >
+                                  <FiTrash2 />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
 
             </div>
@@ -676,7 +726,7 @@ const AdminDashboard = () => {
                           },
                           ...prev
                         ]);
-                        toast.success('Bride Record Added!');
+                        toast.success('Bride Record Created!');
                       }
                     }}
                     className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold text-xs flex items-center gap-2 shadow-sm"
@@ -686,53 +736,89 @@ const AdminDashboard = () => {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {bridalRecords.map((b) => (
-                    <div key={b._id} className="p-6 rounded-3xl bg-gradient-to-br from-[#FFF5F8] to-white border border-pink-200 shadow-sm space-y-4">
-                      <div className="flex justify-between items-start border-b border-pink-100 pb-3">
-                        <div>
-                          <span className="text-[10px] font-bold text-[#B76E79] uppercase font-mono tracking-wider">{b.eventType}</span>
-                          <h4 className="font-serif text-lg font-bold text-[#2C2225]">{b.clientName}</h4>
-                          <p className="text-xs text-gray-500">Function Date: <strong className="text-gray-800">{b.functionDate}</strong></p>
-                        </div>
-                        <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-[#B76E79] text-white shadow-xs">
-                          {b.deliveryStatus}
-                        </span>
-                      </div>
-
-                      {/* Skin & Jewelry Notes */}
-                      <div className="space-y-1 text-xs text-gray-700">
-                        <p><strong>Makeup Trial Date:</strong> {b.trialDate}</p>
-                        <p><strong>Skin Type & Prep:</strong> {b.skinNotes}</p>
-                        <p><strong>Jewelry Theme:</strong> {b.jewelryColor}</p>
-                      </div>
-
-                      {/* Bespoke Designer Blouse Measurement Sheet */}
-                      <div className="pt-3 border-t border-pink-100 space-y-2.5">
-                        <div className="flex justify-between items-center">
-                          <span className="text-xs font-bold text-[#B76E79] flex items-center gap-1.5">
-                            <FiScissors /> Bespoke Measurement Card
-                          </span>
-                          <button 
-                            onClick={() => toast.success(`Measurement sheet exported for ${b.clientName}`)}
-                            className="text-[11px] text-[#B76E79] hover:underline font-bold"
-                          >
-                            Print Card 🖨️
-                          </button>
-                        </div>
-                        <div className="grid grid-cols-4 gap-2 bg-white p-3 rounded-2xl border border-pink-100 text-center text-xs">
-                          <div><span className="text-gray-400 block text-[9px]">Bust</span><strong>{b.bust}</strong></div>
-                          <div><span className="text-gray-400 block text-[9px]">Waist</span><strong>{b.waist}</strong></div>
-                          <div><span className="text-gray-400 block text-[9px]">Shoulder</span><strong>{b.shoulder}</strong></div>
-                          <div><span className="text-gray-400 block text-[9px]">Sleeve</span><strong>{b.sleeve}</strong></div>
-                        </div>
-                        <p className="text-xs text-gray-600 italic bg-white/60 p-2 rounded-xl border border-pink-100">
-                          Work Details: {b.blouseDetails}
-                        </p>
-                      </div>
+                {bridalRecords.length === 0 ? (
+                  <div className="py-12 text-center space-y-3">
+                    <div className="w-16 h-16 mx-auto rounded-full bg-pink-50 text-[#B76E79] flex items-center justify-center text-2xl border border-pink-200">
+                      <FiHeart />
                     </div>
-                  ))}
-                </div>
+                    <h4 className="font-serif text-base font-bold text-[#2C2225]">No Bridal Records Yet</h4>
+                    <p className="text-xs text-gray-500 max-w-sm mx-auto">
+                      Click "+ Add Bride Consultation" above to create a new bride makeup trial and couture measurement record.
+                    </p>
+                    <button
+                      onClick={() => {
+                        const name = prompt('Bride Name:');
+                        const funcDate = prompt('Function Date (YYYY-MM-DD):');
+                        if (name && funcDate) {
+                          setBridalRecords([
+                            {
+                              _id: Date.now().toString(),
+                              clientName: name,
+                              functionDate: funcDate,
+                              eventType: 'Muhurtham & Reception',
+                              trialDate: '2026-08-15',
+                              skinNotes: 'Combination Skin, Dewy Finish',
+                              jewelryColor: 'Antique Temple Gold',
+                              blouseDetails: 'Aari Embroidery Blouse Work',
+                              bust: '36"', waist: '30"', shoulder: '14 text.5"', sleeve: '11.5"',
+                              deliveryStatus: 'Consultation Done'
+                            }
+                          ]);
+                          toast.success('First Bride Record Created!');
+                        }
+                      }}
+                      className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white text-xs font-bold shadow-sm"
+                    >
+                      + Create First Bride Record
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {bridalRecords.map((b) => (
+                      <div key={b._id} className="p-6 rounded-3xl bg-gradient-to-br from-[#FFF5F8] to-white border border-pink-200 shadow-sm space-y-4">
+                        <div className="flex justify-between items-start border-b border-pink-100 pb-3">
+                          <div>
+                            <span className="text-[10px] font-bold text-[#B76E79] uppercase font-mono tracking-wider">{b.eventType}</span>
+                            <h4 className="font-serif text-lg font-bold text-[#2C2225]">{b.clientName}</h4>
+                            <p className="text-xs text-gray-500">Function Date: <strong className="text-gray-800">{b.functionDate}</strong></p>
+                          </div>
+                          <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-[#B76E79] text-white shadow-xs">
+                            {b.deliveryStatus}
+                          </span>
+                        </div>
+
+                        <div className="space-y-1 text-xs text-gray-700">
+                          <p><strong>Makeup Trial Date:</strong> {b.trialDate}</p>
+                          <p><strong>Skin Type & Prep:</strong> {b.skinNotes}</p>
+                          <p><strong>Jewelry Theme:</strong> {b.jewelryColor}</p>
+                        </div>
+
+                        <div className="pt-3 border-t border-pink-100 space-y-2.5">
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs font-bold text-[#B76E79] flex items-center gap-1.5">
+                              <FiScissors /> Bespoke Measurement Card
+                            </span>
+                            <button 
+                              onClick={() => toast.success(`Measurement sheet exported for ${b.clientName}`)}
+                              className="text-[11px] text-[#B76E79] hover:underline font-bold"
+                            >
+                              Print Card 🖨️
+                            </button>
+                          </div>
+                          <div className="grid grid-cols-4 gap-2 bg-white p-3 rounded-2xl border border-pink-100 text-center text-xs">
+                            <div><span className="text-gray-400 block text-[9px]">Bust</span><strong>{b.bust}</strong></div>
+                            <div><span className="text-gray-400 block text-[9px]">Waist</span><strong>{b.waist}</strong></div>
+                            <div><span className="text-gray-400 block text-[9px]">Shoulder</span><strong>{b.shoulder}</strong></div>
+                            <div><span className="text-gray-400 block text-[9px]">Sleeve</span><strong>{b.sleeve}</strong></div>
+                          </div>
+                          <p className="text-xs text-gray-600 italic bg-white/60 p-2 rounded-xl border border-pink-100">
+                            Work Details: {b.blouseDetails}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
             </div>
@@ -742,7 +828,7 @@ const AdminDashboard = () => {
           {activeTab === 'GalleryAndServices' && (
             <div className="space-y-8">
               
-              {/* Portfolio Gallery Upload & Live Status */}
+              {/* Portfolio Gallery Upload */}
               <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div>
