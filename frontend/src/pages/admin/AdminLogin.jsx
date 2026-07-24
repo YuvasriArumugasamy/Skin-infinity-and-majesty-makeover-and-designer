@@ -84,11 +84,11 @@ const AdminLogin = () => {
         <div className="blob-blurer" />
 
         {/* Glass Content Card */}
-        <div className="blob-article p-7 md:p-9 space-y-6">
+        <div className="blob-article p-5 sm:p-6 space-y-4">
 
           {/* Header Badge */}
-          <div className="text-center space-y-3">
-            <div className="w-24 h-24 mx-auto overflow-hidden rounded-2xl p-1 bg-white/90 border border-pink-200 shadow-sm flex items-center justify-center backdrop-blur-md">
+          <div className="text-center space-y-2">
+            <div className="w-20 h-20 mx-auto overflow-hidden rounded-2xl p-1 bg-white/95 border border-pink-200/80 shadow-sm flex items-center justify-center backdrop-blur-md">
               <img 
                 src="/logo.png" 
                 alt="Skin Infinity & Majesty" 
@@ -97,55 +97,55 @@ const AdminLogin = () => {
             </div>
 
             <div>
-              <h1 className="font-serif text-2xl font-bold text-luxuryDark tracking-tight">
+              <h1 className="font-serif text-xl font-bold text-luxuryDark tracking-tight">
                 Admin Portal Access
               </h1>
-              <p className="text-xs text-gray-600 font-medium mt-1">
+              <p className="text-[11px] text-gray-600 font-medium mt-0.5">
                 Skin Infinity & Majesty Management System
               </p>
             </div>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-3">
             
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-luxuryDark uppercase tracking-wider">
+              <label className="block text-[10px] font-bold text-luxuryDark uppercase tracking-wider">
                 Admin Username / Email
               </label>
               <div className="relative">
-                <FiMail className="absolute left-4 top-3.5 text-gray-500 text-base" />
+                <FiMail className="absolute left-3.5 top-3 text-gray-500 text-sm" />
                 <input
                   type="text"
                   required
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="admin@skininfinity.com"
-                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/80 backdrop-blur-md border border-pink-200 text-luxuryDark placeholder-gray-400 text-xs focus:outline-none focus:border-luxuryRoseGold focus:bg-white transition font-medium"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/80 backdrop-blur-md border border-pink-200/80 text-luxuryDark placeholder-gray-400 text-xs focus:outline-none focus:border-luxuryRoseGold focus:bg-white transition font-medium"
                 />
               </div>
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-bold text-luxuryDark uppercase tracking-wider">
+              <label className="block text-[10px] font-bold text-luxuryDark uppercase tracking-wider">
                 Password
               </label>
               <div className="relative">
-                <FiLock className="absolute left-4 top-3.5 text-gray-500 text-base" />
+                <FiLock className="absolute left-3.5 top-3 text-gray-500 text-sm" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-11 pr-11 py-3 rounded-xl bg-white/80 backdrop-blur-md border border-pink-200 text-luxuryDark placeholder-gray-400 text-xs focus:outline-none focus:border-luxuryRoseGold focus:bg-white transition font-mono font-medium"
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-white/80 backdrop-blur-md border border-pink-200/80 text-luxuryDark placeholder-gray-400 text-xs focus:outline-none focus:border-luxuryRoseGold focus:bg-white transition font-mono font-medium"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-3.5 text-gray-400 hover:text-luxuryRoseGold transition"
+                  className="absolute right-3 top-3 text-gray-400 hover:text-luxuryRoseGold transition"
                 >
-                  {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
+                  {showPassword ? <FiEyeOff size={15} /> : <FiEye size={15} />}
                 </button>
               </div>
             </div>
@@ -153,7 +153,7 @@ const AdminLogin = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-[#D87093] via-[#C57488] to-luxuryRoseGold hover:opacity-95 text-white font-bold text-xs tracking-wider uppercase shadow-md hover:shadow-lg hover:scale-[1.01] transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 px-5 rounded-full bg-gradient-to-r from-[#D87093] via-[#C57488] to-luxuryRoseGold hover:opacity-95 text-white font-bold text-xs tracking-wider uppercase shadow-md hover:shadow-lg hover:scale-[1.01] transition-all flex items-center justify-center gap-2 mt-1"
             >
               {loading ? (
                 <span>AUTHENTICATING...</span>
@@ -167,27 +167,27 @@ const AdminLogin = () => {
           </form>
 
           {/* Demo Box */}
-          <div className="p-4 rounded-2xl bg-white/60 backdrop-blur-md border border-pink-200/80 text-center space-y-2 shadow-sm">
+          <div className="p-3.5 rounded-xl bg-white/60 backdrop-blur-md border border-pink-200/80 text-center space-y-1.5 shadow-sm">
             <div className="flex items-center justify-center gap-1.5 text-xs text-luxuryRoseGold font-bold">
               <FiKey />
               <span>Demo Admin Credentials Pre-filled</span>
             </div>
-            <p className="text-[11px] text-gray-600">
+            <p className="text-[10px] text-gray-600">
               Email: <span className="font-bold text-luxuryDark">admin@skininfinity.com</span> | Pass: <span className="font-bold text-luxuryDark">admin123</span>
             </p>
-            <div className="flex items-center justify-center gap-2 pt-1">
+            <div className="flex items-center justify-center gap-2 pt-0.5">
               <button
                 type="button"
                 onClick={handleQuickDemoLogin}
-                className="px-3 py-1.5 rounded-lg bg-white/90 border border-pink-200 text-luxuryRoseGold text-[11px] font-bold shadow-sm hover:bg-pink-100 transition flex items-center gap-1 mx-auto"
+                className="px-2.5 py-1 rounded-lg bg-white/90 border border-pink-200 text-luxuryRoseGold text-[10px] font-bold shadow-sm hover:bg-pink-100 transition flex items-center gap-1 mx-auto"
               >
                 <FiCheckCircle className="text-emerald-500" />
-                <span>Auto-Fill Credentials</span>
+                <span>Auto-Fill</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleLogin()}
-                className="px-3 py-1.5 rounded-lg bg-luxuryRoseGold text-white text-[11px] font-bold shadow-sm hover:bg-rose-700 transition"
+                className="px-2.5 py-1 rounded-lg bg-luxuryRoseGold text-white text-[10px] font-bold shadow-sm hover:bg-rose-700 transition"
               >
                 Instant Login ➔
               </button>
