@@ -55,7 +55,7 @@ const AdminDashboard = () => {
   const [newGallery, setNewGallery] = useState({
     title: '',
     category: 'Bridal Makeover',
-    image: '/bride1.jpg'
+    image: ''
   });
 
   // Staff members list
@@ -250,7 +250,7 @@ const AdminDashboard = () => {
     setNewGallery({
       title: '',
       category: 'Bridal Makeover',
-      image: '/bride1.jpg'
+      image: ''
     });
   };
 
@@ -684,24 +684,22 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="block font-bold text-gray-700 mb-1">Select Image File from Device 📷</label>
-                <input 
-                  type="file" 
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="w-full px-3 py-2 rounded-xl border border-pink-200 bg-pink-50/40 text-gray-700 text-xs file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#B76E79] file:text-white hover:file:opacity-90 cursor-pointer"
-                />
-              </div>
-
-              <div>
-                <label className="block font-bold text-gray-700 mb-1">Or Image URL / Path</label>
-                <input 
-                  type="text" 
-                  placeholder="e.g. /bride1.jpg or image URL" 
-                  value={newGallery.image}
-                  onChange={e => setNewGallery({ ...newGallery, image: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
-                />
+                <label className="block font-bold text-gray-700 mb-1.5">Select Image File from Device 📷</label>
+                <div className="relative border-2 border-dashed border-pink-300 hover:border-[#B76E79] rounded-2xl p-5 text-center bg-pink-50/30 hover:bg-pink-50/70 transition cursor-pointer group">
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+                  />
+                  <div className="flex flex-col items-center justify-center space-y-1.5">
+                    <div className="w-11 h-11 rounded-full bg-white text-[#B76E79] border border-pink-200 flex items-center justify-center text-xl shadow-xs group-hover:scale-110 transition-transform">
+                      <FiUpload />
+                    </div>
+                    <span className="text-xs font-bold text-[#2C2225]">Click to Choose File from Device</span>
+                    <span className="text-[10px] text-gray-500">Select any photo (JPG, PNG, WEBP) from your phone or PC</span>
+                  </div>
+                </div>
               </div>
 
               {newGallery.image && (
