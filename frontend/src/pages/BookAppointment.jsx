@@ -118,20 +118,20 @@ const BookAppointment = () => {
       {/* 1. HERO BANNER WITH bg1.png BACKGROUND */}
       <section className="relative overflow-hidden min-h-[460px] sm:min-h-[520px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-12 shadow-md">
         
-        {/* Background Image: bg1.png */}
+        {/* Background Image: bg1.png - object-[15%_center] on mobile pushes model hair to the right */}
         <img 
           src="/bg1.png" 
           alt="Skin Infinity & Majesty Background" 
-          className="absolute inset-0 w-full h-full object-cover object-center z-0"
+          className="absolute inset-0 w-full h-full object-cover object-[15%_center] sm:object-center z-0 opacity-90 sm:opacity-100"
         />
 
-        {/* Soft Light Pink Luxury Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#FFF5F8]/95 via-[#FFF0F4]/80 to-transparent z-10"></div>
+        {/* Soft Light Pink Responsive Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b sm:bg-gradient-to-r from-[#FFF5F8]/95 via-[#FFF5F8]/85 to-[#FFF5F8]/70 sm:to-transparent z-10"></div>
 
         <div className="relative z-20 max-w-5xl mx-auto px-4 md:px-8 text-center space-y-5">
           
           {/* Animated Light Pill Tag */}
-          <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-pink-200 text-[#C57488] text-[11px] font-bold uppercase tracking-[0.25em] shadow-sm">
+          <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-pink-200 text-[#C57488] text-[11px] font-bold uppercase tracking-[0.25em] shadow-xs">
             <FiStar className="text-[#C57488] animate-pulse text-xs" />
             <span>RESERVE YOUR LUXURY SLOT</span>
           </div>
@@ -139,7 +139,7 @@ const BookAppointment = () => {
           {/* Main Stylish Dark Title */}
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif-luxury font-bold text-[#2C2225] tracking-tight leading-tight">
             Book Your Signature <br className="hidden sm:block"/>
-            <span className="text-[#C57488] italic font-serif">
+            <span className="text-[#C57488] italic font-serif block sm:inline mt-1 sm:mt-0">
               Beauty & Couture Experience
             </span>
           </h1>
@@ -153,22 +153,22 @@ const BookAppointment = () => {
             <div className="w-12 sm:w-16 h-[1.5px] bg-[#C57488]"></div>
           </div>
 
-          {/* Subtitle Content */}
-          <p className="text-gray-700 text-xs sm:text-sm md:text-base max-w-2xl mx-auto font-medium leading-relaxed">
+          {/* Subtitle Content with soft white blur on mobile for 100% legibility */}
+          <p className="text-gray-800 text-xs sm:text-sm md:text-base max-w-2xl mx-auto font-medium leading-relaxed bg-white/60 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none p-3 sm:p-0 rounded-2xl border border-pink-100/60 sm:border-none">
             Certified Beauty Experts, Custom Bridal Styling & Clinical Skin Care Treatments by <span className="font-bold text-[#2C2225]">Skin Infinity & Majesty</span>.
           </p>
 
           {/* Feature Highlights Badges */}
-          <div className="pt-3 flex flex-wrap items-center justify-center gap-4 text-xs font-semibold text-gray-700">
-            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-pink-200 shadow-xs">
+          <div className="pt-3 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs font-semibold text-gray-700">
+            <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-2 rounded-full border border-pink-200 shadow-xs">
               <FiShield className="text-[#C57488] text-xs" />
               <span>Certified Hygiene</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-pink-200 shadow-xs">
+            <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-2 rounded-full border border-pink-200 shadow-xs">
               <FiHeart className="text-rose-500 text-xs" />
               <span>100% Satisfaction</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-pink-200 shadow-xs">
+            <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-2 rounded-full border border-pink-200 shadow-xs">
               <FiClock className="text-[#C57488] text-xs" />
               <span>Mon - Sat: 10AM - 8PM</span>
             </div>
