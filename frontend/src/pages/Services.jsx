@@ -183,14 +183,16 @@ const Services = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: cIdx * 0.08 }}
                     whileHover={{ y: -6 }}
-                    className="bg-[#FFF8FA] rounded-2xl overflow-hidden border border-pink-100/50 shadow-sm flex flex-col justify-between group hover:shadow-lg transition duration-300"
+                    className="relative bg-[#FFF8FA] rounded-2xl border border-pink-100/50 shadow-sm flex flex-col justify-between group hover:shadow-lg transition duration-300"
                   >
-                    <div className="relative h-48 sm:h-52 overflow-hidden">
-                      <img 
-                        src={card.img} 
-                        alt={card.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
-                      />
+                    <div className="relative h-48 sm:h-52">
+                      <div className="w-full h-full overflow-hidden rounded-t-2xl">
+                        <img 
+                          src={card.img} 
+                          alt={card.title} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
+                        />
+                      </div>
                       {/* Floating Circle Icon */}
                       <div className="absolute -bottom-5 left-5 w-10 h-10 rounded-full bg-white border border-pink-100 flex items-center justify-center text-[#C57488] shadow-md z-10">
                         <card.icon className="text-base" />
@@ -250,14 +252,16 @@ const Services = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: cIdx * 0.08 }}
                     whileHover={{ y: -6 }}
-                    className="bg-[#FFF8FA] rounded-2xl overflow-hidden border border-pink-100/50 shadow-sm flex flex-col justify-between group hover:shadow-lg transition duration-300"
+                    className="relative bg-[#FFF8FA] rounded-2xl border border-pink-100/50 shadow-sm flex flex-col justify-between group hover:shadow-lg transition duration-300"
                   >
-                    <div className="relative h-48 sm:h-52 overflow-hidden">
-                      <img 
-                        src={card.img} 
-                        alt={card.title} 
-                        className="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
-                      />
+                    <div className="relative h-48 sm:h-52">
+                      <div className="w-full h-full overflow-hidden rounded-t-2xl">
+                        <img 
+                          src={card.img} 
+                          alt={card.title} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
+                        />
+                      </div>
                       {/* Floating Circle Icon */}
                       <div className="absolute -bottom-5 left-5 w-10 h-10 rounded-full bg-white border border-pink-100 flex items-center justify-center text-[#C57488] shadow-md z-10">
                         <card.icon className="text-base" />
