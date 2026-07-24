@@ -166,34 +166,6 @@ const AdminLogin = () => {
             </button>
           </form>
 
-          {/* Demo Box */}
-          <div className="p-3.5 rounded-xl bg-white/60 backdrop-blur-md border border-pink-200/80 text-center space-y-1.5 shadow-sm">
-            <div className="flex items-center justify-center gap-1.5 text-xs text-luxuryRoseGold font-bold">
-              <FiKey />
-              <span>Demo Admin Credentials Pre-filled</span>
-            </div>
-            <p className="text-[10px] text-gray-600">
-              Email: <span className="font-bold text-luxuryDark">admin@skininfinity.com</span> | Pass: <span className="font-bold text-luxuryDark">admin123</span>
-            </p>
-            <div className="flex items-center justify-center gap-2 pt-0.5">
-              <button
-                type="button"
-                onClick={handleQuickDemoLogin}
-                className="px-2.5 py-1 rounded-lg bg-white/90 border border-pink-200 text-luxuryRoseGold text-[10px] font-bold shadow-sm hover:bg-pink-100 transition flex items-center gap-1 mx-auto"
-              >
-                <FiCheckCircle className="text-emerald-500" />
-                <span>Auto-Fill</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleLogin()}
-                className="px-2.5 py-1 rounded-lg bg-luxuryRoseGold text-white text-[10px] font-bold shadow-sm hover:bg-rose-700 transition"
-              >
-                Instant Login ➔
-              </button>
-            </div>
-          </div>
-
         </div>
 
       </motion.div>
