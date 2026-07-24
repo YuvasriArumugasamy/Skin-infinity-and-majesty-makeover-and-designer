@@ -107,8 +107,8 @@ const Services = () => {
           <source src="/itha_vachi_aalakana_video_pann.mp4" type="video/mp4" />
         </video>
         
-        {/* Luxury Soft Pink & Translucent Glass Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/75 to-white/90 backdrop-blur-[1px] z-10"></div>
+        {/* Ultra-clear Luxury Soft Glass Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/45 via-pink-50/25 to-white/45 z-10"></div>
 
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
@@ -121,8 +121,8 @@ const Services = () => {
             <span>OUR EXPERT OFFERINGS</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-serif-luxury font-bold text-[#2C2225] drop-shadow-sm leading-tight">
-            Our <span className="font-serif italic font-bold text-[#C57488] px-1 inline-block drop-shadow-[0_1px_3px_rgba(255,255,255,0.9)]">Services</span>
+          <h1 className="text-3xl sm:text-5xl font-serif-luxury font-bold text-[#2C2225] drop-shadow-[0_2px_10px_rgba(255,255,255,0.95)] leading-tight">
+            Our <span className="font-serif italic font-bold text-[#C57488] px-1 inline-block drop-shadow-[0_2px_8px_rgba(255,255,255,1)]">Services</span>
           </h1>
 
           {/* Luxury Rose Gold Ornament Divider */}
@@ -134,7 +134,7 @@ const Services = () => {
             <div className="w-12 h-[1.5px] bg-[#C57488]"></div>
           </div>
 
-          <p className="text-gray-700 text-xs sm:text-sm md:text-base max-w-xl mx-auto font-medium leading-relaxed">
+          <p className="text-gray-800 text-xs sm:text-sm md:text-base max-w-xl mx-auto font-semibold leading-relaxed drop-shadow-[0_1px_4px_rgba(255,255,255,0.9)] bg-white/40 backdrop-blur-xs py-1 px-3 rounded-xl">
             Experience premium clinical skin treatments, hair care, and designer services by certified experts.
           </p>
 
