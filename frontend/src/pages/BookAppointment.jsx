@@ -72,9 +72,33 @@ const BookAppointment = () => {
       await axios.post('/api/appointments', formData);
       setSuccessModal(true);
       toast.success('Appointment Request Submitted Successfully!');
+      setFormData({
+        customerName: '',
+        phone: '',
+        email: '',
+        gender: 'Female',
+        age: '',
+        category: 'Skin Care',
+        service: 'Advance Hydra Facial',
+        date: '',
+        time: '10:00 AM',
+        notes: ''
+      });
     } catch (err) {
       setSuccessModal(true);
       toast.success('Appointment Request Submitted!');
+      setFormData({
+        customerName: '',
+        phone: '',
+        email: '',
+        gender: 'Female',
+        age: '',
+        category: 'Skin Care',
+        service: 'Advance Hydra Facial',
+        date: '',
+        time: '10:00 AM',
+        notes: ''
+      });
     } finally {
       setLoading(false);
     }
