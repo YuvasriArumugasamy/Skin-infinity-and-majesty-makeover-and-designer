@@ -139,4 +139,78 @@
   transition-duration: 400ms;
 }
 
+/* Uiverse Social & Contact Circular Container Styling */
+.socialContainer {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 1.5px solid #fbcfe8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 2px 8px rgba(197, 116, 136, 0.08);
+  color: #C57488;
+  text-decoration: none;
+}
+
+.socialContainer:active {
+  transform: scale(0.9);
+  transition-duration: 0.2s;
+}
+
+/* Call Hover */
+.containerCall:hover {
+  background-color: #e11d48;
+  border-color: #e11d48;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35);
+}
+
+/* Instagram Hover */
+.containerInsta:hover {
+  background-color: #d62976;
+  border-color: #d62976;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(214, 41, 118, 0.35);
+}
+
+/* WhatsApp Hover */
+.containerWa:hover {
+  background-color: #128c7e;
+  border-color: #128c7e;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(18, 140, 126, 0.35);
+}
+
+/* Location Hover */
+.containerLoc:hover {
+  background-color: #C57488;
+  border-color: #C57488;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(197, 116, 136, 0.35);
+}
+
+.socialIconSvg {
+  transition: transform 0.3s ease;
+}
+
+.socialContainer:hover .socialIconSvg {
+  animation: slide-in-top 0.3s both;
+}
+
+@keyframes slide-in-top {
+  0% {
+    transform: translateY(-35px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
 

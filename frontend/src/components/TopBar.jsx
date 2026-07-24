@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiPhone, FiClock, FiMapPin, FiInstagram, FiFacebook } from 'react-icons/fi';
+import { FiPhone, FiClock, FiMapPin, FiInstagram } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 
 const TopBar = () => {
@@ -62,30 +62,40 @@ const TopBar = () => {
               </a>
             </div>
 
-            <div className="flex items-center gap-4 border-l border-pink-200 pl-4">
+            <div className="flex items-center gap-3 border-l border-pink-200 pl-4">
+              <a 
+                href="tel:6380850488" 
+                className="text-gray-600 hover:text-[#e11d48] transition text-sm"
+                title="Call"
+              >
+                <FiPhone />
+              </a>
               <a 
                 href="https://instagram.com/s.mahalakshmi74" 
                 target="_blank" 
                 rel="noreferrer" 
-                className="text-gray-600 hover:text-[#C57488] transition text-sm"
+                className="text-gray-600 hover:text-[#D62976] transition text-sm"
+                title="Instagram"
               >
                 <FiInstagram />
-              </a>
-              <a 
-                href="https://facebook.com" 
-                target="_blank" 
-                rel="noreferrer" 
-                className="text-gray-600 hover:text-[#C57488] transition text-sm"
-              >
-                <FiFacebook />
               </a>
               <a 
                 href="https://wa.me/916380850488?text=Hello%20Skin%20Infinity%20%26%20Majesty!%20I%20would%20like%20to%20inquire%20about%20your%20beauty%20%26%20designer%20services%20and%20book%20an%20appointment." 
                 target="_blank" 
                 rel="noreferrer" 
                 className="text-gray-600 hover:text-emerald-500 transition text-sm"
+                title="WhatsApp"
               >
                 <FaWhatsapp />
+              </a>
+              <a 
+                href="https://maps.google.com/?q=Ramayanpatti,+Tirunelveli,+Tamil+Nadu+627358" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="text-gray-600 hover:text-[#C57488] transition text-sm"
+                title="Location"
+              >
+                <FiMapPin />
               </a>
             </div>
           </div>
@@ -115,37 +125,47 @@ const TopBar = () => {
             </div>
           ))}
 
-          {/* Slide 4: Social Icons */}
+          {/* Slide 4: Contact & Social Icons */}
           <div
-            className={`absolute inset-x-0 top-0 bottom-0 flex items-center justify-center gap-6 transition-all duration-700 transform ${
+            className={`absolute inset-x-0 top-0 bottom-0 flex items-center justify-center gap-5 transition-all duration-700 transform ${
               currentSlide === slides.length 
                 ? 'opacity-100 translate-y-0' 
                 : 'opacity-0 translate-y-4 pointer-events-none'
             }`}
           >
             <a 
+              href="tel:6380850488" 
+              className="text-gray-600 hover:text-[#e11d48] transition text-base"
+              title="Call"
+            >
+              <FiPhone />
+            </a>
+            <a 
               href="https://instagram.com/s.mahalakshmi74" 
               target="_blank" 
               rel="noreferrer" 
-              className="text-gray-600 hover:text-[#C57488] transition text-base"
+              className="text-gray-600 hover:text-[#D62976] transition text-base"
+              title="Instagram"
             >
               <FiInstagram />
-            </a>
-            <a 
-              href="https://facebook.com" 
-              target="_blank" 
-              rel="noreferrer" 
-              className="text-gray-600 hover:text-[#C57488] transition text-base"
-            >
-              <FiFacebook />
             </a>
             <a 
               href="https://wa.me/916380850488?text=Hello%20Skin%20Infinity%20%26%20Majesty!%20I%20would%20like%20to%20inquire%20about%20your%20beauty%20%26%20designer%20services%20and%20book%20an%20appointment." 
               target="_blank" 
               rel="noreferrer" 
               className="text-gray-600 hover:text-emerald-500 transition text-base"
+              title="WhatsApp"
             >
               <FaWhatsapp />
+            </a>
+            <a 
+              href="https://maps.google.com/?q=Ramayanpatti,+Tirunelveli,+Tamil+Nadu+627358" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="text-gray-600 hover:text-[#C57488] transition text-base"
+              title="Location"
+            >
+              <FiMapPin />
             </a>
           </div>
         </div>

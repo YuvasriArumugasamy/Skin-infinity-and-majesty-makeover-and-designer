@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiPhone, FiMapPin, FiClock, FiInstagram, FiFacebook, FiHeart, FiArrowUp } from 'react-icons/fi';
+import { FiPhone, FiMapPin, FiClock, FiInstagram, FiHeart, FiArrowUp } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 
 const Footer = () => {
@@ -34,15 +34,40 @@ const Footer = () => {
           <p className="text-gray-600 text-xs leading-relaxed">
             Enhancing beauty with care, passion and professionalism.
           </p>
-          <div className="flex items-center gap-2.5 pt-1">
-            <a href="https://facebook.com" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-pink-200 text-luxuryRoseGold hover:bg-luxuryRoseGold hover:text-white flex items-center justify-center transition shadow-sm">
-              <FiFacebook className="text-sm" />
+          <div className="flex items-center gap-3 pt-2">
+            <a 
+              href="tel:6380850488" 
+              className="socialContainer containerCall"
+              title="Call Us"
+            >
+              <FiPhone className="socialIconSvg text-base" />
             </a>
-            <a href="https://instagram.com/s.mahalakshmi74" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-pink-200 text-luxuryRoseGold hover:bg-luxuryRoseGold hover:text-white flex items-center justify-center transition shadow-sm">
-              <FiInstagram className="text-sm" />
+            <a 
+              href="https://instagram.com/s.mahalakshmi74" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="socialContainer containerInsta"
+              title="Instagram"
+            >
+              <FiInstagram className="socialIconSvg text-base" />
             </a>
-            <a href="https://wa.me/916380850488?text=Hello%20Skin%20Infinity%20%26%20Majesty!%20I%20would%20like%20to%20inquire%20about%20your%20beauty%20%26%20designer%20services%20and%20book%20an%20appointment." target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-white border border-pink-200 text-emerald-600 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition shadow-sm">
-              <FaWhatsapp className="text-sm" />
+            <a 
+              href="https://wa.me/916380850488?text=Hello%20Skin%20Infinity%20%26%20Majesty!%20I%20would%20like%20to%20inquire%20about%20your%20beauty%20%26%20designer%20services%20and%20book%20an%20appointment." 
+              target="_blank" 
+              rel="noreferrer" 
+              className="socialContainer containerWa"
+              title="WhatsApp"
+            >
+              <FaWhatsapp className="socialIconSvg text-base" />
+            </a>
+            <a 
+              href="https://maps.google.com/?q=Ramayanpatti,+Tirunelveli,+Tamil+Nadu+627358" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="socialContainer containerLoc"
+              title="Location"
+            >
+              <FiMapPin className="socialIconSvg text-base" />
             </a>
           </div>
         </div>
