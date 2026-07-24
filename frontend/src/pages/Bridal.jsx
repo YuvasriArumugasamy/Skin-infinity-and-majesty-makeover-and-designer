@@ -31,7 +31,7 @@ const Bridal = () => {
     },
     {
       title: 'RECEPTION MAKEUP',
-      img: '/bride2.jpg',
+      img: '/ChatGPT Image Jul 24, 2026, 09_03_32 PM.png',
       features: [
         'HD Makeup',
         'Hairstyling',
@@ -152,8 +152,8 @@ const Bridal = () => {
                   </span>
                 )}
 
-                <div className="h-44 sm:h-48 overflow-hidden relative">
-                  <img src={pkg.img} alt={pkg.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                <div className="h-52 sm:h-56 overflow-hidden relative">
+                  <img src={pkg.img} alt={pkg.title} className="w-full h-full object-cover object-top group-hover:scale-105 transition duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
                 </div>
 
