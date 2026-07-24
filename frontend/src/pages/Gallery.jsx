@@ -16,10 +16,14 @@ const Gallery = () => {
     { id: 6, title: 'Botanical Hair Spa Therapy', cat: 'Hair Care', url: '/hair spa.png', desc: 'Deep Conditioning, Anti-Dandruff & Scalp Repair' },
     { id: 7, title: 'Handcrafted Aari Work Blouse', cat: 'Designer Services', url: '/ari work.png', desc: 'Intricate Zardosi, Beadwork & Peacock Motif Embroidery' },
     { id: 8, title: 'Precision Machine Embroidery', cat: 'Designer Services', url: '/Machine embroider work.png', desc: 'Custom Bridal & Designer Partywear Embroidery' },
-    { id: 9, title: 'Microblading & Brow Design', cat: 'Beauty Care', url: '/microblading.png', desc: 'Semi-Permanent Eyebrow Shaping & Micro-Feathering' },
-    { id: 10, title: 'Luxury Manicure & Pedicure', cat: 'Beauty Care', url: '/manicure & pedicure.png', desc: 'Relaxing Hand & Foot Spa with Cuticle Care' },
-    { id: 11, title: 'Skin Infinity Studio Ambiance', cat: 'Salon Interior', url: '/shop1.png', desc: 'Modern, Private & Hygienic Facial & Spa Rooms' },
-    { id: 12, title: 'Majesty Designer Boutique Lounge', cat: 'Salon Interior', url: '/shop3.png', desc: 'Bespoke Designer Fitting & Bridal Consultation Lounge' }
+    { id: 9, title: 'Designer Bridal Blouse Work', cat: 'Designer Services', url: '/blouse.png', desc: 'Custom Aari & Thread Work Designer Blouse' },
+    { id: 10, title: 'Royal Embroidery Blouse Design', cat: 'Designer Services', url: '/blouse1.png', desc: 'Bespoke Bridal Silk Blouse Embroidery' },
+    { id: 11, title: 'Handcrafted Designer Blouse', cat: 'Designer Services', url: '/blouse4.png', desc: 'Intricate Pattern & Maggam Work Blouse' },
+    { id: 12, title: 'Signature Bridal Blouse Art', cat: 'Designer Services', url: '/blouse5.png', desc: 'Custom Designer Blouse Tailoring & Ornamentation' },
+    { id: 13, title: 'Microblading & Brow Design', cat: 'Beauty Care', url: '/microblading.png', desc: 'Semi-Permanent Eyebrow Shaping & Micro-Feathering' },
+    { id: 14, title: 'Luxury Manicure & Pedicure', cat: 'Beauty Care', url: '/manicure & pedicure.png', desc: 'Relaxing Hand & Foot Spa with Cuticle Care' },
+    { id: 15, title: 'Skin Infinity Studio Ambiance', cat: 'Salon Interior', url: '/shop1.png', desc: 'Modern, Private & Hygienic Facial & Spa Rooms' },
+    { id: 16, title: 'Majesty Designer Boutique Lounge', cat: 'Salon Interior', url: '/shop3.png', desc: 'Bespoke Designer Fitting & Bridal Consultation Lounge' }
   ];
 
   const categories = ['All', 'Bridal', 'Skin Care', 'Hair Care', 'Beauty Care', 'Designer Services', 'Salon Interior'];
