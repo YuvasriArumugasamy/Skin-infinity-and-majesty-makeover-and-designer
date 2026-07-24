@@ -747,11 +747,11 @@ const AdminDashboard = () => {
           
           {/* Executive Brand Badge */}
           <div className="p-4 rounded-2xl bg-gradient-to-br from-[#FFF0F5] to-white border border-pink-200/60 shadow-sm flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl overflow-hidden bg-white p-1 border border-pink-200 shadow-sm shrink-0 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full overflow-hidden bg-white p-0.5 border-2 border-[#C57488] shadow-sm shrink-0 flex items-center justify-center">
               <img 
                 src="/logo.png" 
                 alt="Skin Infinity & Majesty" 
-                className="w-full h-full object-contain"
+                className="w-full h-full object-cover rounded-full"
               />
             </div>
             <div>
