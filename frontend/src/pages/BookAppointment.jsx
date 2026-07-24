@@ -131,7 +131,7 @@ const BookAppointment = () => {
         <div className="relative z-20 max-w-5xl mx-auto px-4 md:px-8 text-center space-y-5">
           
           {/* Animated Light Pill Tag */}
-          <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-pink-200 text-[#C57488] text-[11px] font-bold uppercase tracking-[0.25em] shadow-xs">
+          <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-white/95 backdrop-blur-md border border-pink-200 text-[#C57488] text-[11px] font-bold uppercase tracking-[0.25em] shadow-sm">
             <FiStar className="text-[#C57488] animate-pulse text-xs" />
             <span>RESERVE YOUR LUXURY SLOT</span>
           </div>
@@ -154,21 +154,21 @@ const BookAppointment = () => {
           </div>
 
           {/* Subtitle Content with soft white blur on mobile for 100% legibility */}
-          <p className="text-gray-800 text-xs sm:text-sm md:text-base max-w-2xl mx-auto font-medium leading-relaxed bg-white/60 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none p-3 sm:p-0 rounded-2xl border border-pink-100/60 sm:border-none">
+          <p className="text-gray-800 text-xs sm:text-sm md:text-base max-w-2xl mx-auto font-medium leading-relaxed bg-white/60 sm:bg-transparent backdrop-blur-sm sm:backdrop-blur-none p-3 sm:p-0 rounded-2xl border border-pink-100/60 sm:border-none">
             Certified Beauty Experts, Custom Bridal Styling & Clinical Skin Care Treatments by <span className="font-bold text-[#2C2225]">Skin Infinity & Majesty</span>.
           </p>
 
           {/* Feature Highlights Badges */}
           <div className="pt-3 flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs font-semibold text-gray-700">
-            <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-2 rounded-full border border-pink-200 shadow-xs">
+            <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-2 rounded-full border border-pink-200 shadow-sm">
               <FiShield className="text-[#C57488] text-xs" />
               <span>Certified Hygiene</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-2 rounded-full border border-pink-200 shadow-xs">
+            <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-2 rounded-full border border-pink-200 shadow-sm">
               <FiHeart className="text-rose-500 text-xs" />
               <span>100% Satisfaction</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-2 rounded-full border border-pink-200 shadow-xs">
+            <div className="flex items-center gap-1.5 bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-2 rounded-full border border-pink-200 shadow-sm">
               <FiClock className="text-[#C57488] text-xs" />
               <span>Mon - Sat: 10AM - 8PM</span>
             </div>
@@ -273,7 +273,7 @@ const BookAppointment = () => {
                 <select
                   value={formData.service}
                   onChange={e => setFormData({ ...formData, service: e.target.value })}
-                  className="w-full px-4 py-3.5 rounded-xl border border-pink-200 text-xs focus:outline-none focus:border-[#C57488] focus:ring-1 focus:ring-[#C57488] bg-white font-semibold text-[#2C2225] shadow-xs"
+                  className="w-full px-4 py-3.5 rounded-xl border border-pink-200 text-xs focus:outline-none focus:border-[#C57488] focus:ring-1 focus:ring-[#C57488] bg-white font-semibold text-[#2C2225] shadow-sm"
                 >
                   {categories[formData.category].map((s, idx) => (
                     <option key={idx} value={s}>{s}</option>
