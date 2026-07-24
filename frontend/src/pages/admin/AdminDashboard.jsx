@@ -918,55 +918,100 @@ const AdminDashboard = () => {
               {/* Stat Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.05 }} whileHover={{ y: -6, scale: 1.02 }} className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3 cursor-pointer">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Live Bookings</span>
-                    <div className="w-9 h-9 rounded-xl bg-pink-50 text-[#B76E79] flex items-center justify-center font-bold">
+                {/* Card 1: Live Bookings */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }} 
+                  whileInView={{ opacity: 1, y: 0 }} 
+                  viewport={{ once: true }} 
+                  transition={{ duration: 0.4, delay: 0.05 }} 
+                  whileHover={{ y: -8, scale: 1.025 }} 
+                  className="relative overflow-hidden bg-white/95 backdrop-blur-xl p-6 rounded-3xl border border-pink-100/90 shadow-md hover:shadow-xl hover:shadow-pink-200/50 transition-all duration-300 group cursor-pointer space-y-4"
+                >
+                  <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#D87093] via-[#B76E79] to-[#C57488]" />
+                  <div className="flex justify-between items-center pt-1">
+                    <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Live Bookings</span>
+                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-pink-50 to-pink-100/80 text-[#B76E79] border border-pink-200/60 flex items-center justify-center text-lg shadow-xs group-hover:scale-110 group-hover:rotate-6 transition-all">
                       <FiCalendar />
                     </div>
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{appointments.length}</h3>
-                    <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">Live Sync</span>
+                  <div className="flex items-baseline justify-between pt-1">
+                    <h3 className="text-4xl font-serif-luxury font-bold text-[#2C2225] tracking-tight">{appointments.length}</h3>
+                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 shadow-2xs flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block" />
+                      Live Sync
+                    </span>
                   </div>
                 </motion.div>
 
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 }} whileHover={{ y: -6, scale: 1.02 }} className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3 cursor-pointer">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Bridal Suites</span>
-                    <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+                {/* Card 2: Active Bridal Suites */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }} 
+                  whileInView={{ opacity: 1, y: 0 }} 
+                  viewport={{ once: true }} 
+                  transition={{ duration: 0.4, delay: 0.1 }} 
+                  whileHover={{ y: -8, scale: 1.025 }} 
+                  className="relative overflow-hidden bg-white/95 backdrop-blur-xl p-6 rounded-3xl border border-amber-100/90 shadow-md hover:shadow-xl hover:shadow-amber-200/50 transition-all duration-300 group cursor-pointer space-y-4"
+                >
+                  <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-400 via-amber-500 to-rose-400" />
+                  <div className="flex justify-between items-center pt-1">
+                    <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Active Bridal Suites</span>
+                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100/80 text-amber-700 border border-amber-200/60 flex items-center justify-center text-lg shadow-xs group-hover:scale-110 group-hover:rotate-6 transition-all">
                       <FiHeart />
                     </div>
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{bridalRecords.length}</h3>
-                    <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-100">Bespoke</span>
+                  <div className="flex items-baseline justify-between pt-1">
+                    <h3 className="text-4xl font-serif-luxury font-bold text-[#2C2225] tracking-tight">{bridalRecords.length}</h3>
+                    <span className="text-[11px] font-bold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 shadow-2xs">
+                      Bespoke Studio
+                    </span>
                   </div>
                 </motion.div>
 
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.15 }} whileHover={{ y: -6, scale: 1.02 }} className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3 cursor-pointer">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Portfolio Photos</span>
-                    <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
+                {/* Card 3: Portfolio Photos */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }} 
+                  whileInView={{ opacity: 1, y: 0 }} 
+                  viewport={{ once: true }} 
+                  transition={{ duration: 0.4, delay: 0.15 }} 
+                  whileHover={{ y: -8, scale: 1.025 }} 
+                  className="relative overflow-hidden bg-white/95 backdrop-blur-xl p-6 rounded-3xl border border-purple-100/90 shadow-md hover:shadow-xl hover:shadow-purple-200/50 transition-all duration-300 group cursor-pointer space-y-4"
+                >
+                  <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-purple-400 via-purple-500 to-pink-400" />
+                  <div className="flex justify-between items-center pt-1">
+                    <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Portfolio Photos</span>
+                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100/80 text-purple-700 border border-purple-200/60 flex items-center justify-center text-lg shadow-xs group-hover:scale-110 group-hover:rotate-6 transition-all">
                       <FiImage />
                     </div>
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{gallery.length}</h3>
-                    <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-100">Live</span>
+                  <div className="flex items-baseline justify-between pt-1">
+                    <h3 className="text-4xl font-serif-luxury font-bold text-[#2C2225] tracking-tight">{gallery.length}</h3>
+                    <span className="text-[11px] font-bold text-purple-800 bg-purple-50 px-3 py-1 rounded-full border border-purple-200 shadow-2xs">
+                      Published
+                    </span>
                   </div>
                 </motion.div>
 
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.2 }} whileHover={{ y: -6, scale: 1.02 }} className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm space-y-3 cursor-pointer">
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Studio Rating</span>
-                    <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center font-bold">
+                {/* Card 4: Studio Rating */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }} 
+                  whileInView={{ opacity: 1, y: 0 }} 
+                  viewport={{ once: true }} 
+                  transition={{ duration: 0.4, delay: 0.2 }} 
+                  whileHover={{ y: -8, scale: 1.025 }} 
+                  className="relative overflow-hidden bg-white/95 backdrop-blur-xl p-6 rounded-3xl border border-yellow-100/90 shadow-md hover:shadow-xl hover:shadow-yellow-200/50 transition-all duration-300 group cursor-pointer space-y-4"
+                >
+                  <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-400" />
+                  <div className="flex justify-between items-center pt-1">
+                    <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Studio Rating</span>
+                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-50 to-yellow-100/80 text-amber-500 border border-amber-200/60 flex items-center justify-center text-lg shadow-xs group-hover:scale-110 group-hover:rotate-6 transition-all">
                       <FiStar />
                     </div>
                   </div>
-                  <div className="flex items-baseline justify-between">
-                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">4.9 ★</h3>
-                    <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-100">Verified</span>
+                  <div className="flex items-baseline justify-between pt-1">
+                    <h3 className="text-4xl font-serif-luxury font-bold text-[#2C2225] tracking-tight">4.9 ★</h3>
+                    <span className="text-[11px] font-bold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 shadow-2xs">
+                      Verified 5★
+                    </span>
                   </div>
                 </motion.div>
 
