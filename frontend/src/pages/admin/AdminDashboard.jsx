@@ -909,7 +909,7 @@ const AdminDashboard = () => {
         </header>
 
         {/* Content Body */}
-        <div className="p-6 md:p-8 space-y-8">
+        <div className="p-3.5 sm:p-6 md:p-8 space-y-6 sm:space-y-8">
           
           {/* ==================== TAB 1: EXECUTIVE OVERVIEW ==================== */}
           {activeTab === 'Overview' && (
@@ -1190,7 +1190,7 @@ const AdminDashboard = () => {
               </motion.div>
 
               {/* Master Appointments Table */}
-              <motion.div initial={{ opacity: 0, y: 35 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
+              <motion.div initial={{ opacity: 0, y: 35 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="bg-white/90 backdrop-blur-md p-4 sm:p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-5 sm:space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div>
                     <h3 className="font-serif text-lg font-bold text-[#2C2225]">Appointments Management Table</h3>
@@ -1231,12 +1231,17 @@ const AdminDashboard = () => {
                           initial={{ opacity: 0, y: 15 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, delay: index * 0.05 }}
-                          className="p-4.5 rounded-2xl bg-gradient-to-br from-[#FFF8FA] to-white border border-pink-200/80 shadow-xs space-y-3.5"
+                          className="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-[#FFF8FA] to-white border border-pink-200/80 shadow-xs space-y-3.5"
                         >
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h4 className="font-bold text-sm text-[#2C2225]">{apt.customerName || apt.name}</h4>
-                              <span className="text-xs text-[#B76E79] font-semibold block mt-0.5">{apt.service}</span>
+                          <div className="flex justify-between items-start gap-2.5">
+                            <div className="flex items-center gap-3 min-w-0 flex-1">
+                              <div className="w-9 h-9 rounded-full bg-[#B76E79] text-white font-bold flex items-center justify-center text-xs shadow-xs shrink-0">
+                                {(apt.customerName || apt.name || 'C').charAt(0).toUpperCase()}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h4 className="font-bold text-sm text-[#2C2225] truncate leading-tight">{apt.customerName || apt.name}</h4>
+                                <span className="text-xs text-[#B76E79] font-semibold block truncate mt-0.5">{apt.service}</span>
+                              </div>
                             </div>
                             <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${
                               apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
