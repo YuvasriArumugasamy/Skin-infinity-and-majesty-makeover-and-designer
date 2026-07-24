@@ -1025,6 +1025,8 @@ const AdminDashboard = () => {
                     ))}
                   </div>
                 )}
+              </div>
+
               {/* Real Dynamic Revenue Area Chart */}
               <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-4">
                 <div className="flex justify-between items-center">
