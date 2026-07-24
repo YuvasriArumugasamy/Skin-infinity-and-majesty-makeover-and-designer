@@ -6,10 +6,10 @@ import {
   FiGrid, FiCalendar, FiUsers, FiScissors, FiStar, 
   FiMail, FiLogOut, FiCheck, FiX, FiRefreshCw,
   FiPlus, FiSearch, FiClock, FiTrash2, FiMenu, FiDollarSign,
-  FiSend, FiUserCheck, FiHeart, FiFileText, FiImage, FiUpload, FiEye
+  FiSend, FiHeart, FiFileText, FiImage, FiUpload, FiShare2, FiChevronRight
 } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('Overview');
@@ -83,13 +83,6 @@ const AdminDashboard = () => {
     }
   ];
 
-  const initialCustomers = [
-    { _id: 'c1', name: 'Priya Sundaram', email: 'priya.s@gmail.com', phone: '+91 98765 43210', totalVisits: 8, totalSpent: '₹48,500', tier: 'VIP Gold' },
-    { _id: 'c2', name: 'Ananya Ramesh', email: 'ananya.r@yahoo.com', phone: '+91 98450 12345', totalVisits: 3, totalSpent: '₹14,200', tier: 'Silver' },
-    { _id: 'c3', name: 'Kavitha Krishnan', email: 'kavitha.k@gmail.com', phone: '+91 99123 88765', totalVisits: 12, totalSpent: '₹82,000', tier: 'Platinum VIP' },
-    { _id: 'c4', name: 'Meera Varma', email: 'meera.v@outlook.com', phone: '+91 97654 32109', totalVisits: 5, totalSpent: '₹39,000', tier: 'Gold' }
-  ];
-
   const initialServices = [
     { _id: 's1', name: 'Bespoke Royal Bridal HD Makeup', category: 'Bridal Suite', price: '₹18,500', duration: '3.5 Hours', status: 'Active' },
     { _id: 's2', name: 'Ultra Glow Hydra-Facial Treatment', category: 'Skin Therapy', price: '₹4,500', duration: '90 Mins', status: 'Active' },
@@ -97,25 +90,10 @@ const AdminDashboard = () => {
     { _id: 's4', name: 'Designer Blouse Embroidery & Saree Draping', category: 'Couture', price: '₹8,000', duration: '2 Hours', status: 'Active' }
   ];
 
-  const initialReviews = [
-    { _id: 'r1', clientName: 'Sangeetha M.', rating: 5, comment: 'Yuvasri ma’am created the most magical bridal look for my reception! Unmatched elegance.', service: 'Bridal Makeover', status: 'Published' },
-    { _id: 'r2', clientName: 'Divya N.', rating: 5, comment: 'Hydra facial gave me an instant glass skin radiance. Highly recommend Skin Infinity!', service: 'Hydra-Facial', status: 'Published' },
-    { _id: 'r3', clientName: 'Revathi K.', rating: 5, comment: 'The saree draping and hair spa package was super luxurious. 10/10 service!', service: 'Hair & Saree Styling', status: 'Published' },
-    { _id: 'r4', clientName: 'Nandhini R.', rating: 5, comment: 'Best bridal blouse design work in town! Perfect fit and timely delivery.', service: 'Bespoke Couture', status: 'Pending Moderation' }
-  ];
-
-  const initialMessages = [
-    { _id: 'm1', name: 'Lakshmi Narayanan', email: 'lakshmi.n@gmail.com', phone: '+91 98840 99887', subject: 'Bridal Package Inquiry for Oct 2026', date: '2 Hours ago', status: 'Unread' },
-    { _id: 'm2', name: 'Shanthi Saravanan', email: 'shanthi.s@hotmail.com', phone: '+91 97100 22334', subject: 'Pre-wedding Skincare Consultation', date: 'Yesterday', status: 'Read' }
-  ];
-
   const [appointments, setAppointments] = useState(initialAppointments);
   const [gallery, setGallery] = useState(initialGallery);
   const [bridalRecords, setBridalRecords] = useState(initialBridalRecords);
-  const [customers, setCustomers] = useState(initialCustomers);
   const [services, setServices] = useState(initialServices);
-  const [reviews, setReviews] = useState(initialReviews);
-  const [messages, setMessages] = useState(initialMessages);
 
   const chartData = [
     { name: '1 May', revenue: 15000 },
@@ -129,15 +107,11 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
-      const [aptRes, conRes, revRes] = await Promise.all([
-        axios.get('/api/appointments'),
-        axios.get('/api/contact'),
-        axios.get('/api/reviews')
+      const [aptRes] = await Promise.all([
+        axios.get('/api/appointments')
       ]);
       if (aptRes.data?.data?.length > 0) setAppointments(aptRes.data.data);
-      if (conRes.data?.data?.length > 0) setMessages(conRes.data.data);
-      if (revRes.data?.data?.length > 0) setReviews(revRes.data.data);
-      toast.success('Dashboard Data Synchronized!');
+      toast.success('Dashboard Synchronized!');
     } catch (e) {
       toast.success('Dashboard Refreshed');
     }
@@ -176,7 +150,6 @@ const AdminDashboard = () => {
     toast.success(`Opening WhatsApp for ${apt.customerName}...`, { icon: '💬' });
   };
 
-  // Gallery Management Actions
   const handleAddGalleryItem = () => {
     const title = prompt('Photo Title / Description:');
     const category = prompt('Category (e.g. Bridal Makeover, Bespoke Couture, Skin Therapy):') || 'Bridal Makeover';
@@ -206,17 +179,6 @@ const AdminDashboard = () => {
     toast.success('Photo removed from Gallery');
   };
 
-  // Reviews Moderation Actions
-  const handleReviewStatus = (id, newStatus) => {
-    setReviews(prev => prev.map(r => r._id === id ? { ...r, status: newStatus } : r));
-    toast.success(`Review status set to ${newStatus}!`);
-  };
-
-  const handleDeleteReview = (id) => {
-    setReviews(prev => prev.filter(r => r._id !== id));
-    toast.success('Review removed');
-  };
-
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     toast.success('Logged out');
@@ -232,46 +194,44 @@ const AdminDashboard = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 flex text-gray-800 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-[#FFF8FA] via-white to-[#FAF0F4] flex text-gray-800 font-sans">
       
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
         <div 
-          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          className="fixed inset-0 bg-black/40 z-40 md:hidden backdrop-blur-sm"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
       {/* Sidebar Navigation */}
-      <aside className={`fixed md:static top-0 left-0 bottom-0 z-50 w-64 bg-white border-r border-pink-100 p-6 flex flex-col justify-between shrink-0 transition-transform duration-300 ${
+      <aside className={`fixed md:static top-0 left-0 bottom-0 z-50 w-72 bg-white/90 backdrop-blur-md border-r border-pink-100/80 p-6 flex flex-col justify-between shrink-0 shadow-lg md:shadow-none transition-transform duration-300 ${
         mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
       }`}>
         <div className="space-y-8">
           
-          {/* Brand Logo */}
-          <div className="flex items-center gap-3">
-            <img 
-              src="/logo.png" 
-              alt="Skin Infinity & Majesty" 
-              className="h-11 w-auto object-contain shrink-0"
-            />
+          {/* Executive Brand Badge */}
+          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#FFF0F5] to-white border border-pink-200/60 shadow-sm flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl overflow-hidden bg-white p-1 border border-pink-200 shadow-sm shrink-0 flex items-center justify-center">
+              <img 
+                src="/logo.png" 
+                alt="Skin Infinity & Majesty" 
+                className="w-full h-full object-contain"
+              />
+            </div>
             <div>
-              <h3 className="font-serif text-sm font-bold text-[#2C2225] leading-tight">SKIN INFINITY</h3>
-              <span className="text-[9px] tracking-widest text-[#B76E79] uppercase font-semibold">ADMIN PANEL</span>
+              <h3 className="font-serif text-sm font-bold text-[#2C2225] leading-tight tracking-tight">SKIN INFINITY</h3>
+              <span className="text-[10px] tracking-widest text-[#B76E79] font-bold uppercase">EXECUTIVE SUITE</span>
             </div>
           </div>
 
-          {/* Navigation Items */}
-          <nav className="space-y-1.5">
+          {/* Core Streamlined Executive Navigation */}
+          <nav className="space-y-2">
             {[
-              { id: 'Overview', label: 'Dashboard', icon: <FiGrid /> },
-              { id: 'Appointments', label: 'Bookings & Slots', icon: <FiCalendar /> },
-              { id: 'BridalSuite', label: 'Bridal & Designer', icon: <FiHeart /> },
-              { id: 'GalleryManager', label: 'Gallery & Portfolio', icon: <FiImage /> },
-              { id: 'Reviews', label: 'Reviews Moderation', icon: <FiStar /> },
-              { id: 'Customers', label: 'Customers', icon: <FiUsers /> },
-              { id: 'Services', label: 'Services Suite', icon: <FiScissors /> },
-              { id: 'Messages', label: 'Inquiries', icon: <FiMail /> }
+              { id: 'Overview', label: 'Executive Dashboard', desc: 'Live Metrics & Today Schedule', icon: <FiGrid /> },
+              { id: 'Appointments', label: 'Bookings & Slots', desc: 'Real-Time Slots & WhatsApp', icon: <FiCalendar /> },
+              { id: 'BridalSuite', label: 'Bridal & Couture Studio', desc: 'Bride Notes & Measurements', icon: <FiHeart /> },
+              { id: 'GalleryAndServices', label: 'Portfolio & Services', desc: 'Photos & Pricing Suite', icon: <FiImage /> }
             ].map(item => {
               const isActive = activeTab === item.id;
               return (
@@ -281,14 +241,23 @@ const AdminDashboard = () => {
                     setActiveTab(item.id);
                     setMobileMenuOpen(false);
                   }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition ${
+                  className={`w-full text-left p-3.5 rounded-2xl transition-all duration-300 flex items-center gap-3.5 group ${
                     isActive 
-                      ? 'bg-pink-50 text-[#B76E79] border border-pink-200 shadow-sm' 
-                      : 'text-gray-600 hover:bg-gray-100'
+                      ? 'bg-gradient-to-r from-[#B76E79] to-[#D87093] text-white shadow-md shadow-pink-200/50 scale-[1.02]' 
+                      : 'bg-white/60 hover:bg-pink-50/70 text-gray-700 border border-pink-100/50'
                   }`}
                 >
-                  <span className="text-base">{item.icon}</span>
-                  <span>{item.label}</span>
+                  <div className={`p-2.5 rounded-xl text-lg transition ${
+                    isActive ? 'bg-white/20 text-white' : 'bg-pink-100/60 text-[#B76E79] group-hover:bg-[#B76E79] group-hover:text-white'
+                  }`}>
+                    {item.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="block text-xs font-bold truncate leading-tight">{item.label}</span>
+                    <span className={`block text-[10px] truncate mt-0.5 ${isActive ? 'text-pink-100' : 'text-gray-400'}`}>
+                      {item.desc}
+                    </span>
+                  </div>
                 </button>
               );
             })}
@@ -296,93 +265,208 @@ const AdminDashboard = () => {
 
         </div>
 
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold text-red-500 hover:bg-red-50 transition"
-        >
-          <FiLogOut className="text-base" /> LOGOUT
-        </button>
+        {/* User Info & Logout */}
+        <div className="pt-6 border-t border-pink-100/80 space-y-3">
+          <div className="flex items-center gap-3 p-2 bg-pink-50/60 rounded-xl border border-pink-100">
+            <img src="/logo.png" alt="Admin" className="w-8 h-8 rounded-full object-cover border border-pink-200" />
+            <div className="min-w-0 flex-1">
+              <span className="block text-xs font-bold text-[#2C2225] truncate">Yuvasri A.</span>
+              <span className="block text-[9px] text-[#B76E79] font-semibold uppercase">Super Admin</span>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition"
+          >
+            <FiLogOut /> Log Out
+          </button>
+        </div>
       </aside>
 
-      {/* Main Content Area */}
+      {/* Main Executive Content Area */}
       <main className="flex-1 overflow-y-auto min-w-0">
         
-        {/* Top Navbar */}
-        <header className="bg-white border-b border-pink-100 px-6 py-4 flex justify-between items-center sticky top-0 z-30">
+        {/* Top Executive Header */}
+        <header className="bg-white/80 backdrop-blur-md border-b border-pink-100/80 px-6 py-4 flex justify-between items-center sticky top-0 z-30 shadow-xs">
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setMobileMenuOpen(true)} 
-              className="p-2 rounded-lg bg-gray-100 text-gray-700 md:hidden"
+              className="p-2 rounded-xl bg-pink-50 text-[#B76E79] md:hidden border border-pink-200"
             >
               <FiMenu size={18} />
             </button>
             <div>
-              <h2 className="font-serif text-xl font-bold text-[#2C2225]">Welcome Back, Admin! 👋</h2>
-              <p className="text-xs text-gray-500">Skin Infinity & Majesty Bespoke Suite</p>
+              <h2 className="font-serif text-lg md:text-xl font-bold text-[#2C2225]">Skin Infinity & Majesty Executive Suite ✨</h2>
+              <p className="text-xs text-gray-500">Luxury Salon & Bespoke Bridal Studio Control Panel</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <button 
               onClick={fetchData} 
-              className="p-2.5 rounded-lg bg-pink-50 text-[#B76E79] text-sm hover:bg-pink-100 transition"
-              title="Refresh Data"
+              className="p-2.5 rounded-xl bg-pink-50 text-[#B76E79] text-xs font-bold hover:bg-pink-100 border border-pink-200 transition flex items-center gap-1.5"
+              title="Refresh Real-time Data"
             >
-              <FiRefreshCw />
+              <FiRefreshCw className="text-sm" />
+              <span className="hidden sm:inline">Sync Data</span>
             </button>
 
-            <div className="w-9 h-9 rounded-full overflow-hidden border border-pink-200 shadow-sm shrink-0">
-              <img src="/logo.png" alt="SM Admin" className="w-full h-full object-cover" />
-            </div>
+            <button
+              onClick={() => {
+                const name = prompt('Client Name:');
+                const service = prompt('Service Name:');
+                if (name && service) {
+                  setAppointments(prev => [
+                    {
+                      _id: Date.now().toString(),
+                      customerName: name,
+                      service: service,
+                      date: selectedDate,
+                      time: '04:00 PM',
+                      phone: '9876543210',
+                      status: 'Confirmed',
+                      amount: '₹5,000',
+                      staff: 'Yuvasri A. (Master Artist)'
+                    },
+                    ...prev
+                  ]);
+                  toast.success('Instant Booking Added!');
+                }
+              }}
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white text-xs font-bold flex items-center gap-2 shadow-sm hover:opacity-95 transition"
+            >
+              <FiPlus />
+              <span className="hidden sm:inline">Quick Booking</span>
+            </button>
           </div>
         </header>
 
         {/* Content Body */}
         <div className="p-6 md:p-8 space-y-8">
           
-          {/* TAB 1: OVERVIEW */}
+          {/* ==================== TAB 1: EXECUTIVE OVERVIEW ==================== */}
           {activeTab === 'Overview' && (
-            <>
-              {/* Stat Widgets */}
+            <div className="space-y-8">
+              
+              {/* Executive Metric Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-2">
-                  <span className="text-xs font-bold text-gray-400 uppercase">Total Appointments</span>
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-2xl font-serif font-bold text-[#2C2225]">{appointments.length + 123}</h3>
-                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+18%</span>
+                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm hover:shadow-md transition space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Appointments</span>
+                    <div className="w-9 h-9 rounded-xl bg-pink-50 text-[#B76E79] flex items-center justify-center font-bold">
+                      <FiCalendar />
+                    </div>
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{appointments.length + 124}</h3>
+                    <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">+18% Live</span>
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-2">
-                  <span className="text-xs font-bold text-gray-400 uppercase">Portfolio Gallery Photos</span>
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-2xl font-serif font-bold text-[#2C2225]">{gallery.length} Photos</h3>
-                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Live</span>
+                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm hover:shadow-md transition space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Active Bridal Suites</span>
+                    <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
+                      <FiHeart />
+                    </div>
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">{bridalRecords.length + 18}</h3>
+                    <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-100">Bespoke</span>
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-2">
-                  <span className="text-xs font-bold text-gray-400 uppercase">Total Revenue</span>
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-2xl font-serif font-bold text-[#2C2225]">₹2,48,350</h3>
-                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+25%</span>
+                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm hover:shadow-md transition space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Monthly Revenue</span>
+                    <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                      <FiDollarSign />
+                    </div>
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">₹2,48,350</h3>
+                    <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">+25% Growth</span>
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-2">
-                  <span className="text-xs font-bold text-gray-400 uppercase">Approved Testimonials</span>
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-2xl font-serif font-bold text-[#2C2225]">4.9 ★</h3>
-                    <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">{reviews.length} Rev</span>
+                <div className="bg-white/90 backdrop-blur-md p-6 rounded-2xl border border-pink-100 shadow-sm hover:shadow-md transition space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Client Rating</span>
+                    <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
+                      <FiStar />
+                    </div>
+                  </div>
+                  <div className="flex items-baseline justify-between">
+                    <h3 className="text-3xl font-serif font-bold text-[#2C2225]">4.9 ★</h3>
+                    <span className="text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-100">250+ Verified</span>
                   </div>
                 </div>
 
               </div>
 
-              {/* Revenue Area Chart */}
-              <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-4">
-                <h3 className="font-serif text-lg font-bold text-[#2C2225]">Revenue Growth Overview</h3>
+              {/* Today's Live Schedule Timeline Cards */}
+              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-pink-100 pb-4">
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">🌟 Today's Client Appointments Schedule</h3>
+                    <p className="text-xs text-gray-500">Live timeline for salon treatments & bridal consultations</p>
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-pink-50 text-[#B76E79] border border-pink-200">
+                    {selectedDate}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {appointments.slice(0, 6).map((apt, idx) => (
+                    <div key={apt._id} className="p-5 rounded-2xl bg-gradient-to-br from-[#FFF5F8] to-white border border-pink-200/80 shadow-xs space-y-4 hover:border-[#B76E79] transition">
+                      <div className="flex justify-between items-start">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-[#B76E79] text-white font-bold flex items-center justify-center text-sm shadow-sm">
+                            {apt.customerName.charAt(0)}
+                          </div>
+                          <div>
+                            <h4 className="font-bold text-sm text-[#2C2225] leading-tight">{apt.customerName}</h4>
+                            <span className="text-[11px] text-[#B76E79] font-semibold">{apt.service}</span>
+                          </div>
+                        </div>
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                          apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
+                          apt.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
+                          'bg-amber-100 text-amber-800'
+                        }`}>
+                          {apt.status}
+                        </span>
+                      </div>
+
+                      <div className="p-3 rounded-xl bg-white border border-pink-100 text-xs space-y-1 text-gray-600">
+                        <div className="flex justify-between">
+                          <span>Time Slot:</span>
+                          <strong className="text-gray-800">{apt.time}</strong>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Assigned Stylist:</span>
+                          <strong className="text-[#B76E79]">{apt.staff || 'Master Artist'}</strong>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between pt-1">
+                        <span className="font-serif font-bold text-sm text-[#2C2225]">{apt.amount}</span>
+                        <button
+                          onClick={() => handleSendWhatsApp(apt)}
+                          className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition"
+                        >
+                          <FaWhatsapp /> Send WA
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Revenue Chart */}
+              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-4">
+                <h3 className="font-serif text-lg font-bold text-[#2C2225]">Studio Revenue Trajectory</h3>
                 <div className="h-64 w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={chartData}>
@@ -401,73 +485,19 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              {/* Recent Appointments Preview Table */}
-              <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-4">
-                <div className="flex justify-between items-center">
-                  <h3 className="font-serif text-lg font-bold text-[#2C2225]">Recent Bookings</h3>
-                  <button 
-                    onClick={() => setActiveTab('Appointments')} 
-                    className="text-xs text-[#B76E79] font-bold hover:underline"
-                  >
-                    View All ({appointments.length}) ➔
-                  </button>
-                </div>
-
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs">
-                    <thead>
-                      <tr className="border-b border-pink-100 text-gray-400 uppercase font-bold">
-                        <th className="py-3 px-4">Client Name</th>
-                        <th className="py-3 px-4">Service</th>
-                        <th className="py-3 px-4">Date & Time</th>
-                        <th className="py-3 px-4">Assigned Staff</th>
-                        <th className="py-3 px-4">Status</th>
-                        <th className="py-3 px-4 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100 text-gray-700">
-                      {appointments.slice(0, 5).map((apt) => (
-                        <tr key={apt._id} className="hover:bg-pink-50/50 transition">
-                          <td className="py-3 px-4 font-bold text-[#2C2225]">{apt.customerName}</td>
-                          <td className="py-3 px-4 text-[#B76E79] font-semibold">{apt.service}</td>
-                          <td className="py-3 px-4 text-gray-600">{apt.date} | {apt.time}</td>
-                          <td className="py-3 px-4 text-gray-700 font-medium">{apt.staff}</td>
-                          <td className="py-3 px-4">
-                            <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                              apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-700' :
-                              apt.status === 'Cancelled' ? 'bg-red-100 text-red-700' :
-                              'bg-amber-100 text-amber-700'
-                            }`}>
-                              {apt.status}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4 text-right">
-                            <button
-                              onClick={() => handleSendWhatsApp(apt)}
-                              className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 font-bold text-[11px] inline-flex items-center gap-1 border border-emerald-200 transition"
-                            >
-                              <FaWhatsapp /> Reminder
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </>
+            </div>
           )}
 
-          {/* TAB 2: APPOINTMENTS & SLOT MANAGEMENT */}
+          {/* ==================== TAB 2: BOOKINGS & SLOT STUDIO ==================== */}
           {activeTab === 'Appointments' && (
-            <div className="space-y-6">
+            <div className="space-y-8">
               
-              {/* Feature 1: Interactive Time Slot Tracker */}
-              <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-4">
+              {/* Real-time Time Slot Availability Grid */}
+              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-5">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-pink-100 pb-4">
                   <div>
-                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">📅 Real-Time Slot Availability Tracker</h3>
-                    <p className="text-xs text-gray-500">Check open and booked time slots for salon appointments</p>
+                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">📅 Real-Time Slot Tracker & Instant Booking</h3>
+                    <p className="text-xs text-gray-500">Green = Available Slot | Red = Reserved Slot</p>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold text-gray-600">Select Date:</span>
@@ -475,7 +505,7 @@ const AdminDashboard = () => {
                       type="date"
                       value={selectedDate}
                       onChange={e => setSelectedDate(e.target.value)}
-                      className="px-3 py-1.5 rounded-lg border border-pink-200 text-xs font-bold text-[#B76E79] bg-pink-50"
+                      className="px-3.5 py-1.5 rounded-xl border border-pink-200 text-xs font-bold text-[#B76E79] bg-pink-50"
                     />
                   </div>
                 </div>
@@ -484,10 +514,10 @@ const AdminDashboard = () => {
                   {timeSlots.map((slot, idx) => (
                     <div 
                       key={idx}
-                      className={`p-3 rounded-xl border text-center space-y-1 transition ${
+                      className={`p-4 rounded-2xl border text-center space-y-1.5 transition-all duration-300 ${
                         slot.booked 
-                          ? 'bg-rose-50 border-rose-200 text-rose-800' 
-                          : 'bg-emerald-50 border-emerald-200 text-emerald-800 hover:scale-105 cursor-pointer'
+                          ? 'bg-rose-50/80 border-rose-200 text-rose-900 shadow-xs' 
+                          : 'bg-emerald-50/80 border-emerald-200 text-emerald-900 hover:scale-105 cursor-pointer shadow-sm'
                       }`}
                       onClick={() => {
                         if (!slot.booked) {
@@ -513,7 +543,7 @@ const AdminDashboard = () => {
                       }}
                     >
                       <span className="block text-xs font-bold">{slot.time}</span>
-                      <span className={`inline-block px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                      <span className={`inline-block px-2.5 py-0.5 rounded-full text-[9px] font-bold ${
                         slot.booked ? 'bg-rose-200 text-rose-900' : 'bg-emerald-200 text-emerald-900'
                       }`}>
                         {slot.booked ? `Booked: ${slot.client}` : 'Available +'}
@@ -523,70 +553,25 @@ const AdminDashboard = () => {
                 </div>
               </div>
 
-              {/* Main Appointments Table with Staff Allocation & WhatsApp */}
-              <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
+              {/* Master Appointments Table with WhatsApp & Staff */}
+              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div>
-                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">Appointments & Staff Allocation</h3>
+                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">Appointments & Staff Allocation Table</h3>
                     <p className="text-xs text-gray-500">Manage client bookings and assign specialized artists</p>
                   </div>
                   
-                  <button
-                    onClick={() => {
-                      const name = prompt('Client Name:');
-                      const service = prompt('Service Name:');
-                      if (name && service) {
-                        setAppointments(prev => [
-                          {
-                            _id: Date.now().toString(),
-                            customerName: name,
-                            service: service,
-                            date: selectedDate,
-                            time: '03:00 PM',
-                            phone: '9990011223',
-                            status: 'Confirmed',
-                            amount: '₹5,000',
-                            staff: 'Yuvasri A. (Master Artist)'
-                          },
-                          ...prev
-                        ]);
-                        toast.success('New Appointment Scheduled!');
-                      }
-                    }}
-                    className="px-4 py-2.5 rounded-full bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold text-xs flex items-center gap-2 shadow-sm hover:opacity-95 transition"
-                  >
-                    <FiPlus />
-                    <span>New Appointment</span>
-                  </button>
-                </div>
-
-                {/* Filter & Search */}
-                <div className="flex flex-col sm:flex-row gap-3 justify-between items-center bg-pink-50/50 p-3 rounded-xl border border-pink-100">
-                  <div className="relative w-full sm:w-72">
-                    <FiSearch className="absolute left-3.5 top-3 text-gray-400 text-xs" />
-                    <input
-                      type="text"
-                      placeholder="Search client, service, or phone..."
-                      value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2 rounded-lg bg-white border border-pink-200 text-xs text-gray-700 focus:outline-none focus:border-[#B76E79]"
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-1.5">
-                    {['All', 'Confirmed', 'Pending', 'Cancelled'].map(st => (
-                      <button
-                        key={st}
-                        onClick={() => setStatusFilter(st)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                          statusFilter === st 
-                            ? 'bg-[#B76E79] text-white' 
-                            : 'bg-white text-gray-600 hover:bg-pink-100 border border-pink-100'
-                        }`}
-                      >
-                        {st}
-                      </button>
-                    ))}
+                  <div className="flex items-center gap-2">
+                    <div className="relative w-full sm:w-64">
+                      <FiSearch className="absolute left-3.5 top-3 text-gray-400 text-xs" />
+                      <input
+                        type="text"
+                        placeholder="Search client or phone..."
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        className="w-full pl-9 pr-4 py-2 rounded-xl bg-pink-50/50 border border-pink-200 text-xs text-gray-700 focus:outline-none focus:border-[#B76E79]"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -595,66 +580,56 @@ const AdminDashboard = () => {
                   <table className="w-full text-left text-xs">
                     <thead>
                       <tr className="border-b border-pink-100 text-gray-400 uppercase font-bold">
-                        <th className="py-3 px-4">Client Name</th>
-                        <th className="py-3 px-4">Service</th>
-                        <th className="py-3 px-4">Date & Time</th>
-                        <th className="py-3 px-4">Assigned Staff / Artist</th>
-                        <th className="py-3 px-4">Status</th>
-                        <th className="py-3 px-4 text-right">Actions</th>
+                        <th className="py-3.5 px-4">Client Name</th>
+                        <th className="py-3.5 px-4">Service</th>
+                        <th className="py-3.5 px-4">Date & Time</th>
+                        <th className="py-3.5 px-4">Assigned Staff</th>
+                        <th className="py-3.5 px-4">Status</th>
+                        <th className="py-3.5 px-4 text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-100 text-gray-700">
+                    <tbody className="divide-y divide-pink-100/60 text-gray-700">
                       {filteredAppointments.map((apt) => (
-                        <tr key={apt._id} className="hover:bg-pink-50/50 transition">
-                          <td className="py-3 px-4 font-bold text-[#2C2225]">{apt.customerName}</td>
-                          <td className="py-3 px-4 text-[#B76E79] font-semibold">{apt.service}</td>
-                          <td className="py-3 px-4 text-gray-600">{apt.date} | {apt.time}</td>
-                          <td className="py-3 px-4">
+                        <tr key={apt._id} className="hover:bg-pink-50/40 transition">
+                          <td className="py-3.5 px-4 font-bold text-[#2C2225]">{apt.customerName}</td>
+                          <td className="py-3.5 px-4 text-[#B76E79] font-semibold">{apt.service}</td>
+                          <td className="py-3.5 px-4 text-gray-600">{apt.date} | {apt.time}</td>
+                          <td className="py-3.5 px-4">
                             <select
                               value={apt.staff || staffList[0]}
                               onChange={e => handleStaffAssign(apt._id, e.target.value)}
-                              className="px-2 py-1 rounded border border-pink-200 bg-white text-[11px] text-gray-700 font-medium focus:outline-none focus:border-[#B76E79]"
+                              className="px-2.5 py-1 rounded-lg border border-pink-200 bg-white text-[11px] text-gray-700 font-medium focus:outline-none focus:border-[#B76E79]"
                             >
                               {staffList.map((st, i) => (
                                 <option key={i} value={st}>{st}</option>
                               ))}
                             </select>
                           </td>
-                          <td className="py-3 px-4">
+                          <td className="py-3.5 px-4">
                             <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                              apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-700' :
-                              apt.status === 'Cancelled' ? 'bg-red-100 text-red-700' :
-                              'bg-amber-100 text-amber-700'
+                              apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
+                              apt.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
+                              'bg-amber-100 text-amber-800'
                             }`}>
                               {apt.status}
                             </span>
                           </td>
-                          <td className="py-3 px-4 text-right">
+                          <td className="py-3.5 px-4 text-right">
                             <div className="flex items-center justify-end gap-2">
                               <button
                                 onClick={() => handleSendWhatsApp(apt)}
-                                title="Send WhatsApp Reminder"
-                                className="px-2 py-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-600 font-bold text-[11px] border border-emerald-200 transition flex items-center gap-1"
+                                className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 font-bold text-[11px] border border-emerald-200 transition flex items-center gap-1"
                               >
                                 <FaWhatsapp /> WA
                               </button>
                               <button
                                 onClick={() => handleStatusChange(apt._id, 'Confirmed')}
-                                title="Confirm"
-                                className="w-7 h-7 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs transition"
+                                className="w-7 h-7 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs transition"
                               >
                                 <FiCheck />
                               </button>
                               <button
-                                onClick={() => handleStatusChange(apt._id, 'Cancelled')}
-                                title="Cancel"
-                                className="w-7 h-7 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-600 flex items-center justify-center text-xs transition"
-                              >
-                                <FiX />
-                              </button>
-                              <button
                                 onClick={() => handleDeleteAppointment(apt._id)}
-                                title="Delete"
                                 className="w-7 h-7 rounded-full bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center text-xs transition"
                               >
                                 <FiTrash2 />
@@ -671,15 +646,15 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {/* TAB 3: BRIDAL & BESPOKE DESIGNER COUTURE TRACKER */}
+          {/* ==================== TAB 3: BRIDAL & COUTURE STUDIO ==================== */}
           {activeTab === 'BridalSuite' && (
-            <div className="space-y-6">
+            <div className="space-y-8">
               
-              <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
+              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div>
-                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">👰 Bridal Consultation & Trial Tracker</h3>
-                    <p className="text-xs text-gray-500">Track bride event dates, trial makeup notes, and saree draping requirements</p>
+                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">👰 Bridal Consultation & Bespoke Measurement Suite</h3>
+                    <p className="text-xs text-gray-500">Track bride look preferences, function dates, and embroidery blouse measurements</p>
                   </div>
                   <button
                     onClick={() => {
@@ -695,63 +670,65 @@ const AdminDashboard = () => {
                             trialDate: '2026-08-01',
                             skinNotes: 'Sensitive Skin, HD Airbrush Preferred',
                             jewelryColor: 'Antique Gold & Emerald',
-                            blouseDetails: 'Aari Embroidery Blouse',
+                            blouseDetails: 'Aari Hand Embroidery Blouse',
                             bust: '34"', waist: '28"', shoulder: '14"', sleeve: '10.5"',
                             deliveryStatus: 'Consultation Done'
                           },
                           ...prev
                         ]);
-                        toast.success('Bridal Consultation Record Created!');
+                        toast.success('Bride Record Added!');
                       }
                     }}
-                    className="px-4 py-2 rounded-full bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold text-xs flex items-center gap-2 shadow-sm"
+                    className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold text-xs flex items-center gap-2 shadow-sm"
                   >
                     <FiPlus />
-                    <span>Add Bride Record</span>
+                    <span>Add Bride Consultation</span>
                   </button>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {bridalRecords.map((b) => (
-                    <div key={b._id} className="p-5 rounded-2xl bg-pink-50/40 border border-pink-200 space-y-4">
+                    <div key={b._id} className="p-6 rounded-3xl bg-gradient-to-br from-[#FFF5F8] to-white border border-pink-200 shadow-sm space-y-4">
                       <div className="flex justify-between items-start border-b border-pink-100 pb-3">
                         <div>
-                          <span className="text-[10px] font-bold text-[#B76E79] uppercase font-mono">{b.eventType}</span>
-                          <h4 className="font-serif text-base font-bold text-[#2C2225]">{b.clientName}</h4>
-                          <p className="text-xs text-gray-500">Function Date: <strong className="text-gray-700">{b.functionDate}</strong></p>
+                          <span className="text-[10px] font-bold text-[#B76E79] uppercase font-mono tracking-wider">{b.eventType}</span>
+                          <h4 className="font-serif text-lg font-bold text-[#2C2225]">{b.clientName}</h4>
+                          <p className="text-xs text-gray-500">Function Date: <strong className="text-gray-800">{b.functionDate}</strong></p>
                         </div>
-                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#B76E79] text-white">
+                        <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-[#B76E79] text-white shadow-xs">
                           {b.deliveryStatus}
                         </span>
                       </div>
 
                       {/* Skin & Jewelry Notes */}
-                      <div className="space-y-1.5 text-xs text-gray-700">
-                        <p><strong>Trial Date:</strong> {b.trialDate}</p>
-                        <p><strong>Skin Type Notes:</strong> {b.skinNotes}</p>
-                        <p><strong>Jewelry / Theme:</strong> {b.jewelryColor}</p>
+                      <div className="space-y-1 text-xs text-gray-700">
+                        <p><strong>Makeup Trial Date:</strong> {b.trialDate}</p>
+                        <p><strong>Skin Type & Prep:</strong> {b.skinNotes}</p>
+                        <p><strong>Jewelry Theme:</strong> {b.jewelryColor}</p>
                       </div>
 
                       {/* Bespoke Designer Blouse Measurement Sheet */}
-                      <div className="pt-3 border-t border-pink-100 space-y-2">
+                      <div className="pt-3 border-t border-pink-100 space-y-2.5">
                         <div className="flex justify-between items-center">
-                          <span className="text-xs font-bold text-[#B76E79] flex items-center gap-1">
-                            <FiScissors /> Bespoke Designer Measurement Sheet
+                          <span className="text-xs font-bold text-[#B76E79] flex items-center gap-1.5">
+                            <FiScissors /> Bespoke Measurement Card
                           </span>
                           <button 
                             onClick={() => toast.success(`Measurement sheet exported for ${b.clientName}`)}
-                            className="text-[10px] text-gray-600 hover:text-[#B76E79] font-bold underline"
+                            className="text-[11px] text-[#B76E79] hover:underline font-bold"
                           >
-                            Print Sheet
+                            Print Card 🖨️
                           </button>
                         </div>
-                        <div className="grid grid-cols-4 gap-2 bg-white p-2.5 rounded-xl border border-pink-100 text-center text-[11px]">
+                        <div className="grid grid-cols-4 gap-2 bg-white p-3 rounded-2xl border border-pink-100 text-center text-xs">
                           <div><span className="text-gray-400 block text-[9px]">Bust</span><strong>{b.bust}</strong></div>
                           <div><span className="text-gray-400 block text-[9px]">Waist</span><strong>{b.waist}</strong></div>
                           <div><span className="text-gray-400 block text-[9px]">Shoulder</span><strong>{b.shoulder}</strong></div>
                           <div><span className="text-gray-400 block text-[9px]">Sleeve</span><strong>{b.sleeve}</strong></div>
                         </div>
-                        <p className="text-[11px] text-gray-600 italic">Work Details: {b.blouseDetails}</p>
+                        <p className="text-xs text-gray-600 italic bg-white/60 p-2 rounded-xl border border-pink-100">
+                          Work Details: {b.blouseDetails}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -761,225 +738,96 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {/* TAB 4: PORTFOLIO GALLERY MANAGER */}
-          {activeTab === 'GalleryManager' && (
-            <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                  <h3 className="font-serif text-lg font-bold text-[#2C2225]">🖼️ Website Gallery & Portfolio Manager</h3>
-                  <p className="text-xs text-gray-500">Upload, publish, and manage makeover and couture photos displayed on website</p>
-                </div>
-                <button
-                  onClick={handleAddGalleryItem}
-                  className="px-4 py-2.5 rounded-full bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold text-xs flex items-center gap-2 shadow-sm hover:opacity-95 transition"
-                >
-                  <FiUpload />
-                  <span>Upload / Add Photo</span>
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {gallery.map(item => (
-                  <div key={item._id} className="rounded-2xl border border-pink-100 bg-pink-50/30 overflow-hidden shadow-sm flex flex-col justify-between space-y-3 p-4">
-                    <div className="space-y-2">
-                      <div className="w-full h-48 rounded-xl overflow-hidden bg-gray-100 border border-pink-100 relative group">
-                        <img 
-                          src={item.image} 
-                          alt={item.title} 
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                        <span className={`absolute top-2 right-2 px-2.5 py-0.5 rounded-full text-[9px] font-bold shadow-sm ${
-                          item.status === 'Published' ? 'bg-emerald-600 text-white' : 'bg-gray-600 text-white'
-                        }`}>
-                          {item.status}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] font-bold text-[#B76E79] uppercase tracking-wider">{item.category}</span>
-                        <h4 className="font-bold text-sm text-[#2C2225] leading-snug">{item.title}</h4>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-2 border-t border-pink-100 text-xs">
-                      <button
-                        onClick={() => handleToggleGalleryStatus(item._id)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
-                          item.status === 'Published' 
-                            ? 'bg-amber-100 text-amber-800 hover:bg-amber-200' 
-                            : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
-                        }`}
-                      >
-                        {item.status === 'Published' ? 'Set as Draft' : 'Publish to Site'}
-                      </button>
-
-                      <button
-                        onClick={() => handleDeleteGalleryItem(item._id)}
-                        className="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition"
-                        title="Delete Photo"
-                      >
-                        <FiTrash2 size={14} />
-                      </button>
-                    </div>
+          {/* ==================== TAB 4: PORTFOLIO & SERVICES STUDIO ==================== */}
+          {activeTab === 'GalleryAndServices' && (
+            <div className="space-y-8">
+              
+              {/* Portfolio Gallery Upload & Live Status */}
+              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">🖼️ Website Portfolio Photo Manager</h3>
+                    <p className="text-xs text-gray-500">Upload new makeover & designer dress photos displayed on website</p>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* TAB 5: REVIEWS MODERATION */}
-          {activeTab === 'Reviews' && (
-            <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                  <h3 className="font-serif text-lg font-bold text-[#2C2225]">⭐ Client Reviews Moderation</h3>
-                  <p className="text-xs text-gray-500">Approve or reject customer reviews before showing on website</p>
+                  <button
+                    onClick={handleAddGalleryItem}
+                    className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold text-xs flex items-center gap-2 shadow-sm hover:opacity-95 transition"
+                  >
+                    <FiUpload />
+                    <span>Upload / Add Photo</span>
+                  </button>
                 </div>
-                <button
-                  onClick={() => {
-                    const name = prompt('Client Name:');
-                    const comment = prompt('Review / Testimonial:');
-                    if (name && comment) {
-                      setReviews(prev => [
-                        {
-                          _id: Date.now().toString(),
-                          clientName: name,
-                          rating: 5,
-                          comment,
-                          service: 'Bridal Makeover',
-                          status: 'Published'
-                        },
-                        ...prev
-                      ]);
-                      toast.success('Testimonial Added!');
-                    }
-                  }}
-                  className="px-4 py-2.5 rounded-full bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold text-xs flex items-center gap-2 shadow-sm hover:opacity-95 transition"
-                >
-                  <FiPlus />
-                  <span>Add Review</span>
-                </button>
-              </div>
 
-              <div className="space-y-4">
-                {reviews.map(r => (
-                  <div key={r._id} className="p-5 rounded-2xl bg-pink-50/40 border border-pink-100 space-y-3">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-pink-100 pb-2">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-bold text-sm text-[#2C2225]">{r.clientName}</h4>
-                          <span className="text-xs text-amber-500 font-bold">({'★'.repeat(r.rating)})</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {gallery.map(item => (
+                    <div key={item._id} className="rounded-3xl border border-pink-200 bg-gradient-to-br from-[#FFF5F8] to-white p-4 shadow-xs space-y-3 flex flex-col justify-between">
+                      <div className="space-y-2">
+                        <div className="w-full h-48 rounded-2xl overflow-hidden bg-gray-100 border border-pink-100 relative group">
+                          <img 
+                            src={item.image} 
+                            alt={item.title} 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                          <span className={`absolute top-2 right-2 px-2.5 py-0.5 rounded-full text-[9px] font-bold shadow-sm ${
+                            item.status === 'Published' ? 'bg-emerald-600 text-white' : 'bg-gray-600 text-white'
+                          }`}>
+                            {item.status}
+                          </span>
                         </div>
-                        <span className="text-[10px] text-[#B76E79] font-semibold">Service: {r.service}</span>
+                        <div>
+                          <span className="text-[10px] font-bold text-[#B76E79] uppercase tracking-wider">{item.category}</span>
+                          <h4 className="font-bold text-sm text-[#2C2225] leading-snug">{item.title}</h4>
+                        </div>
                       </div>
-                      
-                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                        r.status === 'Published' ? 'bg-emerald-100 text-emerald-700' :
-                        r.status === 'Hidden' ? 'bg-gray-200 text-gray-700' :
-                        'bg-amber-100 text-amber-700'
-                      }`}>
-                        {r.status}
-                      </span>
-                    </div>
 
-                    <p className="text-xs text-gray-700 italic">"{r.comment}"</p>
+                      <div className="flex items-center justify-between pt-2 border-t border-pink-100 text-xs">
+                        <button
+                          onClick={() => handleToggleGalleryStatus(item._id)}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+                            item.status === 'Published' 
+                              ? 'bg-amber-100 text-amber-800 hover:bg-amber-200' 
+                              : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                          }`}
+                        >
+                          {item.status === 'Published' ? 'Set as Draft' : 'Publish to Site'}
+                        </button>
 
-                    <div className="flex items-center justify-end gap-2 pt-1">
-                      {r.status !== 'Published' && (
                         <button
-                          onClick={() => handleReviewStatus(r._id, 'Published')}
-                          className="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 font-bold text-xs border border-emerald-200 transition flex items-center gap-1"
+                          onClick={() => handleDeleteGalleryItem(item._id)}
+                          className="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 flex items-center justify-center transition"
+                          title="Delete Photo"
                         >
-                          <FiCheck /> Approve & Publish
+                          <FiTrash2 size={14} />
                         </button>
-                      )}
-                      {r.status !== 'Hidden' && (
-                        <button
-                          onClick={() => handleReviewStatus(r._id, 'Hidden')}
-                          className="px-3 py-1.5 rounded-lg bg-amber-50 text-amber-700 hover:bg-amber-100 font-bold text-xs border border-amber-200 transition flex items-center gap-1"
-                        >
-                          <FiX /> Hide Review
-                        </button>
-                      )}
-                      <button
-                        onClick={() => handleDeleteReview(r._id)}
-                        className="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition"
-                        title="Delete Review"
-                      >
-                        <FiTrash2 size={14} />
-                      </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
 
-          {/* TAB 6: CUSTOMERS */}
-          {activeTab === 'Customers' && (
-            <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
-              <h3 className="font-serif text-lg font-bold text-[#2C2225]">Registered Clients</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {customers.map(c => (
-                  <div key={c._id} className="p-5 rounded-xl bg-pink-50/40 border border-pink-100 space-y-2">
-                    <div className="flex justify-between items-start">
+              {/* Salon Services Suite List */}
+              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-6">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-[#2C2225]">✂️ Salon Services & Pricing Suite</h3>
+                    <p className="text-xs text-gray-500">Service list displayed on customer booking screen</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {services.map(s => (
+                    <div key={s._id} className="p-5 rounded-2xl bg-pink-50/30 border border-pink-200 flex justify-between items-center">
                       <div>
-                        <h4 className="font-bold text-sm text-[#2C2225]">{c.name}</h4>
-                        <p className="text-xs text-gray-500">{c.email}</p>
+                        <span className="text-[10px] font-bold text-[#B76E79] uppercase">{s.category}</span>
+                        <h4 className="font-bold text-sm text-[#2C2225]">{s.name}</h4>
+                        <p className="text-xs text-gray-500"><FiClock className="inline mr-1" />{s.duration}</p>
                       </div>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#B76E79] text-white">
-                        {c.tier}
-                      </span>
+                      <span className="font-serif font-bold text-base text-[#B76E79]">{s.price}</span>
                     </div>
-                    <div className="pt-2 border-t border-pink-100 flex justify-between text-xs text-gray-600">
-                      <span>Visits: <strong>{c.totalVisits}</strong></span>
-                      <span>Total Spent: <strong className="text-[#B76E79]">{c.totalSpent}</strong></span>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
 
-          {/* TAB 7: SERVICES */}
-          {activeTab === 'Services' && (
-            <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
-              <h3 className="font-serif text-lg font-bold text-[#2C2225]">Salon Services Suite</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {services.map(s => (
-                  <div key={s._id} className="p-5 rounded-xl bg-pink-50/40 border border-pink-100 flex justify-between items-center">
-                    <div>
-                      <span className="text-[10px] font-bold text-[#B76E79] uppercase">{s.category}</span>
-                      <h4 className="font-bold text-sm text-[#2C2225]">{s.name}</h4>
-                      <p className="text-xs text-gray-500"><FiClock className="inline mr-1" />{s.duration}</p>
-                    </div>
-                    <span className="font-bold text-sm text-[#B76E79]">{s.price}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* TAB 8: MESSAGES */}
-          {activeTab === 'Messages' && (
-            <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
-              <h3 className="font-serif text-lg font-bold text-[#2C2225]">Contact Form Inquiries</h3>
-              <div className="space-y-4">
-                {messages.map(m => (
-                  <div key={m._id} className="p-4 rounded-xl bg-pink-50/40 border border-pink-100 flex justify-between items-center">
-                    <div>
-                      <h4 className="font-bold text-sm text-[#2C2225]">{m.name} <span className="text-xs font-normal text-gray-500">({m.phone})</span></h4>
-                      <p className="text-xs font-semibold text-[#B76E79]">{m.subject}</p>
-                      <p className="text-[11px] text-gray-500">{m.email}</p>
-                    </div>
-                    <button 
-                      onClick={() => toast.success(`Reply opened for ${m.email}`)}
-                      className="px-3 py-1.5 rounded-lg bg-pink-100 text-[#B76E79] text-xs font-bold hover:bg-pink-200 transition"
-                    >
-                      Reply
-                    </button>
-                  </div>
-                ))}
-              </div>
             </div>
           )}
 
@@ -991,7 +839,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-
-
-
-
