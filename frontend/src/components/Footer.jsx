@@ -143,24 +143,24 @@ const Footer = () => {
           <h4 className="font-serif-luxury text-sm font-bold text-luxuryDark mb-3 uppercase tracking-wider">
             WE ARE HERE
           </h4>
-          <a 
-            href="https://maps.google.com/?q=Ramayanpatti,+Tirunelveli,+Tamil+Nadu+627358" 
-            target="_blank" 
-            rel="noreferrer" 
-            className="block rounded-xl overflow-hidden border border-pink-200 shadow-sm group relative"
+          <div className="rounded-xl overflow-hidden border border-pink-200 shadow-sm h-32 relative">
+            <iframe
+              title="Skin Infinity & Majesty Location Map"
+              src="https://maps.google.com/maps?q=Ramayanpatti%20Tirunelveli&t=&z=14&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              loading="lazy"
+              className="w-full h-full"
+            ></iframe>
+          </div>
+          <a
+            href="https://maps.google.com/?q=Ramayanpatti,+Tirunelveli,+Tamil+Nadu+627358"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#C57488] hover:text-[#B35F74] transition mt-2.5 uppercase tracking-wider"
           >
-            <div className="h-28 w-full bg-slate-100 relative flex items-center justify-center overflow-hidden">
-              <img 
-                src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=400" 
-                alt="Map Location" 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80"
-              />
-              <div className="absolute inset-0 bg-pink-900/10 backdrop-blur-[1px] flex items-center justify-center">
-                <div className="w-8 h-8 rounded-full bg-rose-600 text-white flex items-center justify-center shadow-lg animate-bounce">
-                  <FiMapPin className="text-base" />
-                </div>
-              </div>
-            </div>
+            <FiMapPin className="text-xs" /> Open Google Maps
           </a>
         </div>
 
