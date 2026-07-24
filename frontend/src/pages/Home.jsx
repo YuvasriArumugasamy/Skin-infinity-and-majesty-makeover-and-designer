@@ -561,11 +561,7 @@ const Home = () => {
                     alt={item.title} 
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end justify-center p-4">
-                    <div className="w-9 h-9 rounded-full bg-white/90 text-[#2C2225] flex items-center justify-center font-bold text-xs shadow-lg">
-                      VS
-                    </div>
-                  </div>
+
                 </div>
                 <div className="p-4 text-center">
                   <h4 className="font-serif-luxury text-sm font-bold text-[#2C2225]">
