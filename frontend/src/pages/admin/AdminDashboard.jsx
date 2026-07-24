@@ -6,8 +6,7 @@ import {
   FiGrid, FiCalendar, FiUsers, FiScissors, FiStar, 
   FiMail, FiLogOut, FiCheck, FiX, FiRefreshCw,
   FiPlus, FiSearch, FiClock, FiTrash2, FiMenu, FiDollarSign,
-  FiSend, FiHeart, FiFileText, FiImage, FiUpload, FiShare2, FiInbox,
-  FiUser, FiPhone
+  FiSend, FiHeart, FiFileText, FiImage, FiUpload, FiShare2, FiInbox
 } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
@@ -576,6 +575,87 @@ const AdminDashboard = () => {
         </div>
       )}
 
+      {/* ========================================================================= */}
+      {/* 🖼️ MODAL POPUP 3: UPLOAD GALLERY PHOTO MODAL */}
+      {/* ========================================================================= */}
+      {galleryModalOpen && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-pink-200 space-y-6 relative">
+            <button 
+              onClick={() => setGalleryModalOpen(false)}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-pink-50 text-[#B76E79] flex items-center justify-center hover:bg-pink-100 transition"
+            >
+              <FiX size={18} />
+            </button>
+
+            <div className="flex items-center gap-3 border-b border-pink-100 pb-4">
+              <div className="w-10 h-10 rounded-2xl bg-purple-100/60 text-purple-700 flex items-center justify-center text-xl font-bold">
+                <FiUpload />
+              </div>
+              <div>
+                <h3 className="font-serif text-xl font-bold text-[#2C2225]">Upload Portfolio Photo</h3>
+                <p className="text-xs text-gray-500">Publish makeover or couture photos to website</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleCreateGallery} className="space-y-4 text-xs">
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">Photo Title / Description *</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="e.g. Royal Reception Airbrush Look" 
+                  value={newGallery.title}
+                  onChange={e => setNewGallery({ ...newGallery, title: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-pink-50/30 text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">Category</label>
+                <select 
+                  value={newGallery.category}
+                  onChange={e => setNewGallery({ ...newGallery, category: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                >
+                  <option value="Bridal Makeover">Bridal Makeover</option>
+                  <option value="Bespoke Couture">Bespoke Couture</option>
+                  <option value="Skin Therapy">Skin Therapy</option>
+                  <option value="Hair Care">Hair Care</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">Image URL / Path</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. /bride1.jpg or image URL" 
+                  value={newGallery.image}
+                  onChange={e => setNewGallery({ ...newGallery, image: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                />
+              </div>
+
+              <div className="pt-4 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setGalleryModalOpen(false)}
+                  className="px-5 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold shadow-md hover:opacity-95 transition"
+                >
+                  Publish Photo
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
         <div 
@@ -584,7 +664,7 @@ const AdminDashboard = () => {
         />
       )}
 
-      {/* 📌 Fixed Left Sidebar Navigation (Stationary & Sticky) */}
+      {/* 📌 Fixed Left Sidebar Navigation */}
       <aside className={`fixed md:sticky top-0 left-0 bottom-0 h-screen z-40 w-72 bg-white/95 backdrop-blur-md border-r border-pink-100/80 p-6 flex flex-col justify-between shrink-0 shadow-sm transition-transform duration-300 ${
         mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
       }`}>
@@ -663,7 +743,7 @@ const AdminDashboard = () => {
         </div>
       </aside>
 
-      {/* 📜 Right Side Main Content Area (Independent Scroll Container) */}
+      {/* 📜 Right Side Main Content Area */}
       <main className="flex-1 h-screen overflow-y-auto min-w-0">
         
         {/* Header */}
@@ -1125,7 +1205,7 @@ const AdminDashboard = () => {
                     <p className="text-xs text-gray-500">Upload new makeover & designer dress photos displayed on website</p>
                   </div>
                   <button
-                    onClick={handleAddGalleryItem}
+                    onClick={() => setGalleryModalOpen(true)}
                     className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold text-xs flex items-center gap-2 shadow-sm hover:opacity-95 transition"
                   >
                     <FiUpload />
