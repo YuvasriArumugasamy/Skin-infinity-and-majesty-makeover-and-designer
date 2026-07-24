@@ -95,7 +95,7 @@ const Home = () => {
       {/* 1. HERO SECTION WITH bg5.png BACKGROUND */}
       <section 
         className="relative min-h-[85vh] lg:min-h-[90vh] bg-cover bg-no-repeat bg-[92%_top] sm:bg-[85%_center] lg:bg-center flex items-start sm:items-center pt-6 pb-12 sm:py-12 lg:py-20"
-        style={{ backgroundImage: `url('/bg5.png')` }}
+        style={{ backgroundImage: `url('/bg5.webp')` }}
       >
         {/* Soft, light gradient overlay - ensures text readability on left while keeping girl's face on right 100% sharp */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-pink-50/50 to-transparent sm:bg-gradient-to-r sm:from-white/80 sm:via-pink-50/40 sm:to-transparent"></div>
@@ -225,7 +225,7 @@ const Home = () => {
                 {/* Direct Image Container with zero white padding */}
                 <div className="relative z-10 w-full h-full rounded-[36px] rounded-tl-[96px] overflow-hidden">
                   <img 
-                    src="/shop3.png" 
+                    src="/shop3.webp" 
                     alt="Skin Infinity Salon Interior" 
                     loading="lazy"
                     decoding="async"
@@ -242,7 +242,7 @@ const Home = () => {
                 {/* Direct Image Container with zero white padding */}
                 <div className="relative z-10 w-full h-full rounded-[26px] overflow-hidden">
                   <img 
-                    src="/maha1.png" 
+                    src="/maha1.webp" 
                     alt="S. Mahalakshmi Bridal Makeover" 
                     loading="lazy"
                     decoding="async"
@@ -620,8 +620,10 @@ const Home = () => {
               {/* Background Bridal Image Wrapper */}
               <div className="relative">
                 <img 
-                  src="/bg3.png" 
+                  src="/bg3.webp" 
                   alt="Bridal Appointment Background" 
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-[280px] lg:h-[540px] object-cover object-right"
                 />
                 {/* Mobile-only Content Overlay on the pink gradient side */}
