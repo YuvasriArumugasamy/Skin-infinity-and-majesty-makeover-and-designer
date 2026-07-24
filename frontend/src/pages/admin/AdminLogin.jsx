@@ -16,7 +16,6 @@ const AdminLogin = () => {
     if (e) e.preventDefault();
     setLoading(true);
     
-    // Simulate brief luxury loading transition for smooth UX
     setTimeout(async () => {
       try {
         const res = await axios.post('/api/auth/login', { email, password });
@@ -24,24 +23,21 @@ const AdminLogin = () => {
           localStorage.setItem('adminToken', res.data.token);
           toast.success('Welcome to Skin Infinity & Majesty Portal!', {
             icon: '👑',
-            style: { background: '#1e1b18', color: '#f3e5d8', border: '1px solid #d4af37' }
+            style: { background: '#FFF5F8', color: '#B76E79', border: '1px solid #F4C2D7' }
           });
           navigate('/admin/dashboard');
           return;
         }
       } catch (err) {
-        // Fallback for Demo Mode if backend API is offline
         if ((email.trim().toLowerCase() === 'admin@skininfinity.com' || email.trim().toLowerCase() === 'admin') && password === 'admin123') {
           localStorage.setItem('adminToken', 'demo_admin_jwt_token_2026');
           toast.success('Demo Admin Authorized Successfully!', {
             icon: '✨',
-            style: { background: '#1e1b18', color: '#f5d0fe', border: '1px solid #c084fc' }
+            style: { background: '#FFF5F8', color: '#B76E79', border: '1px solid #F4C2D7' }
           });
           navigate('/admin/dashboard');
         } else {
-          toast.error('Invalid credentials. Use demo: admin@skininfinity.com / admin123', {
-            style: { background: '#29070a', color: '#fca5a5', border: '1px solid #f87171' }
-          });
+          toast.error('Invalid credentials. Use demo: admin@skininfinity.com / admin123');
         }
       } finally {
         setLoading(false);
@@ -56,175 +52,133 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden bg-[#0d090a] text-slate-100 selection:bg-rose-500 selection:text-white">
+    <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden bg-gradient-to-br from-luxurySubtle via-white to-pink-50 text-luxuryDark">
       
-      {/* Dynamic Ambient Luxury Lighting Background */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-rose-600/20 rounded-full blur-[120px] pointer-events-none animate-pulse" />
-      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-amber-500/15 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute top-1/3 right-10 w-72 h-72 bg-purple-600/15 rounded-full blur-[100px] pointer-events-none" />
+      {/* Light Luxury Glow Backdrop */}
+      <div className="absolute top-10 left-10 w-80 h-80 bg-pink-200/40 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-10 right-10 w-96 h-96 bg-amber-100/50 rounded-full blur-[120px] pointer-events-none" />
 
-      {/* Elegant Mesh Background Grid Accent */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f1315_1px,transparent_1px),linear-gradient(to_bottom,#1f1315_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-40 pointer-events-none" />
-
-      {/* Floating Sparkle Elements */}
-      <div className="absolute top-8 left-8 hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-amber-500/30 text-amber-300 text-xs backdrop-blur-md">
-        <FiStar className="text-amber-400 animate-spin" style={{ animationDuration: '6s' }} />
-        <span>Skin Infinity & Majesty Bespoke Management</span>
-      </div>
-
+      {/* Top Navigation */}
       <Link 
         to="/" 
-        className="absolute top-8 right-8 flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-gray-300 hover:text-white hover:bg-white/10 transition text-xs backdrop-blur-md group"
+        className="absolute top-8 right-8 flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-pink-200 text-luxuryRoseGold hover:bg-pink-50 transition text-xs shadow-sm font-semibold group"
       >
         <FiArrowLeft className="group-hover:-translate-x-1 transition-transform" />
         <span>Return to Website</span>
       </Link>
 
-      {/* Main Luxury Glass Card */}
+      {/* Main Light Luxury Card */}
       <motion.div 
-        initial={{ opacity: 0, y: 25, scale: 0.96 }}
+        initial={{ opacity: 0, y: 20, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        className="max-w-md w-full relative z-10 bg-slate-900/80 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-amber-500/30 shadow-[0_20px_60px_rgba(0,0,0,0.8)] space-y-7 group hover:border-amber-500/50 transition-colors duration-500"
+        transition={{ duration: 0.4 }}
+        className="max-w-md w-full relative z-10 bg-white p-8 md:p-10 rounded-3xl border border-pink-200 shadow-luxury space-y-7"
       >
 
-        {/* Header Badge & Title */}
+        {/* Header Badge */}
         <div className="text-center space-y-3">
-          <div className="relative w-20 h-20 mx-auto">
-            {/* Glowing Ring Effect */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-amber-400 via-rose-500 to-amber-600 blur-md opacity-75 animate-pulse" />
-            <div className="relative w-full h-full rounded-full bg-slate-950 p-1 border border-amber-400/50 flex items-center justify-center shadow-inner">
-              <div className="w-full h-full rounded-full bg-gradient-to-tr from-[#2d1217] to-[#1a0f12] flex flex-col items-center justify-center border border-rose-500/30">
-                <span className="font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-rose-300 to-amber-400 text-2xl tracking-wider">
-                  SM
-                </span>
-                <span className="text-[8px] uppercase tracking-widest text-amber-300/80 font-mono -mt-1">PORTAL</span>
-              </div>
+          <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-luxuryRoseGold to-luxuryGold p-0.5 mx-auto shadow-md flex items-center justify-center">
+            <div className="w-full h-full bg-white rounded-full flex items-center justify-center font-serif font-bold text-luxuryRoseGold text-2xl">
+              SM
             </div>
           </div>
 
           <div>
-            <h1 className="text-2xl font-serif font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-100 via-rose-100 to-amber-200 tracking-wide">
-              Admin Access
+            <h1 className="font-serif text-2xl font-bold text-luxuryDark tracking-tight">
+              Admin Portal Access
             </h1>
-            <p className="text-xs text-rose-200/70 mt-1 font-light tracking-wide">
-              Bespoke Beauty & Bridal Management System
+            <p className="text-xs text-gray-500 mt-1">
+              Skin Infinity & Majesty Management System
             </p>
           </div>
         </div>
 
-        {/* Login Form */}
-        <form onSubmit={handleLogin} className="space-y-5">
+        {/* Form */}
+        <form onSubmit={handleLogin} className="space-y-4">
           
-          {/* Email / Username Field */}
-          <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-amber-200/90 tracking-wider uppercase">
+          <div className="space-y-1">
+            <label className="block text-xs font-bold text-luxuryDark uppercase tracking-wider">
               Admin Username / Email
             </label>
-            <div className="relative group">
-              <FiMail className="absolute left-4 top-3.5 text-rose-300/60 group-focus-within:text-amber-400 transition-colors text-base" />
+            <div className="relative">
+              <FiMail className="absolute left-4 top-3.5 text-gray-400 text-base" />
               <input
                 type="text"
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="admin@skininfinity.com"
-                className="w-full pl-11 pr-4 py-3 rounded-xl bg-slate-950/70 border border-rose-900/40 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 transition duration-200"
+                className="w-full pl-11 pr-4 py-3 rounded-xl bg-gray-50 border border-pink-200 text-luxuryDark placeholder-gray-400 text-xs focus:outline-none focus:border-luxuryRoseGold focus:bg-white transition"
               />
             </div>
           </div>
 
-          {/* Password Field */}
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <label className="block text-xs font-semibold text-amber-200/90 tracking-wider uppercase">
-                Password
-              </label>
-              <button 
-                type="button"
-                onClick={() => toast('Use demo password: admin123', { icon: '🔑' })}
-                className="text-[11px] text-rose-300/70 hover:text-amber-300 transition"
-              >
-                Need Help?
-              </button>
-            </div>
-            <div className="relative group">
-              <FiLock className="absolute left-4 top-3.5 text-rose-300/60 group-focus-within:text-amber-400 transition-colors text-base" />
+          <div className="space-y-1">
+            <label className="block text-xs font-bold text-luxuryDark uppercase tracking-wider">
+              Password
+            </label>
+            <div className="relative">
+              <FiLock className="absolute left-4 top-3.5 text-gray-400 text-base" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-11 pr-11 py-3 rounded-xl bg-slate-950/70 border border-rose-900/40 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400/50 transition duration-200 font-mono"
+                className="w-full pl-11 pr-11 py-3 rounded-xl bg-gray-50 border border-pink-200 text-luxuryDark placeholder-gray-400 text-xs focus:outline-none focus:border-luxuryRoseGold focus:bg-white transition font-mono"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-3.5 text-slate-400 hover:text-amber-300 transition-colors"
-                title={showPassword ? "Hide password" : "Show password"}
+                className="absolute right-3.5 top-3.5 text-gray-400 hover:text-luxuryRoseGold transition"
               >
                 {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
               </button>
             </div>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-700 via-rose-600 to-amber-600 hover:from-rose-600 hover:to-amber-500 text-white font-bold text-xs tracking-widest uppercase shadow-lg shadow-rose-900/40 hover:shadow-rose-700/50 transition-all duration-300 transform active:scale-[0.99] flex items-center justify-center gap-2 group disabled:opacity-75 disabled:cursor-not-allowed"
+            className="w-full py-3.5 px-6 rounded-full bg-gradient-to-r from-[#D87093] to-luxuryRoseGold hover:opacity-95 text-white font-bold text-xs tracking-wider uppercase shadow-md hover:shadow-lg transition flex items-center justify-center gap-2"
           >
             {loading ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                <span>AUTHORIZING ACCESS...</span>
-              </>
+              <span>AUTHENTICATING...</span>
             ) : (
               <>
-                <FiShield className="text-amber-200 text-sm group-hover:scale-110 transition-transform" />
+                <FiShield />
                 <span>LOGIN TO ADMIN DASHBOARD</span>
               </>
             )}
           </button>
         </form>
 
-        {/* Quick Demo Access Bar */}
-        <div className="pt-2 border-t border-rose-900/30">
-          <div className="p-3.5 rounded-2xl bg-gradient-to-b from-rose-950/50 to-slate-950/80 border border-amber-500/20 text-center space-y-2">
-            <div className="flex items-center justify-center gap-1.5 text-xs text-amber-300 font-semibold">
-              <FiKey className="text-rose-400" />
-              <span>Demo Admin Mode Ready</span>
-            </div>
-            <p className="text-[11px] text-slate-400">
-              User: <span className="text-slate-200 font-mono">admin@skininfinity.com</span> | Pass: <span className="text-slate-200 font-mono">admin123</span>
-            </p>
-            <div className="flex items-center justify-center gap-2 pt-1">
-              <button
-                type="button"
-                onClick={handleQuickDemoLogin}
-                className="px-3 py-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-[11px] font-medium transition flex items-center gap-1 mx-auto"
-              >
-                <FiCheckCircle className="text-emerald-400" />
-                <span>Auto-Fill Credentials</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleLogin()}
-                className="px-3 py-1.5 rounded-lg bg-rose-600/30 hover:bg-rose-600/50 border border-rose-500/40 text-rose-200 text-[11px] font-semibold transition"
-              >
-                Instant 1-Click Login ➔
-              </button>
-            </div>
+        {/* Demo Box */}
+        <div className="p-4 rounded-2xl bg-pink-50/80 border border-pink-100 text-center space-y-2">
+          <div className="flex items-center justify-center gap-1.5 text-xs text-luxuryRoseGold font-bold">
+            <FiKey />
+            <span>Demo Admin Credentials Pre-filled</span>
           </div>
-        </div>
-
-        {/* Security Badge Footer */}
-        <div className="text-center pt-1">
-          <p className="text-[10px] text-slate-500 flex items-center justify-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-ping" />
-            256-Bit Encrypted Session • Skin Infinity & Majesty © 2026
+          <p className="text-[11px] text-gray-600">
+            Email: <span className="font-bold text-luxuryDark">admin@skininfinity.com</span> | Pass: <span className="font-bold text-luxuryDark">admin123</span>
           </p>
+          <div className="flex items-center justify-center gap-2 pt-1">
+            <button
+              type="button"
+              onClick={handleQuickDemoLogin}
+              className="px-3 py-1.5 rounded-lg bg-white border border-pink-200 text-luxuryRoseGold text-[11px] font-bold shadow-sm hover:bg-pink-100 transition flex items-center gap-1 mx-auto"
+            >
+              <FiCheckCircle className="text-emerald-500" />
+              <span>Auto-Fill Credentials</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleLogin()}
+              className="px-3 py-1.5 rounded-lg bg-luxuryRoseGold text-white text-[11px] font-bold shadow-sm hover:bg-rose-700 transition"
+            >
+              Instant Login ➔
+            </button>
+          </div>
         </div>
 
       </motion.div>
@@ -233,4 +187,5 @@ const AdminLogin = () => {
 };
 
 export default AdminLogin;
+
 
