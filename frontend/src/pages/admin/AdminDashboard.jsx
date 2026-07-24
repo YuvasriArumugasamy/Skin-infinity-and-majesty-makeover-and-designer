@@ -6,7 +6,8 @@ import {
   FiGrid, FiCalendar, FiUsers, FiScissors, FiStar, 
   FiMail, FiLogOut, FiCheck, FiX, FiRefreshCw,
   FiPlus, FiSearch, FiClock, FiTrash2, FiMenu, FiDollarSign,
-  FiSend, FiHeart, FiFileText, FiImage, FiUpload, FiShare2, FiInbox
+  FiSend, FiHeart, FiFileText, FiImage, FiUpload, FiShare2, FiInbox,
+  FiUser, FiPhone
 } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
@@ -20,6 +21,44 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Modal State Controls
+  const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [brideModalOpen, setBrideModalOpen] = useState(false);
+  const [galleryModalOpen, setGalleryModalOpen] = useState(false);
+
+  // Booking Form State
+  const [newBooking, setNewBooking] = useState({
+    customerName: '',
+    phone: '',
+    service: 'Bespoke Royal Bridal HD Makeup',
+    date: new Date().toISOString().split('T')[0],
+    time: '10:00 AM',
+    amount: '₹18,500',
+    staff: 'Yuvasri A. (Master Artist)'
+  });
+
+  // Bride Form State
+  const [newBride, setNewBride] = useState({
+    clientName: '',
+    functionDate: '',
+    eventType: 'Muhurtham & Reception',
+    trialDate: '',
+    skinNotes: '',
+    jewelryColor: '',
+    blouseDetails: '',
+    bust: '',
+    waist: '',
+    shoulder: '',
+    sleeve: ''
+  });
+
+  // Gallery Form State
+  const [newGallery, setNewGallery] = useState({
+    title: '',
+    category: 'Bridal Makeover',
+    image: '/bride1.jpg'
+  });
+
   // Staff members list
   const staffList = [
     'Yuvasri A. (Master Artist)',
@@ -28,7 +67,7 @@ const AdminDashboard = () => {
     'Dhana L. (Designer Draper)'
   ];
 
-  // Portfolio Gallery Items (Real images from /public)
+  // Portfolio Gallery Items
   const initialGallery = [
     { _id: 'g1', title: 'Royal Muhurtham HD Makeup Look', category: 'Bridal Makeover', image: '/bride1.jpg', status: 'Published' },
     { _id: 'g2', title: 'Handcrafted Zardozi Aari Work Blouse', category: 'Bespoke Couture', image: '/ari work.png', status: 'Published' },
@@ -45,13 +84,12 @@ const AdminDashboard = () => {
     { _id: 's4', name: 'Designer Blouse Embroidery & Saree Draping', category: 'Couture', price: '₹8,000', duration: '2 Hours', status: 'Active' }
   ];
 
-  // Pure live state - No dummy customer appointments or dummy bride records!
   const [appointments, setAppointments] = useState([]);
   const [bridalRecords, setBridalRecords] = useState([]);
   const [gallery, setGallery] = useState(initialGallery);
   const [services, setServices] = useState(initialServices);
 
-  // Dynamic Time Slots Template
+  // Time Slots Template
   const timeSlots = [
     { time: '09:00 AM' },
     { time: '10:30 AM' },
@@ -71,7 +109,7 @@ const AdminDashboard = () => {
     { name: '30 May', revenue: 58000 }
   ];
 
-  // Fetch real data from live backend endpoints
+  // Fetch real data from live backend
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -80,9 +118,9 @@ const AdminDashboard = () => {
       if (Array.isArray(data)) {
         setAppointments(data);
       }
-      toast.success('Synchronized with Live Database!');
+      toast.success('Synchronized with Database!');
     } catch (e) {
-      console.log('API sync status: Ready for live bookings');
+      console.log('Live backend ready');
     } finally {
       setLoading(false);
     }
@@ -92,12 +130,90 @@ const AdminDashboard = () => {
     fetchData();
   }, []);
 
+  // Handle Form Submissions
+  const handleCreateBooking = (e) => {
+    e.preventDefault();
+    if (!newBooking.customerName || !newBooking.phone) {
+      toast.error('Please enter Client Name and Phone number');
+      return;
+    }
+    const created = {
+      _id: Date.now().toString(),
+      ...newBooking,
+      status: 'Confirmed'
+    };
+    setAppointments(prev => [created, ...prev]);
+    toast.success(`Booking created for ${newBooking.customerName}! ✨`);
+    setBookingModalOpen(false);
+    setNewBooking({
+      customerName: '',
+      phone: '',
+      service: 'Bespoke Royal Bridal HD Makeup',
+      date: new Date().toISOString().split('T')[0],
+      time: '10:00 AM',
+      amount: '₹18,500',
+      staff: 'Yuvasri A. (Master Artist)'
+    });
+  };
+
+  const handleCreateBride = (e) => {
+    e.preventDefault();
+    if (!newBride.clientName || !newBride.functionDate) {
+      toast.error('Please enter Bride Name and Function Date');
+      return;
+    }
+    const created = {
+      _id: Date.now().toString(),
+      ...newBride,
+      bust: newBride.bust || '34"',
+      waist: newBride.waist || '28"',
+      shoulder: newBride.shoulder || '14"',
+      sleeve: newBride.sleeve || '10.5"',
+      deliveryStatus: 'Consultation Completed'
+    };
+    setBridalRecords(prev => [created, ...prev]);
+    toast.success(`Bride Record created for ${newBride.clientName}! 👰`);
+    setBrideModalOpen(false);
+    setNewBride({
+      clientName: '',
+      functionDate: '',
+      eventType: 'Muhurtham & Reception',
+      trialDate: '',
+      skinNotes: '',
+      jewelryColor: '',
+      blouseDetails: '',
+      bust: '',
+      waist: '',
+      shoulder: '',
+      sleeve: ''
+    });
+  };
+
+  const handleCreateGallery = (e) => {
+    e.preventDefault();
+    if (!newGallery.title) {
+      toast.error('Please enter Photo Title');
+      return;
+    }
+    const created = {
+      _id: Date.now().toString(),
+      ...newGallery,
+      status: 'Published'
+    };
+    setGallery(prev => [created, ...prev]);
+    toast.success('Photo added to Portfolio! 🖼️');
+    setGalleryModalOpen(false);
+    setNewGallery({
+      title: '',
+      category: 'Bridal Makeover',
+      image: '/bride1.jpg'
+    });
+  };
+
   const handleStatusChange = async (id, status) => {
     try {
       await axios.patch(`/api/appointments/${id}/status`, { status });
-    } catch (e) {
-      // local state update
-    }
+    } catch (e) {}
     setAppointments(prev => prev.map(a => a._id === id ? { ...a, status } : a));
     toast.success(`Appointment marked as ${status}`);
   };
@@ -119,25 +235,6 @@ const AdminDashboard = () => {
     const waUrl = `https://wa.me/${fullPhone}?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
     toast.success(`Opening WhatsApp for ${apt.customerName}...`, { icon: '💬' });
-  };
-
-  const handleAddGalleryItem = () => {
-    const title = prompt('Photo Title / Description:');
-    const category = prompt('Category (e.g. Bridal Makeover, Bespoke Couture, Skin Therapy):') || 'Bridal Makeover';
-    const imgUrl = prompt('Image URL or file name (e.g., /bride1.jpg):') || '/bride1.jpg';
-    if (title) {
-      setGallery(prev => [
-        {
-          _id: Date.now().toString(),
-          title,
-          category,
-          image: imgUrl,
-          status: 'Published'
-        },
-        ...prev
-      ]);
-      toast.success('New Photo Added to Portfolio!');
-    }
   };
 
   const handleToggleGalleryStatus = (id) => {
@@ -168,8 +265,317 @@ const AdminDashboard = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FFF8FA] via-white to-[#FAF0F4] flex text-gray-800 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-[#FFF8FA] via-white to-[#FAF0F4] flex text-gray-800 font-sans relative">
       
+      {/* ========================================================================= */}
+      {/* 👑 MODAL POPUP 1: NEW BOOKING MODAL */}
+      {/* ========================================================================= */}
+      {bookingModalOpen && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-pink-200 space-y-6 relative">
+            <button 
+              onClick={() => setBookingModalOpen(false)}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-pink-50 text-[#B76E79] flex items-center justify-center hover:bg-pink-100 transition"
+            >
+              <FiX size={18} />
+            </button>
+
+            <div className="flex items-center gap-3 border-b border-pink-100 pb-4">
+              <div className="w-10 h-10 rounded-2xl bg-pink-100/60 text-[#B76E79] flex items-center justify-center text-xl font-bold">
+                <FiCalendar />
+              </div>
+              <div>
+                <h3 className="font-serif text-xl font-bold text-[#2C2225]">New Client Appointment</h3>
+                <p className="text-xs text-gray-500">Schedule salon treatment or bridal makeover</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleCreateBooking} className="space-y-4 text-xs">
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">Client Full Name *</label>
+                <input 
+                  type="text" 
+                  required
+                  placeholder="e.g. Priya Sundaram" 
+                  value={newBooking.customerName}
+                  onChange={e => setNewBooking({ ...newBooking, customerName: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-pink-50/30 text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Phone Number *</label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="e.g. 98765 43210" 
+                    value={newBooking.phone}
+                    onChange={e => setNewBooking({ ...newBooking, phone: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-pink-50/30 text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Service Selected</label>
+                  <select 
+                    value={newBooking.service}
+                    onChange={e => setNewBooking({ ...newBooking, service: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                  >
+                    {services.map(s => (
+                      <option key={s._id} value={s.name}>{s.name} ({s.price})</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Date</label>
+                  <input 
+                    type="date" 
+                    value={newBooking.date}
+                    onChange={e => setNewBooking({ ...newBooking, date: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Time Slot</label>
+                  <select 
+                    value={newBooking.time}
+                    onChange={e => setNewBooking({ ...newBooking, time: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                  >
+                    {timeSlots.map((ts, i) => (
+                      <option key={i} value={ts.time}>{ts.time}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Price (₹)</label>
+                  <input 
+                    type="text" 
+                    value={newBooking.amount}
+                    onChange={e => setNewBooking({ ...newBooking, amount: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">Assign Stylist / Master Artist</label>
+                <select 
+                  value={newBooking.staff}
+                  onChange={e => setNewBooking({ ...newBooking, staff: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                >
+                  {staffList.map((st, i) => (
+                    <option key={i} value={st}>{st}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="pt-4 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setBookingModalOpen(false)}
+                  className="px-5 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold shadow-md hover:opacity-95 transition"
+                >
+                  Confirm & Schedule
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 👰 MODAL POPUP 2: NEW BRIDE CONSULTATION MODAL */}
+      {/* ========================================================================= */}
+      {brideModalOpen && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-pink-200 space-y-6 relative max-h-[90vh] overflow-y-auto">
+            <button 
+              onClick={() => setBrideModalOpen(false)}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-pink-50 text-[#B76E79] flex items-center justify-center hover:bg-pink-100 transition"
+            >
+              <FiX size={18} />
+            </button>
+
+            <div className="flex items-center gap-3 border-b border-pink-100 pb-4">
+              <div className="w-10 h-10 rounded-2xl bg-amber-100/60 text-amber-700 flex items-center justify-center text-xl font-bold">
+                <FiHeart />
+              </div>
+              <div>
+                <h3 className="font-serif text-xl font-bold text-[#2C2225]">New Bridal & Couture Record</h3>
+                <p className="text-xs text-gray-500">Bride trial dates, skin prep, and blouse measurements</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleCreateBride} className="space-y-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Bride Full Name *</label>
+                  <input 
+                    type="text" 
+                    required
+                    placeholder="e.g. Priya Sundaram" 
+                    value={newBride.clientName}
+                    onChange={e => setNewBride({ ...newBride, clientName: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-pink-50/30 text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Function Date (Wedding) *</label>
+                  <input 
+                    type="date" 
+                    required
+                    value={newBride.functionDate}
+                    onChange={e => setNewBride({ ...newBride, functionDate: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Event Type</label>
+                  <select 
+                    value={newBride.eventType}
+                    onChange={e => setNewBride({ ...newBride, eventType: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                  >
+                    <option value="Muhurtham & Reception">Muhurtham & Reception</option>
+                    <option value="Grand Sangeet & Wedding">Grand Sangeet & Wedding</option>
+                    <option value="Engagement & Reception">Engagement & Reception</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Makeup Trial Date</label>
+                  <input 
+                    type="date" 
+                    value={newBride.trialDate}
+                    onChange={e => setNewBride({ ...newBride, trialDate: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">Skin Type & Prep Notes</label>
+                <input 
+                  type="text" 
+                  placeholder="e.g. Sensitive Skin, Dewy Finish Preferred, Patch Test Passed" 
+                  value={newBride.skinNotes}
+                  onChange={e => setNewBride({ ...newBride, skinNotes: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Jewelry & Saree Theme</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g. Antique Temple Gold & Ruby" 
+                    value={newBride.jewelryColor}
+                    onChange={e => setNewBride({ ...newBride, jewelryColor: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Blouse Embroidery Work Details</label>
+                  <input 
+                    type="text" 
+                    placeholder="e.g. Heavy Zardozi & Kundan Aari Work" 
+                    value={newBride.blouseDetails}
+                    onChange={e => setNewBride({ ...newBride, blouseDetails: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
+                  />
+                </div>
+              </div>
+
+              {/* Bespoke Measurement Card Inputs */}
+              <div className="p-4 rounded-2xl bg-pink-50/50 border border-pink-200 space-y-3">
+                <span className="font-bold text-[#B76E79] flex items-center gap-1.5">
+                  <FiScissors /> Blouse Measurements (Inches)
+                </span>
+                <div className="grid grid-cols-4 gap-3">
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-600 mb-1">Bust</label>
+                    <input 
+                      type="text" 
+                      placeholder='34"' 
+                      value={newBride.bust}
+                      onChange={e => setNewBride({ ...newBride, bust: e.target.value })}
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-pink-200 bg-white text-center font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-600 mb-1">Waist</label>
+                    <input 
+                      type="text" 
+                      placeholder='28"' 
+                      value={newBride.waist}
+                      onChange={e => setNewBride({ ...newBride, waist: e.target.value })}
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-pink-200 bg-white text-center font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-600 mb-1">Shoulder</label>
+                    <input 
+                      type="text" 
+                      placeholder='14"' 
+                      value={newBride.shoulder}
+                      onChange={e => setNewBride({ ...newBride, shoulder: e.target.value })}
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-pink-200 bg-white text-center font-bold"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-600 mb-1">Sleeve</label>
+                    <input 
+                      type="text" 
+                      placeholder='10.5"' 
+                      value={newBride.sleeve}
+                      onChange={e => setNewBride({ ...newBride, sleeve: e.target.value })}
+                      className="w-full px-2.5 py-1.5 rounded-lg border border-pink-200 bg-white text-center font-bold"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-4 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setBrideModalOpen(false)}
+                  className="px-5 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold shadow-md hover:opacity-95 transition"
+                >
+                  Save Bride Suite
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
         <div 
@@ -179,7 +585,7 @@ const AdminDashboard = () => {
       )}
 
       {/* Sidebar Navigation */}
-      <aside className={`fixed md:static top-0 left-0 bottom-0 z-50 w-72 bg-white/90 backdrop-blur-md border-r border-pink-100/80 p-6 flex flex-col justify-between shrink-0 shadow-lg md:shadow-none transition-transform duration-300 ${
+      <aside className={`fixed md:static top-0 left-0 bottom-0 z-40 w-72 bg-white/90 backdrop-blur-md border-r border-pink-100/80 p-6 flex flex-col justify-between shrink-0 shadow-lg md:shadow-none transition-transform duration-300 ${
         mobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
       }`}>
         <div className="space-y-8">
@@ -286,28 +692,7 @@ const AdminDashboard = () => {
             </button>
 
             <button
-              onClick={() => {
-                const name = prompt('Client Name:');
-                const service = prompt('Service Name:');
-                const phone = prompt('Client Phone Number:') || '9876543210';
-                if (name && service) {
-                  setAppointments(prev => [
-                    {
-                      _id: Date.now().toString(),
-                      customerName: name,
-                      service: service,
-                      date: selectedDate,
-                      time: '02:00 PM',
-                      phone: phone,
-                      status: 'Confirmed',
-                      amount: '₹4,500',
-                      staff: 'Yuvasri A. (Master Artist)'
-                    },
-                    ...prev
-                  ]);
-                  toast.success('New Booking Added!');
-                }
-              }}
+              onClick={() => setBookingModalOpen(true)}
               className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white text-xs font-bold flex items-center gap-2 shadow-sm hover:opacity-95 transition"
             >
               <FiPlus />
@@ -388,27 +773,7 @@ const AdminDashboard = () => {
                     <p className="text-xs text-gray-500">Real bookings submitted by clients through the website</p>
                   </div>
                   <button
-                    onClick={() => {
-                      const name = prompt('Client Name:');
-                      const service = prompt('Service Name:');
-                      if (name && service) {
-                        setAppointments(prev => [
-                          {
-                            _id: Date.now().toString(),
-                            customerName: name,
-                            service: service,
-                            date: selectedDate,
-                            time: '11:00 AM',
-                            phone: '9876543210',
-                            status: 'Confirmed',
-                            amount: '₹4,500',
-                            staff: 'Yuvasri A. (Master Artist)'
-                          },
-                          ...prev
-                        ]);
-                        toast.success('Appointment Added!');
-                      }
-                    }}
+                    onClick={() => setBookingModalOpen(true)}
                     className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-pink-50 text-[#B76E79] border border-pink-200 hover:bg-pink-100 transition"
                   >
                     + Add New Booking
@@ -425,26 +790,7 @@ const AdminDashboard = () => {
                       Customer appointments booked from the website will automatically appear here in real-time.
                     </p>
                     <button
-                      onClick={() => {
-                        const name = prompt('Client Name:');
-                        const service = prompt('Service Name:');
-                        if (name && service) {
-                          setAppointments([
-                            {
-                              _id: Date.now().toString(),
-                              customerName: name,
-                              service: service,
-                              date: selectedDate,
-                              time: '10:00 AM',
-                              phone: '9876543210',
-                              status: 'Confirmed',
-                              amount: '₹5,000',
-                              staff: 'Yuvasri A. (Master Artist)'
-                            }
-                          ]);
-                          toast.success('First Appointment Scheduled!');
-                        }
-                      }}
+                      onClick={() => setBookingModalOpen(true)}
                       className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white text-xs font-bold shadow-sm"
                     >
                       + Create Manual Booking
@@ -559,24 +905,8 @@ const AdminDashboard = () => {
                         }`}
                         onClick={() => {
                           if (!isSlotBooked) {
-                            const client = prompt(`Book open slot for ${slot.time} on ${selectedDate}.\nEnter Client Name:`);
-                            if (client) {
-                              setAppointments(prev => [
-                                {
-                                  _id: Date.now().toString(),
-                                  customerName: client,
-                                  service: 'Salon Makeover',
-                                  date: selectedDate,
-                                  time: slot.time,
-                                  phone: '9876543210',
-                                  status: 'Confirmed',
-                                  amount: '₹3,500',
-                                  staff: 'Yuvasri A. (Master Artist)'
-                                },
-                                ...prev
-                              ]);
-                              toast.success(`Slot ${slot.time} booked for ${client}!`);
-                            }
+                            setNewBooking({ ...newBooking, time: slot.time, date: selectedDate });
+                            setBookingModalOpen(true);
                           }
                         }}
                       >
@@ -707,28 +1037,7 @@ const AdminDashboard = () => {
                     <p className="text-xs text-gray-500">Track bride look preferences, function dates, and embroidery blouse measurements</p>
                   </div>
                   <button
-                    onClick={() => {
-                      const name = prompt('Bride Name:');
-                      const funcDate = prompt('Function Date (YYYY-MM-DD):');
-                      if (name && funcDate) {
-                        setBridalRecords(prev => [
-                          {
-                            _id: Date.now().toString(),
-                            clientName: name,
-                            functionDate: funcDate,
-                            eventType: 'Muhurtham & Reception',
-                            trialDate: '2026-08-01',
-                            skinNotes: 'Sensitive Skin, HD Airbrush Preferred',
-                            jewelryColor: 'Antique Gold & Emerald',
-                            blouseDetails: 'Aari Hand Embroidery Blouse',
-                            bust: '34"', waist: '28"', shoulder: '14"', sleeve: '10.5"',
-                            deliveryStatus: 'Consultation Done'
-                          },
-                          ...prev
-                        ]);
-                        toast.success('Bride Record Created!');
-                      }
-                    }}
+                    onClick={() => setBrideModalOpen(true)}
                     className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold text-xs flex items-center gap-2 shadow-sm"
                   >
                     <FiPlus />
@@ -743,33 +1052,13 @@ const AdminDashboard = () => {
                     </div>
                     <h4 className="font-serif text-base font-bold text-[#2C2225]">No Bridal Records Yet</h4>
                     <p className="text-xs text-gray-500 max-w-sm mx-auto">
-                      Click "+ Add Bride Consultation" above to create a new bride makeup trial and couture measurement record.
+                      Click "+ Add Bride Consultation" above to open the popup modal and add bride trial notes and measurements.
                     </p>
                     <button
-                      onClick={() => {
-                        const name = prompt('Bride Name:');
-                        const funcDate = prompt('Function Date (YYYY-MM-DD):');
-                        if (name && funcDate) {
-                          setBridalRecords([
-                            {
-                              _id: Date.now().toString(),
-                              clientName: name,
-                              functionDate: funcDate,
-                              eventType: 'Muhurtham & Reception',
-                              trialDate: '2026-08-15',
-                              skinNotes: 'Combination Skin, Dewy Finish',
-                              jewelryColor: 'Antique Temple Gold',
-                              blouseDetails: 'Aari Embroidery Blouse Work',
-                              bust: '36"', waist: '30"', shoulder: '14 text.5"', sleeve: '11.5"',
-                              deliveryStatus: 'Consultation Done'
-                            }
-                          ]);
-                          toast.success('First Bride Record Created!');
-                        }
-                      }}
+                      onClick={() => setBrideModalOpen(true)}
                       className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white text-xs font-bold shadow-sm"
                     >
-                      + Create First Bride Record
+                      + Create Bride Record Modal
                     </button>
                   </div>
                 ) : (
@@ -788,9 +1077,9 @@ const AdminDashboard = () => {
                         </div>
 
                         <div className="space-y-1 text-xs text-gray-700">
-                          <p><strong>Makeup Trial Date:</strong> {b.trialDate}</p>
-                          <p><strong>Skin Type & Prep:</strong> {b.skinNotes}</p>
-                          <p><strong>Jewelry Theme:</strong> {b.jewelryColor}</p>
+                          <p><strong>Makeup Trial Date:</strong> {b.trialDate || 'N/A'}</p>
+                          <p><strong>Skin Type & Prep:</strong> {b.skinNotes || 'Normal Skin'}</p>
+                          <p><strong>Jewelry Theme:</strong> {b.jewelryColor || 'Gold Theme'}</p>
                         </div>
 
                         <div className="pt-3 border-t border-pink-100 space-y-2.5">
@@ -812,7 +1101,7 @@ const AdminDashboard = () => {
                             <div><span className="text-gray-400 block text-[9px]">Sleeve</span><strong>{b.sleeve}</strong></div>
                           </div>
                           <p className="text-xs text-gray-600 italic bg-white/60 p-2 rounded-xl border border-pink-100">
-                            Work Details: {b.blouseDetails}
+                            Work Details: {b.blouseDetails || 'Aari Embroidery Work'}
                           </p>
                         </div>
                       </div>
