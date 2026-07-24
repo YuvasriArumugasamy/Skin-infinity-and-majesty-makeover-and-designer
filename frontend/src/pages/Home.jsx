@@ -199,8 +199,8 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Secondary Overlapping Photo (maha1.png): Animated Rotating Conic Gradient Border Hugging Image Directly */}
-              <div className="absolute -bottom-8 right-0 sm:-right-6 z-20 w-[58%] sm:w-3/5 p-[3.5px] sm:p-[4px] rounded-[30px] overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.3)] ring-4 ring-white group/sub hover:shadow-[0_25px_50px_rgba(197,116,136,0.45)] transition-all duration-500">
+              {/* Secondary Overlapping Photo (maha1.png): Positioned lower with zero white ring border */}
+              <div className="absolute -bottom-12 sm:-bottom-14 right-0 sm:-right-6 z-20 w-[58%] sm:w-3/5 p-[3.5px] sm:p-[4px] rounded-[30px] overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.35)] group/sub hover:shadow-[0_25px_50px_rgba(197,116,136,0.5)] transition-all duration-500">
                 {/* Continuous Rotating Conic Gradient Layer (Reverse direction) */}
                 <div className="absolute -inset-[100%] bg-[conic-gradient(from_0deg,#C57488,#F5D77F,#E8A5BD,#C57488,#F5D77F,#C57488)] animate-spin-border-reverse"></div>
 
