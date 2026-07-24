@@ -177,32 +177,40 @@ const Home = () => {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left: Overlapping Photo Collage */}
+          {/* Left: Overlapping Photo Collage with Uiverse Rotating Gradient Border Card design */}
           <div className="lg:col-span-6 relative flex justify-center">
-            <div className="relative w-full max-w-md">
-              {/* Main Arched Photo: shop3.png */}
-              <div className="relative z-10 rounded-[40px] rounded-tl-[100px] overflow-hidden border-8 border-white shadow-2xl bg-pink-100">
-                <img 
-                  src="/shop3.png" 
-                  alt="Skin Infinity Salon Interior" 
-                  className="w-full h-[380px] sm:h-[420px] object-cover"
-                />
+            <div className="relative w-full max-w-md p-2">
+              
+              {/* Main Arched Photo Card with Uiverse.io Rotating Gradient Border */}
+              <div className="card-uiverse relative z-10 rounded-[40px] rounded-tl-[100px] shadow-2xl">
+                <div className="card-content relative z-10 w-full h-[380px] sm:h-[420px] rounded-[34px] rounded-tl-[94px] overflow-hidden">
+                  <img 
+                    src="/shop3.png" 
+                    alt="Skin Infinity Salon Interior" 
+                    className="w-full h-full object-cover transform hover:scale-105 transition duration-700"
+                  />
+                </div>
               </div>
 
-              {/* Secondary Overlapping Arched Photo: maha1.png */}
-              <div className="absolute -bottom-8 right-0 sm:-right-8 z-20 w-[55%] sm:w-3/5 rounded-[30px] overflow-hidden border-4 sm:border-6 border-white shadow-2xl bg-pink-50">
-                <img 
-                  src="/maha1.png" 
-                  alt="S. Mahalakshmi Bridal Makeover" 
-                  className="w-full h-[180px] sm:h-[250px] object-cover object-top"
-                />
+              {/* Secondary Overlapping Photo Card with Uiverse.io Rotating Gradient Border */}
+              <div className="card-uiverse absolute -bottom-8 right-0 sm:-right-8 z-20 w-[58%] sm:w-3/5 rounded-[30px] shadow-2xl">
+                <div className="card-content relative z-10 w-full h-[185px] sm:h-[250px] rounded-[24px] overflow-hidden">
+                  <img 
+                    src="/maha1.png" 
+                    alt="S. Mahalakshmi Bridal Makeover" 
+                    className="w-full h-full object-cover object-top transform hover:scale-105 transition duration-700"
+                  />
+                </div>
               </div>
 
-              {/* Floating Badge: 10+ Years Experience */}
-              <div className="absolute top-6 left-0 sm:-left-8 z-30 bg-[#C57488] text-white px-4 py-3 sm:px-5 sm:py-4 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center">
-                <span className="font-serif-luxury font-bold text-xl sm:text-3xl leading-none">10+</span>
-                <span className="text-[9px] sm:text-[10px] font-medium tracking-wide uppercase mt-1">Years of<br />Experience</span>
+              {/* Floating Badge: 10+ Years Experience with Uiverse Card Border */}
+              <div className="card-uiverse absolute top-6 left-0 sm:-left-8 z-30 rounded-2xl shadow-xl">
+                <div className="card-content relative z-10 bg-gradient-to-br from-[#C57488] to-[#9E465D] text-white px-4 py-3 sm:px-5 sm:py-4 rounded-xl flex flex-col items-center justify-center text-center">
+                  <span className="font-serif-luxury font-bold text-xl sm:text-3xl leading-none">10+</span>
+                  <span className="text-[9px] sm:text-[10px] font-medium tracking-wide uppercase mt-1">Years of<br />Experience</span>
+                </div>
               </div>
+
             </div>
           </div>
 
