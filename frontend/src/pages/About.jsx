@@ -97,14 +97,6 @@ const About = () => {
                   alt="S. Mahalakshmi Founder"
                   className="w-full h-[360px] sm:h-[420px] object-cover object-center"
                 />
-                {/* Floating Shiny Badge */}
-                <div className="absolute bottom-4 right-4 z-20 shiny-badge-board shiny-gold-border text-white px-4 py-3 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center">
-                  <div className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-200 flex items-center justify-center text-[9px] text-pink-950 font-black shadow-md border border-white/50 animate-pulse">
-                    ✦
-                  </div>
-                  <span className="font-serif-luxury font-extrabold text-xl sm:text-2xl leading-none gold-gradient-text">10+</span>
-                  <span className="text-[8.5px] sm:text-[9.5px] font-bold tracking-wider uppercase mt-1 text-amber-100">Years Exp.</span>
-                </div>
               </div>
             </motion.div>
 

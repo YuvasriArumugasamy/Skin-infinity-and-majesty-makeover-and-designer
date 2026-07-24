@@ -180,36 +180,31 @@ const Home = () => {
           {/* Left: Overlapping Photo Collage */}
           <div className="lg:col-span-6 relative flex justify-center">
             <div className="relative w-full max-w-md">
+              {/* Luxury Ambient Glow Effect */}
+              <div className="absolute -inset-3 bg-gradient-to-tr from-[#C57488]/20 via-amber-200/30 to-pink-200/30 rounded-[48px] rounded-tl-[108px] blur-xl opacity-70"></div>
+
               {/* Main Arched Photo: shop3.png */}
-              <div className="relative z-10 rounded-[40px] rounded-tl-[100px] overflow-hidden border-8 border-white shadow-2xl bg-pink-100">
+              <div className="relative z-10 rounded-[40px] rounded-tl-[100px] overflow-hidden shadow-[0_20px_45px_rgba(44,34,37,0.15)] bg-pink-100 border border-pink-100/60 group hover:shadow-[0_25px_50px_rgba(197,116,136,0.25)] transition-all duration-500">
                 <img 
                   src="/shop3.png" 
                   alt="Skin Infinity Salon Interior" 
-                  className="w-full h-[380px] sm:h-[420px] object-cover"
+                  className="w-full h-[380px] sm:h-[420px] object-cover group-hover:scale-[1.03] transition-transform duration-700"
                 />
               </div>
 
               {/* Secondary Overlapping Arched Photo: maha1.png */}
-              <div className="absolute -bottom-8 right-0 sm:-right-8 z-20 w-[55%] sm:w-3/5 rounded-[30px] overflow-hidden border-4 sm:border-6 border-white shadow-2xl bg-pink-50">
+              <div className="absolute -bottom-8 right-0 sm:-right-6 z-20 w-[55%] sm:w-3/5 rounded-[30px] overflow-hidden shadow-[0_15px_35px_rgba(0,0,0,0.2)] bg-pink-50 border border-amber-200/80 group/sub hover:shadow-[0_20px_40px_rgba(197,116,136,0.3)] transition-all duration-500">
                 <img 
                   src="/maha1.png" 
                   alt="S. Mahalakshmi Bridal Makeover" 
-                  className="w-full h-[180px] sm:h-[250px] object-cover object-top"
+                  className="w-full h-[180px] sm:h-[250px] object-cover object-top group-hover/sub:scale-[1.04] transition-transform duration-700"
                 />
               </div>
 
-              {/* Floating Ultra-Unique Shiny Badge: 10+ Years Experience */}
-              <div className="absolute top-6 left-0 sm:-left-8 z-30 shiny-badge-board shiny-gold-border text-white px-5 py-4 sm:px-6 sm:py-5 rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col items-center justify-center text-center group cursor-pointer">
-                {/* Gold Sparkling Star Ornament */}
-                <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-gradient-to-tr from-amber-400 via-yellow-300 to-amber-100 flex items-center justify-center text-[11px] text-pink-950 font-black shadow-md border border-white/60 animate-pulse z-10">
-                  ✦
-                </div>
-                <span className="font-serif-luxury font-extrabold text-2xl sm:text-4xl leading-none gold-gradient-text tracking-tight">
-                  10+
-                </span>
-                <span className="text-[9.5px] sm:text-[11px] font-bold tracking-widest uppercase mt-1.5 text-amber-100 drop-shadow-sm">
-                  Years of<br />Experience
-                </span>
+              {/* Floating Badge: 10+ Years Experience */}
+              <div className="absolute top-6 left-0 sm:-left-8 z-30 bg-gradient-to-r from-[#C57488] to-[#ab5b70] text-white px-4 py-3 sm:px-5 sm:py-4 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center backdrop-blur-md border border-white/20">
+                <span className="font-serif-luxury font-bold text-xl sm:text-3xl leading-none">10+</span>
+                <span className="text-[9px] sm:text-[10px] font-medium tracking-wide uppercase mt-1">Years of<br />Experience</span>
               </div>
             </div>
           </div>
