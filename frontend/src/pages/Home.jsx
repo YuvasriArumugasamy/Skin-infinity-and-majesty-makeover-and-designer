@@ -510,20 +510,48 @@ const Home = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
-                title: 'Facial Treatment',
-                img: '/advance hydrs facial.png'
+                title: 'Hair Styling & Care',
+                img: '/hair.jpeg'
               },
               {
-                title: 'Hair Spa',
-                img: '/hair spa.png'
+                title: 'Hair Treatment',
+                img: '/hair.png'
               },
               {
-                title: 'Hair Cut & Style',
-                img: '/ChatGPT Image Jul 22, 2026, 11_17_44 AM.png'
+                title: 'Hair Styling',
+                img: '/hair1.png'
               },
               {
-                title: 'Mehandi Design',
-                img: '/ChatGPT Image Jul 22, 2026, 11_28_36 AM.png'
+                title: 'Facial Care',
+                img: '/facial1.png'
+              },
+              {
+                title: 'Glowing Facial',
+                img: '/facial2.png'
+              },
+              {
+                title: 'Bridal Makeover',
+                img: '/marriage.png'
+              },
+              {
+                title: 'Bridal Styling',
+                img: '/marriage1.png'
+              },
+              {
+                title: 'Bridal Transformation',
+                img: '/marriage2.png'
+              },
+              {
+                title: 'Bridal Elegance',
+                img: '/marriage3.png'
+              },
+              {
+                title: 'Bridal Beauty',
+                img: '/marriage4.png'
+              },
+              {
+                title: 'Bridal Glow',
+                img: '/marriage5.png'
               }
             ].map((item, idx) => (
               <div key={idx} className="bg-pink-50/50 rounded-2xl overflow-hidden border border-pink-100 shadow-sm group">
