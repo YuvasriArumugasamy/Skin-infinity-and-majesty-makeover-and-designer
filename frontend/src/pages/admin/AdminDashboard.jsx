@@ -6,7 +6,7 @@ import {
   FiGrid, FiCalendar, FiUsers, FiScissors, FiStar, 
   FiMail, FiLogOut, FiCheck, FiX, FiRefreshCw,
   FiPlus, FiSearch, FiClock, FiTrash2, FiMenu, FiDollarSign,
-  FiSend, FiUserCheck, FiHeart, FiFileText, FiEdit3
+  FiSend, FiUserCheck, FiHeart, FiFileText, FiImage, FiUpload, FiEye
 } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
@@ -27,7 +27,7 @@ const AdminDashboard = () => {
     'Dhana L. (Designer Draper)'
   ];
 
-  // Rich initial appointments data with assigned staff
+  // Initial appointments
   const initialAppointments = [
     { _id: '1', customerName: 'Priya Sundaram', service: 'Bespoke Bridal HD Makeup', date: '2026-07-25', time: '10:00 AM', phone: '9876543210', status: 'Confirmed', amount: '₹18,500', staff: 'Yuvasri A. (Master Artist)' },
     { _id: '2', customerName: 'Ananya Ramesh', service: 'Hydra-Facial & Glow Therapy', date: '2026-07-25', time: '02:00 PM', phone: '9845012345', status: 'Pending', amount: '₹4,500', staff: 'Kavya R. (Senior Aesthetician)' },
@@ -46,7 +46,16 @@ const AdminDashboard = () => {
     { time: '06:00 PM', booked: false, client: null }
   ];
 
-  // Bridal & Designer Tracker initial records
+  // Initial Portfolio Gallery Items
+  const initialGallery = [
+    { _id: 'g1', title: 'Royal Muhurtham HD Makeup Look', category: 'Bridal Makeover', image: '/bride1.jpg', status: 'Published' },
+    { _id: 'g2', title: 'Handcrafted Zardozi Aari Work Blouse', category: 'Bespoke Couture', image: '/ari work.png', status: 'Published' },
+    { _id: 'g3', title: 'Advance Hydra-Facial Glow Treatment', category: 'Skin Therapy', image: '/advance hydrs facial.png', status: 'Published' },
+    { _id: 'g4', title: 'Reception Glam Hair Spa & Styling', category: 'Hair Care', image: '/hair spa.png', status: 'Published' },
+    { _id: 'g5', title: 'Custom Designer Blouse Embroidery', category: 'Bespoke Couture', image: '/Machine embroider work.png', status: 'Published' }
+  ];
+
+  // Initial Bridal Records
   const initialBridalRecords = [
     {
       _id: 'b1',
@@ -91,7 +100,8 @@ const AdminDashboard = () => {
   const initialReviews = [
     { _id: 'r1', clientName: 'Sangeetha M.', rating: 5, comment: 'Yuvasri ma’am created the most magical bridal look for my reception! Unmatched elegance.', service: 'Bridal Makeover', status: 'Published' },
     { _id: 'r2', clientName: 'Divya N.', rating: 5, comment: 'Hydra facial gave me an instant glass skin radiance. Highly recommend Skin Infinity!', service: 'Hydra-Facial', status: 'Published' },
-    { _id: 'r3', clientName: 'Revathi K.', rating: 5, comment: 'The saree draping and hair spa package was super luxurious. 10/10 service!', service: 'Hair & Saree Styling', status: 'Published' }
+    { _id: 'r3', clientName: 'Revathi K.', rating: 5, comment: 'The saree draping and hair spa package was super luxurious. 10/10 service!', service: 'Hair & Saree Styling', status: 'Published' },
+    { _id: 'r4', clientName: 'Nandhini R.', rating: 5, comment: 'Best bridal blouse design work in town! Perfect fit and timely delivery.', service: 'Bespoke Couture', status: 'Pending Moderation' }
   ];
 
   const initialMessages = [
@@ -100,6 +110,7 @@ const AdminDashboard = () => {
   ];
 
   const [appointments, setAppointments] = useState(initialAppointments);
+  const [gallery, setGallery] = useState(initialGallery);
   const [bridalRecords, setBridalRecords] = useState(initialBridalRecords);
   const [customers, setCustomers] = useState(initialCustomers);
   const [services, setServices] = useState(initialServices);
@@ -165,6 +176,47 @@ const AdminDashboard = () => {
     toast.success(`Opening WhatsApp for ${apt.customerName}...`, { icon: '💬' });
   };
 
+  // Gallery Management Actions
+  const handleAddGalleryItem = () => {
+    const title = prompt('Photo Title / Description:');
+    const category = prompt('Category (e.g. Bridal Makeover, Bespoke Couture, Skin Therapy):') || 'Bridal Makeover';
+    const imgUrl = prompt('Image URL or file name (e.g., /bride1.jpg or image URL):') || '/bride1.jpg';
+    if (title) {
+      setGallery(prev => [
+        {
+          _id: Date.now().toString(),
+          title,
+          category,
+          image: imgUrl,
+          status: 'Published'
+        },
+        ...prev
+      ]);
+      toast.success('New Photo Added to Portfolio!');
+    }
+  };
+
+  const handleToggleGalleryStatus = (id) => {
+    setGallery(prev => prev.map(g => g._id === id ? { ...g, status: g.status === 'Published' ? 'Draft' : 'Published' } : g));
+    toast.success('Gallery Item Status Updated!');
+  };
+
+  const handleDeleteGalleryItem = (id) => {
+    setGallery(prev => prev.filter(g => g._id !== id));
+    toast.success('Photo removed from Gallery');
+  };
+
+  // Reviews Moderation Actions
+  const handleReviewStatus = (id, newStatus) => {
+    setReviews(prev => prev.map(r => r._id === id ? { ...r, status: newStatus } : r));
+    toast.success(`Review status set to ${newStatus}!`);
+  };
+
+  const handleDeleteReview = (id) => {
+    setReviews(prev => prev.filter(r => r._id !== id));
+    toast.success('Review removed');
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     toast.success('Logged out');
@@ -215,9 +267,10 @@ const AdminDashboard = () => {
               { id: 'Overview', label: 'Dashboard', icon: <FiGrid /> },
               { id: 'Appointments', label: 'Bookings & Slots', icon: <FiCalendar /> },
               { id: 'BridalSuite', label: 'Bridal & Designer', icon: <FiHeart /> },
+              { id: 'GalleryManager', label: 'Gallery & Portfolio', icon: <FiImage /> },
+              { id: 'Reviews', label: 'Reviews Moderation', icon: <FiStar /> },
               { id: 'Customers', label: 'Customers', icon: <FiUsers /> },
               { id: 'Services', label: 'Services Suite', icon: <FiScissors /> },
-              { id: 'Reviews', label: 'Reviews', icon: <FiStar /> },
               { id: 'Messages', label: 'Inquiries', icon: <FiMail /> }
             ].map(item => {
               const isActive = activeTab === item.id;
@@ -302,10 +355,10 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-2">
-                  <span className="text-xs font-bold text-gray-400 uppercase">Bridal Packages Booked</span>
+                  <span className="text-xs font-bold text-gray-400 uppercase">Portfolio Gallery Photos</span>
                   <div className="flex items-center justify-between">
-                    <h3 className="text-2xl font-serif font-bold text-[#2C2225]">{bridalRecords.length + 24}</h3>
-                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">+35%</span>
+                    <h3 className="text-2xl font-serif font-bold text-[#2C2225]">{gallery.length} Photos</h3>
+                    <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Live</span>
                   </div>
                 </div>
 
@@ -318,10 +371,10 @@ const AdminDashboard = () => {
                 </div>
 
                 <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-2">
-                  <span className="text-xs font-bold text-gray-400 uppercase">Average Rating</span>
+                  <span className="text-xs font-bold text-gray-400 uppercase">Approved Testimonials</span>
                   <div className="flex items-center justify-between">
                     <h3 className="text-2xl font-serif font-bold text-[#2C2225]">4.9 ★</h3>
-                    <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">250+ Rev</span>
+                    <span className="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">{reviews.length} Rev</span>
                   </div>
                 </div>
 
@@ -708,7 +761,160 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {/* TAB 4: CUSTOMERS */}
+          {/* TAB 4: PORTFOLIO GALLERY MANAGER */}
+          {activeTab === 'GalleryManager' && (
+            <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <h3 className="font-serif text-lg font-bold text-[#2C2225]">🖼️ Website Gallery & Portfolio Manager</h3>
+                  <p className="text-xs text-gray-500">Upload, publish, and manage makeover and couture photos displayed on website</p>
+                </div>
+                <button
+                  onClick={handleAddGalleryItem}
+                  className="px-4 py-2.5 rounded-full bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold text-xs flex items-center gap-2 shadow-sm hover:opacity-95 transition"
+                >
+                  <FiUpload />
+                  <span>Upload / Add Photo</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {gallery.map(item => (
+                  <div key={item._id} className="rounded-2xl border border-pink-100 bg-pink-50/30 overflow-hidden shadow-sm flex flex-col justify-between space-y-3 p-4">
+                    <div className="space-y-2">
+                      <div className="w-full h-48 rounded-xl overflow-hidden bg-gray-100 border border-pink-100 relative group">
+                        <img 
+                          src={item.image} 
+                          alt={item.title} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <span className={`absolute top-2 right-2 px-2.5 py-0.5 rounded-full text-[9px] font-bold shadow-sm ${
+                          item.status === 'Published' ? 'bg-emerald-600 text-white' : 'bg-gray-600 text-white'
+                        }`}>
+                          {item.status}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold text-[#B76E79] uppercase tracking-wider">{item.category}</span>
+                        <h4 className="font-bold text-sm text-[#2C2225] leading-snug">{item.title}</h4>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2 border-t border-pink-100 text-xs">
+                      <button
+                        onClick={() => handleToggleGalleryStatus(item._id)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                          item.status === 'Published' 
+                            ? 'bg-amber-100 text-amber-800 hover:bg-amber-200' 
+                            : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                        }`}
+                      >
+                        {item.status === 'Published' ? 'Set as Draft' : 'Publish to Site'}
+                      </button>
+
+                      <button
+                        onClick={() => handleDeleteGalleryItem(item._id)}
+                        className="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition"
+                        title="Delete Photo"
+                      >
+                        <FiTrash2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 5: REVIEWS MODERATION */}
+          {activeTab === 'Reviews' && (
+            <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <h3 className="font-serif text-lg font-bold text-[#2C2225]">⭐ Client Reviews Moderation</h3>
+                  <p className="text-xs text-gray-500">Approve or reject customer reviews before showing on website</p>
+                </div>
+                <button
+                  onClick={() => {
+                    const name = prompt('Client Name:');
+                    const comment = prompt('Review / Testimonial:');
+                    if (name && comment) {
+                      setReviews(prev => [
+                        {
+                          _id: Date.now().toString(),
+                          clientName: name,
+                          rating: 5,
+                          comment,
+                          service: 'Bridal Makeover',
+                          status: 'Published'
+                        },
+                        ...prev
+                      ]);
+                      toast.success('Testimonial Added!');
+                    }
+                  }}
+                  className="px-4 py-2.5 rounded-full bg-gradient-to-r from-[#D87093] to-[#B76E79] text-white font-bold text-xs flex items-center gap-2 shadow-sm hover:opacity-95 transition"
+                >
+                  <FiPlus />
+                  <span>Add Review</span>
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {reviews.map(r => (
+                  <div key={r._id} className="p-5 rounded-2xl bg-pink-50/40 border border-pink-100 space-y-3">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-pink-100 pb-2">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-bold text-sm text-[#2C2225]">{r.clientName}</h4>
+                          <span className="text-xs text-amber-500 font-bold">({'★'.repeat(r.rating)})</span>
+                        </div>
+                        <span className="text-[10px] text-[#B76E79] font-semibold">Service: {r.service}</span>
+                      </div>
+                      
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                        r.status === 'Published' ? 'bg-emerald-100 text-emerald-700' :
+                        r.status === 'Hidden' ? 'bg-gray-200 text-gray-700' :
+                        'bg-amber-100 text-amber-700'
+                      }`}>
+                        {r.status}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-gray-700 italic">"{r.comment}"</p>
+
+                    <div className="flex items-center justify-end gap-2 pt-1">
+                      {r.status !== 'Published' && (
+                        <button
+                          onClick={() => handleReviewStatus(r._id, 'Published')}
+                          className="px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 font-bold text-xs border border-emerald-200 transition flex items-center gap-1"
+                        >
+                          <FiCheck /> Approve & Publish
+                        </button>
+                      )}
+                      {r.status !== 'Hidden' && (
+                        <button
+                          onClick={() => handleReviewStatus(r._id, 'Hidden')}
+                          className="px-3 py-1.5 rounded-lg bg-amber-50 text-amber-700 hover:bg-amber-100 font-bold text-xs border border-amber-200 transition flex items-center gap-1"
+                        >
+                          <FiX /> Hide Review
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleDeleteReview(r._id)}
+                        className="w-8 h-8 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition"
+                        title="Delete Review"
+                      >
+                        <FiTrash2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 6: CUSTOMERS */}
           {activeTab === 'Customers' && (
             <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
               <h3 className="font-serif text-lg font-bold text-[#2C2225]">Registered Clients</h3>
@@ -734,7 +940,7 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {/* TAB 5: SERVICES */}
+          {/* TAB 7: SERVICES */}
           {activeTab === 'Services' && (
             <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
               <h3 className="font-serif text-lg font-bold text-[#2C2225]">Salon Services Suite</h3>
@@ -753,25 +959,7 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {/* TAB 6: REVIEWS */}
-          {activeTab === 'Reviews' && (
-            <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
-              <h3 className="font-serif text-lg font-bold text-[#2C2225]">Client Testimonials</h3>
-              <div className="space-y-4">
-                {reviews.map(r => (
-                  <div key={r._id} className="p-4 rounded-xl bg-pink-50/40 border border-pink-100 space-y-1">
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-bold text-sm text-[#2C2225]">{r.clientName}</h4>
-                      <span className="text-xs text-amber-500 font-bold">★ {r.rating}.0</span>
-                    </div>
-                    <p className="text-xs text-gray-600 italic">"{r.comment}"</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* TAB 7: MESSAGES */}
+          {/* TAB 8: MESSAGES */}
           {activeTab === 'Messages' && (
             <div className="bg-white p-6 rounded-2xl border border-pink-100 shadow-sm space-y-5">
               <h3 className="font-serif text-lg font-bold text-[#2C2225]">Contact Form Inquiries</h3>
@@ -803,6 +991,7 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
 
 
 
