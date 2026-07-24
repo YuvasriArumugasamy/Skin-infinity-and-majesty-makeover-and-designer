@@ -177,17 +177,20 @@ const Home = () => {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left: Overlapping Photo Collage with Designer Luxury Borders */}
+          {/* Left: Overlapping Photo Collage with Designer Animated Rotating Borders */}
           <div className="lg:col-span-6 relative flex justify-center">
             <div className="relative w-full max-w-md">
               
               {/* Soft Ambient Luxury Glow behind the frames */}
               <div className="absolute -inset-4 bg-gradient-to-tr from-[#C57488]/30 via-amber-200/40 to-pink-200/40 rounded-[52px] rounded-tl-[112px] blur-2xl opacity-75"></div>
 
-              {/* Main Photo (shop3.png): Designer Multi-Layer White & Rose-Gold Luxury Frame */}
-              <div className="relative z-10 p-2.5 sm:p-3 bg-gradient-to-br from-[#F5D77F] via-white via-pink-100 to-[#C57488] rounded-[44px] rounded-tl-[104px] shadow-[0_22px_50px_rgba(44,34,37,0.22)] group hover:shadow-[0_30px_60px_rgba(197,116,136,0.35)] transition-all duration-500">
+              {/* Main Photo (shop3.png): Animated Rotating Conic Gradient Luxury Border */}
+              <div className="relative z-10 p-[5px] sm:p-[6px] rounded-[44px] rounded-tl-[104px] overflow-hidden shadow-[0_22px_50px_rgba(44,34,37,0.22)] group hover:shadow-[0_30px_60px_rgba(197,116,136,0.35)] transition-all duration-500">
+                {/* Continuous 360-degree Rotating Conic Gradient Layer */}
+                <div className="absolute -inset-[100%] bg-[conic-gradient(from_0deg,#F5D77F,#C57488,#E8A5BD,#F5D77F,#ab5b70,#F5D77F)] animate-spin-border"></div>
+
                 {/* Inner Pure White Thick Border Padding */}
-                <div className="bg-white p-2 sm:p-2.5 rounded-[36px] rounded-tl-[96px] overflow-hidden border-2 border-pink-100/80 shadow-sm">
+                <div className="relative z-10 bg-white p-2 sm:p-2.5 rounded-[38px] rounded-tl-[98px] overflow-hidden border border-pink-100/80 shadow-sm">
                   <img 
                     src="/shop3.png" 
                     alt="Skin Infinity Salon Interior" 
@@ -196,10 +199,13 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Secondary Overlapping Photo (maha1.png): Designer Luxury White & Gold Border Frame */}
-              <div className="absolute -bottom-8 right-0 sm:-right-6 z-20 w-[58%] sm:w-3/5 p-2 bg-gradient-to-tr from-[#C57488] via-amber-300 via-white to-[#C57488] rounded-[34px] shadow-[0_20px_45px_rgba(0,0,0,0.25)] ring-4 ring-white group/sub hover:shadow-[0_25px_50px_rgba(197,116,136,0.4)] transition-all duration-500">
+              {/* Secondary Overlapping Photo (maha1.png): Animated Rotating Conic Gradient Border Frame */}
+              <div className="absolute -bottom-8 right-0 sm:-right-6 z-20 w-[58%] sm:w-3/5 p-[4px] sm:p-[5px] rounded-[34px] overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.25)] ring-4 ring-white group/sub hover:shadow-[0_25px_50px_rgba(197,116,136,0.4)] transition-all duration-500">
+                {/* Continuous Rotating Conic Gradient Layer (Reverse direction) */}
+                <div className="absolute -inset-[100%] bg-[conic-gradient(from_0deg,#C57488,#F5D77F,#E8A5BD,#C57488,#F5D77F,#C57488)] animate-spin-border-reverse"></div>
+
                 {/* Inner White Border Pad */}
-                <div className="bg-white p-1.5 sm:p-2 rounded-[28px] overflow-hidden border border-pink-200/60 shadow-inner">
+                <div className="relative z-10 bg-white p-1.5 sm:p-2 rounded-[29px] overflow-hidden border border-pink-200/60 shadow-inner">
                   <img 
                     src="/maha1.png" 
                     alt="S. Mahalakshmi Bridal Makeover" 
