@@ -98,15 +98,7 @@ const AdminDashboard = () => {
     { time: '06:00 PM' }
   ];
 
-  const chartData = [
-    { name: '1 May', revenue: 15000 },
-    { name: '5 May', revenue: 32000 },
-    { name: '10 May', revenue: 24000 },
-    { name: '15 May', revenue: 45000 },
-    { name: '20 May', revenue: 68000 },
-    { name: '25 May', revenue: 42000 },
-    { name: '30 May', revenue: 58000 }
-  ];
+
 
   // Fetch real data from live backend & localStorage
   const fetchData = async () => {
@@ -1001,26 +993,7 @@ const AdminDashboard = () => {
                 )}
               </div>
 
-              {/* Revenue Area Chart */}
-              <div className="bg-white/90 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-pink-100 shadow-sm space-y-4">
-                <h3 className="font-serif text-lg font-bold text-[#2C2225]">Studio Revenue Trajectory</h3>
-                <div className="h-64 w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={chartData}>
-                      <defs>
-                        <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#B76E79" stopOpacity={0.4}/>
-                          <stop offset="95%" stopColor="#B76E79" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <XAxis dataKey="name" stroke="#999" fontSize={11} />
-                      <YAxis stroke="#999" fontSize={11} tickFormatter={val => `₹${val/1000}k`} />
-                      <Tooltip formatter={(val) => [`₹${val.toLocaleString()}`, 'Revenue']} />
-                      <Area type="monotone" dataKey="revenue" stroke="#B76E79" strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
+
 
             </div>
           )}
