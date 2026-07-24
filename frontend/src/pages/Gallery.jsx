@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FiStar, FiCheckCircle, FiAward, FiHeart, FiMaximize2, FiX, FiFilter } from 'react-icons/fi';
+import { FiStar, FiHeart, FiMaximize2, FiX } from 'react-icons/fi';
 
 const Gallery = () => {
   const [filter, setFilter] = useState('All');

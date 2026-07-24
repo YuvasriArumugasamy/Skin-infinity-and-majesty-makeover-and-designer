@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiPhone, FiMapPin, FiClock, FiInstagram, FiHeart, FiArrowUp } from 'react-icons/fi';
+import { FiPhone, FiMapPin, FiClock, FiInstagram, FiHeart } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 
 const Footer = () => {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   return (
     <footer className="relative bg-[#FFF4F7] text-gray-700 pt-14 pb-6 border-t border-pink-200">

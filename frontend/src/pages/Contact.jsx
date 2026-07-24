@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { FiPhone, FiMapPin, FiClock, FiMail, FiSend, FiStar } from 'react-icons/fi';
+import { FiPhone, FiMapPin, FiClock, FiSend, FiStar } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 
 const Contact = () => {

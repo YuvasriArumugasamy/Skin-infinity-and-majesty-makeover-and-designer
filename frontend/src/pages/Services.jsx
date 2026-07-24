@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FiCheck, FiAward, FiHeart, FiStar, FiUsers, FiScissors } from 'react-icons/fi';
+import { FiAward, FiHeart, FiStar, FiScissors } from 'react-icons/fi';
 
 const Services = () => {
   const sections = [
