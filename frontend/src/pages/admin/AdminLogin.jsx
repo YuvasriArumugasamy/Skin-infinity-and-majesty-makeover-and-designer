@@ -37,7 +37,7 @@ const AdminLogin = () => {
           });
           navigate('/admin/dashboard');
         } else {
-          toast.error('Invalid credentials. Use demo: admin@skininfinity.com / admin123');
+          toast.error('Invalid email or password');
         }
       } finally {
         setLoading(false);
