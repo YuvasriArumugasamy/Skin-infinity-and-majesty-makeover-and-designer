@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
-import { FiLock, FiMail, FiEye, FiEyeOff, FiShield, FiArrowLeft, FiCheckCircle, FiSparkles, FiKey } from 'react-icons/fi';
+import { FiLock, FiMail, FiEye, FiEyeOff, FiShield, FiArrowLeft, FiCheckCircle, FiStar, FiKey } from 'react-icons/fi';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('admin@skininfinity.com');
@@ -68,7 +68,7 @@ const AdminLogin = () => {
 
       {/* Floating Sparkle Elements */}
       <div className="absolute top-8 left-8 hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-amber-500/30 text-amber-300 text-xs backdrop-blur-md">
-        <FiSparkles className="text-amber-400 animate-spin" style={{ animationDuration: '6s' }} />
+        <FiStar className="text-amber-400 animate-spin" style={{ animationDuration: '6s' }} />
         <span>Skin Infinity & Majesty Bespoke Management</span>
       </div>
 
