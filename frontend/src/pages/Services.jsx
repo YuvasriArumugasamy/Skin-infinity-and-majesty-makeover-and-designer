@@ -96,22 +96,22 @@ const Services = () => {
       {/* 1. HERO BANNER SECTION WITH bg1.png BACKGROUND */}
       <section className="relative overflow-hidden min-h-[380px] sm:min-h-[440px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-8 shadow-sm">
         {/* Background Image - bg2.png */}
-        <div className="absolute inset-0 z-0 opacity-60">
+        <div className="absolute inset-0 z-0 opacity-70">
           <img 
             src="/bg2.png" 
             alt="Services Banner Background" 
-            className="w-full h-full object-cover object-center"
+            className="w-full h-full object-cover object-[85%_center] sm:object-center"
           />
         </div>
         
         {/* Luxury Soft Pink & Rose Gold Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-pink-50/70 to-white/60 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-pink-50/75 to-white/50 z-10"></div>
 
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-20 max-w-4xl mx-auto px-4 md:px-8 text-center space-y-4"
+          className="relative z-20 max-w-2xl sm:max-w-4xl mx-auto px-6 sm:px-8 pr-14 sm:pr-8 text-center space-y-4"
         >
           <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-pink-200 text-[#C57488] text-[11px] font-bold uppercase tracking-[0.25em] shadow-sm">
             <FiStar className="text-amber-500 animate-pulse text-xs fill-amber-400" />
