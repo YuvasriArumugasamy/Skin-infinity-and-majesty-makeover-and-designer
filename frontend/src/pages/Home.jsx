@@ -555,13 +555,12 @@ const Home = () => {
               }
             ].map((item, idx) => (
               <div key={idx} className="bg-pink-50/50 rounded-2xl overflow-hidden border border-pink-100 shadow-sm group">
-                <div className="relative h-60 overflow-hidden">
+                <div className="relative h-72 sm:h-80 md:h-[340px] overflow-hidden">
                   <img 
                     src={item.img} 
                     alt={item.title} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition duration-500"
                   />
-
                 </div>
                 <div className="p-4 text-center">
                   <h4 className="font-serif-luxury text-sm font-bold text-[#2C2225]">

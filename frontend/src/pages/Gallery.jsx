@@ -164,11 +164,11 @@ const Gallery = () => {
                 className="group relative rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer border border-pink-100/80 flex flex-col h-[340px]"
               >
                 {/* Image Container */}
-                <div className="relative w-full h-[240px] overflow-hidden bg-pink-50/30">
+                <div className="relative w-full h-[300px] overflow-hidden bg-pink-50/30">
                   <img 
                     src={item.url} 
                     alt={item.title} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" 
+                    className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 ease-out" 
                   />
                   
                   {/* Floating Category Badge */}
