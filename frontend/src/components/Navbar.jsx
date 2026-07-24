@@ -71,7 +71,7 @@ const Navbar = () => {
               if (link.name === 'SERVICES') {
                 return (
                   <div key={link.name} className="relative group/dropdown py-2">
-                    <button className="text-xs tracking-wider font-bold text-gray-700 hover:text-luxuryRoseGold transition-all flex items-center gap-1">
+                    <button className="nav-link-hover flex items-center gap-1">
                       SERVICES <FiChevronDown className="text-xs" />
                     </button>
                     {/* Dropdown Menu */}
@@ -93,11 +93,7 @@ const Navbar = () => {
                   key={link.name}
                   to={link.path}
                   className={({ isActive }) =>
-                    `text-xs tracking-wider font-bold transition-all relative py-1 ${
-                      isActive
-                        ? 'text-luxuryRoseGold border-b-2 border-luxuryRoseGold'
-                        : 'text-gray-700 hover:text-luxuryRoseGold'
-                    }`
+                    `nav-link-hover ${isActive ? 'active' : ''}`
                   }
                 >
                   {link.name}
