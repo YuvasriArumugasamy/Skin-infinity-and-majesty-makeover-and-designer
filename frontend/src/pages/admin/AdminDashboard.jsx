@@ -218,6 +218,17 @@ const AdminDashboard = () => {
     });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewGallery(prev => ({ ...prev, image: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleCreateGallery = (e) => {
     e.preventDefault();
     if (!newGallery.title) {
@@ -229,7 +240,11 @@ const AdminDashboard = () => {
       ...newGallery,
       status: 'Published'
     };
-    setGallery(prev => [created, ...prev]);
+    setGallery(prev => {
+      const updated = [created, ...prev];
+      localStorage.setItem('gallery', JSON.stringify(updated));
+      return updated;
+    });
     toast.success('Photo added to Portfolio! 🖼️');
     setGalleryModalOpen(false);
     setNewGallery({
@@ -237,6 +252,24 @@ const AdminDashboard = () => {
       category: 'Bridal Makeover',
       image: '/bride1.jpg'
     });
+  };
+
+  const handleToggleGalleryStatus = (id) => {
+    setGallery(prev => {
+      const updated = prev.map(g => g._id === id ? { ...g, status: g.status === 'Published' ? 'Draft' : 'Published' } : g);
+      localStorage.setItem('gallery', JSON.stringify(updated));
+      return updated;
+    });
+    toast.success('Gallery Status Updated!');
+  };
+
+  const handleDeleteGalleryItem = (id) => {
+    setGallery(prev => {
+      const updated = prev.filter(g => g._id !== id);
+      localStorage.setItem('gallery', JSON.stringify(updated));
+      return updated;
+    });
+    toast.success('Photo removed');
   };
 
   const handleStatusChange = async (id, status) => {
@@ -673,7 +706,17 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="block font-bold text-gray-700 mb-1">Image URL / Path</label>
+                <label className="block font-bold text-gray-700 mb-1">Select Image File from Device 📷</label>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="w-full px-3 py-2 rounded-xl border border-pink-200 bg-pink-50/40 text-gray-700 text-xs file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-[#B76E79] file:text-white hover:file:opacity-90 cursor-pointer"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">Or Image URL / Path</label>
                 <input 
                   type="text" 
                   placeholder="e.g. /bride1.jpg or image URL" 
@@ -682,6 +725,13 @@ const AdminDashboard = () => {
                   className="w-full px-4 py-2.5 rounded-xl border border-pink-200 bg-white text-gray-800 focus:outline-none focus:border-[#B76E79]"
                 />
               </div>
+
+              {newGallery.image && (
+                <div className="p-2 border border-pink-100 bg-pink-50/20 rounded-2xl flex items-center gap-3">
+                  <img src={newGallery.image} alt="Preview" className="w-14 h-14 object-cover rounded-xl border border-pink-200 shrink-0" />
+                  <span className="text-[11px] font-bold text-emerald-700">✓ Image Preview Ready</span>
+                </div>
+              )}
 
               <div className="pt-4 flex justify-end gap-3">
                 <button
