@@ -125,51 +125,51 @@ const BookAppointment = () => {
           className="absolute inset-0 w-full h-full object-cover object-center z-0"
         />
 
-        {/* Warm Luxury Dark Gradient Overlay for contrast and readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#2A191F]/90 via-[#311E26]/80 to-[#23141A]/85 sm:to-transparent z-10"></div>
+        {/* Soft Light Pink Luxury Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#FFF5F8]/95 via-[#FFF0F4]/80 to-transparent z-10"></div>
 
         <div className="relative z-20 max-w-5xl mx-auto px-4 md:px-8 text-center space-y-5">
           
-          {/* Animated Glassmorphism Pill Tag */}
-          <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-pink-200/40 text-pink-100 text-[11px] font-bold uppercase tracking-[0.25em] shadow-lg">
-            <FiStar className="text-amber-300 animate-pulse text-xs" />
+          {/* Animated Light Pill Tag */}
+          <div className="inline-flex items-center gap-2 px-5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-pink-200 text-[#C57488] text-[11px] font-bold uppercase tracking-[0.25em] shadow-sm">
+            <FiStar className="text-[#C57488] animate-pulse text-xs" />
             <span>RESERVE YOUR LUXURY SLOT</span>
           </div>
 
-          {/* Main Stylish Title */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif-luxury font-bold text-white drop-shadow-xl tracking-tight leading-tight">
+          {/* Main Stylish Dark Title */}
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-serif-luxury font-bold text-[#2C2225] tracking-tight leading-tight">
             Book Your Signature <br className="hidden sm:block"/>
-            <span className="bg-gradient-to-r from-amber-200 via-rose-200 to-pink-200 bg-clip-text text-transparent italic font-serif">
+            <span className="text-[#C57488] italic font-serif">
               Beauty & Couture Experience
             </span>
           </h1>
 
-          {/* Luxury Gold Ornament Divider */}
-          <div className="flex items-center justify-center gap-2 my-2 text-amber-300/90">
-            <div className="w-12 sm:w-16 h-[1px] bg-gradient-to-r from-transparent to-amber-300"></div>
+          {/* Rose Gold Ornament Divider */}
+          <div className="flex items-center justify-center gap-2 my-2 text-[#C57488]">
+            <div className="w-12 sm:w-16 h-[1.5px] bg-[#C57488]"></div>
             <span className="text-xs">✦</span>
-            <div className="w-20 sm:w-24 h-[1.5px] bg-amber-300"></div>
+            <div className="w-20 sm:w-24 h-[2px] bg-[#C57488]"></div>
             <span className="text-xs">✦</span>
-            <div className="w-12 sm:w-16 h-[1px] bg-gradient-to-l from-transparent to-amber-300"></div>
+            <div className="w-12 sm:w-16 h-[1.5px] bg-[#C57488]"></div>
           </div>
 
           {/* Subtitle Content */}
-          <p className="text-pink-100/90 text-xs sm:text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed drop-shadow">
-            Certified Beauty Experts, Custom Bridal Styling & Clinical Skin Care Treatments by <span className="font-semibold text-white">Skin Infinity & Majesty</span>.
+          <p className="text-gray-700 text-xs sm:text-sm md:text-base max-w-2xl mx-auto font-medium leading-relaxed">
+            Certified Beauty Experts, Custom Bridal Styling & Clinical Skin Care Treatments by <span className="font-bold text-[#2C2225]">Skin Infinity & Majesty</span>.
           </p>
 
           {/* Feature Highlights Badges */}
-          <div className="pt-3 flex flex-wrap items-center justify-center gap-4 text-xs font-semibold text-pink-100/90">
-            <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15">
-              <FiShield className="text-amber-300 text-xs" />
+          <div className="pt-3 flex flex-wrap items-center justify-center gap-4 text-xs font-semibold text-gray-700">
+            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-pink-200 shadow-xs">
+              <FiShield className="text-[#C57488] text-xs" />
               <span>Certified Hygiene</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15">
-              <FiHeart className="text-rose-300 text-xs" />
+            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-pink-200 shadow-xs">
+              <FiHeart className="text-rose-500 text-xs" />
               <span>100% Satisfaction</span>
             </div>
-            <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15">
-              <FiClock className="text-amber-300 text-xs" />
+            <div className="flex items-center gap-1.5 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-pink-200 shadow-xs">
+              <FiClock className="text-[#C57488] text-xs" />
               <span>Mon - Sat: 10AM - 8PM</span>
             </div>
           </div>
