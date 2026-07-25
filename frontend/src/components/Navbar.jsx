@@ -56,7 +56,7 @@ const Navbar = () => {
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-[#C57488] shadow-md bg-white shrink-0 group-hover:scale-105 transition-transform duration-300">
               <img 
                 src="/logo.webp" 
-                alt="Skin Infinity & Majesty" 
+                alt="Skin Infinity & Majesty Beauty Salon & Designer Studio Logo" 
                 className="w-full h-full object-cover"
               />
             </div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 import { FiPhone, FiMapPin, FiClock, FiSend, FiStar } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 
@@ -52,6 +53,31 @@ const Contact = () => {
 
   return (
     <div className="bg-[#FCF9FA] min-h-screen pb-20">
+      <SEO 
+        title="Contact Skin Infinity & Majesty | Ramayanpatti, Tirunelveli - Call 63808 50488"
+        description="Contact S. Mahalakshmi at Skin Infinity & Majesty. Located at Tirunelveli - Sankarankoil Rd, Ramayanpatti. Call or WhatsApp +91 63808 50488 for appointments."
+        keywords="contact Skin Infinity Tirunelveli, beauty salon address Ramayanpatti, Mahalakshmi salon phone number, Sankarankoil road salon"
+        canonical="/contact"
+        ogImage="/bg.webp"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "name": "Contact Skin Infinity & Majesty",
+          "mainEntity": {
+            "@type": "BeautySalon",
+            "name": "Skin Infinity & Majesty Makeover and Designer Studio",
+            "telephone": "+916380850488",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Tirunelveli - Sankarankoil Rd, Ramayanpatti",
+              "addressLocality": "Tirunelveli",
+              "addressRegion": "Tamil Nadu",
+              "postalCode": "627358",
+              "addressCountry": "IN"
+            }
+          }
+        }}
+      />
       
       {/* 1. HERO BANNER WITH bg.webp BACKGROUND */}
       <section className="relative overflow-hidden min-h-[380px] sm:min-h-[440px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-12 shadow-md">

@@ -1,0 +1,9 @@
+# Robots.txt for Skin Infinity & Majesty
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Host & Sitemap Location
+Host: https://skininfinityandmajesty.com
+Sitemap: https://skininfinityandmajesty.com/sitemap.xml

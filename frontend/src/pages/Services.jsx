@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 import { FiAward, FiHeart, FiStar, FiScissors, FiCheck } from 'react-icons/fi';
 
 const Services = () => {
@@ -110,6 +111,53 @@ const Services = () => {
 
   return (
     <div className="bg-white">
+      <SEO 
+        title="Skin Care, Hydra Facial, Hair Spa & Beauty Services in Tirunelveli | Skin Infinity & Majesty"
+        description="Explore premium salon & skin care services in Tirunelveli by S. Mahalakshmi. Advance Hydra Facial, Microblading, Chemical Peels, Hair Spa, Mehendi & Aari Work Blouses."
+        keywords="skin care Tirunelveli, hydra facial price Tirunelveli, chemical peeling Ramayanpatti, microblading eyebrows Tirunelveli, hair spa treatment, designer Aari work blouse, Mehendi designs Tirunelveli"
+        canonical="/services"
+        ogImage="/advance hydrs facial.webp"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "serviceType": "Beauty & Salon Services",
+          "provider": {
+            "@type": "BeautySalon",
+            "name": "Skin Infinity & Majesty Makeover and Designer Studio",
+            "telephone": "+916380850488",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Tirunelveli - Sankarankoil Rd, Ramayanpatti",
+              "addressLocality": "Tirunelveli",
+              "postalCode": "627358",
+              "addressCountry": "IN"
+            }
+          },
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Salon Services Catalog",
+            "itemListElement": [
+              {
+                "@type": "OfferCatalog",
+                "name": "Skin Care",
+                "itemListElement": [
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Advance Hydra Facial" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Skin Lightening Chemical Peeling" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Microblading Eyebrows" } }
+                ]
+              },
+              {
+                "@type": "OfferCatalog",
+                "name": "Hair & Body Care",
+                "itemListElement": [
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Hair Spa & Hair Cuts" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Manicure & Pedicure" } }
+                ]
+              }
+            ]
+          }
+        }}
+      />
       {/* 1. HERO BANNER SECTION WITH VIDEO BACKGROUND */}
       <section className="relative overflow-hidden min-h-[400px] sm:min-h-[460px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-8 shadow-sm">
         {/* Background Video */}

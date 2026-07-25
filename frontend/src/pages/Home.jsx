@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 import { 
   FiPhone, FiCalendar, FiArrowRight, FiCheck, FiStar, 
   FiAward, FiHeart, FiShield, FiChevronLeft, FiChevronRight, FiMapPin, FiSliders 
@@ -91,6 +92,59 @@ const Home = () => {
 
   return (
     <div className="relative overflow-hidden bg-white text-gray-800">
+      <SEO 
+        title="Skin Infinity & Majesty | Best Beauty Salon, Skin Care & Designer Studio in Tirunelveli"
+        description="Skin Infinity & Majesty by S. Mahalakshmi in Ramayanpatti, Tirunelveli. Premium Hydra Facial, Skin Care, Hair Spa, Microblading, Bridal HD Makeover & Designer Aari Work Studio."
+        keywords="beauty salon Tirunelveli, skin care clinic Ramayanpatti, hydra facial Tirunelveli, microblading Tirunelveli, bridal makeover Tirunelveli, Aari work designer studio, S Mahalakshmi salon, hair spa Tirunelveli, Mehendi artist Ramayanpatti"
+        canonical="/"
+        ogImage="/shop.webp"
+        schema={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": ["BeautySalon", "HairSalon", "LocalBusiness"],
+              "@id": "https://skininfinityandmajesty.com/#organization",
+              "name": "Skin Infinity & Majesty Makeover and Designer Studio",
+              "alternateName": "Skin Infinity & Majesty Tirunelveli",
+              "url": "https://skininfinityandmajesty.com/",
+              "logo": "https://skininfinityandmajesty.com/logo.webp",
+              "image": "https://skininfinityandmajesty.com/shop.webp",
+              "telephone": "+916380850488",
+              "priceRange": "₹₹",
+              "founder": {
+                "@type": "Person",
+                "name": "S. Mahalakshmi"
+              },
+              "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Tirunelveli - Sankarankoil Rd, Ramayanpatti",
+                "addressLocality": "Tirunelveli",
+                "addressRegion": "Tamil Nadu",
+                "postalCode": "627358",
+                "addressCountry": "IN"
+              },
+              "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 8.7366,
+                "longitude": 77.6978
+              },
+              "openingHoursSpecification": [
+                {
+                  "@type": "OpeningHoursSpecification",
+                  "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                  "opens": "10:00",
+                  "closes": "20:00"
+                }
+              ],
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5.0",
+                "reviewCount": "128"
+              }
+            }
+          ]
+        }}
+      />
 
       {/* 1. HERO SECTION WITH bg5.webp BACKGROUND */}
       <section 

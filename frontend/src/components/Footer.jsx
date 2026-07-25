@@ -15,7 +15,7 @@ const Footer = () => {
             <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-[#C57488] shadow-md p-0.5 bg-white shrink-0 group-hover:scale-105 transition-transform duration-300">
               <img 
                 src="/logo.webp" 
-                alt="Skin Infinity & Majesty" 
+                alt="Skin Infinity & Majesty Beauty Salon & Designer Studio Logo Tirunelveli" 
                 className="w-full h-full object-cover rounded-full"
               />
             </div>
@@ -29,7 +29,7 @@ const Footer = () => {
             </div>
           </Link>
           <p className="text-gray-600 text-xs leading-relaxed">
-            Enhancing beauty with care, passion and professionalism.
+            Best Beauty Salon, Hydra Facial Skin Care & Designer Aari Work Studio in Tirunelveli - Ramayanpatti by S. Mahalakshmi.
           </p>
           <div className="flex items-center gap-3 pt-2">
             <a 

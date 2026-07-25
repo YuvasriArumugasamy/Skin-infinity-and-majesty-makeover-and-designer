@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 import { FiCheck, FiCalendar, FiAward, FiHeart, FiStar, FiUsers, FiClock, FiShield } from 'react-icons/fi';
 
 const Bridal = () => {
@@ -55,6 +56,32 @@ const Bridal = () => {
 
   return (
     <div className="bg-white">
+      <SEO 
+        title="Bridal Makeover, HD Makeup & Designer Aari Work Studio Tirunelveli | Skin Infinity & Majesty"
+        description="Transform into a royal bride with S. Mahalakshmi. Luxury Bridal HD & Airbrush Makeup, Engagement Looks, Pre-Bridal Packages, and Custom Designer Aari Work Blouses in Tirunelveli."
+        keywords="bridal makeover Tirunelveli, bridal HD makeup Ramayanpatti, airbrush makeup Tirunelveli, best bridal artist Tirunelveli, designer Aari blouse Tirunelveli, reception makeup, pre-bridal packages Tirunelveli"
+        canonical="/bridal"
+        ogImage="/bride1.webp"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "Luxury Bridal Makeover & Designer Studio",
+          "provider": {
+            "@type": "BeautySalon",
+            "name": "Skin Infinity & Majesty Makeover and Designer Studio",
+            "telephone": "+916380850488",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Tirunelveli - Sankarankoil Rd, Ramayanpatti",
+              "addressLocality": "Tirunelveli",
+              "postalCode": "627358",
+              "addressCountry": "IN"
+            }
+          },
+          "serviceType": "Bridal Makeup & Designer Styling",
+          "areaServed": "Tirunelveli, Tamil Nadu"
+        }}
+      />
       {/* 1. HERO BANNER SECTION WITH VIDEO BACKGROUND */}
       <section className="relative overflow-hidden min-h-[460px] sm:min-h-[520px] flex items-center justify-center border-b border-pink-100 py-16">
         {/* Background Video */}

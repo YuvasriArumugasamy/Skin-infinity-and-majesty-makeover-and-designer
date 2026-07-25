@@ -1,11 +1,38 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 import { FiAward, FiHeart, FiCheck, FiStar, FiUsers } from 'react-icons/fi';
 
 const About = () => {
   return (
     <div>
+      <SEO 
+        title="About S. Mahalakshmi & Skin Infinity & Majesty | Tirunelveli Beauty Salon & Designer Studio"
+        description="Learn about Skin Infinity & Majesty founded by S. Mahalakshmi in Ramayanpatti, Tirunelveli. Certified specialists in clinical skin care, Hydra Facial, microblading, and designer Aari embroidery."
+        keywords="about Skin Infinity Tirunelveli, S Mahalakshmi beauty salon, top salon owner Tirunelveli, Ramayanpatti skin specialist, certified hydra facial practitioner"
+        canonical="/about"
+        ogImage="/maha.webp"
+        schema={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "AboutPage",
+              "name": "About Skin Infinity & Majesty",
+              "description": "Premium Beauty Salon & Designer Studio in Tirunelveli founded by S. Mahalakshmi."
+            },
+            {
+              "@type": "Person",
+              "name": "S. Mahalakshmi",
+              "jobTitle": "Founder & Master Beauty & Designer Specialist",
+              "worksFor": {
+                "@type": "BeautySalon",
+                "name": "Skin Infinity & Majesty Makeover and Designer Studio"
+              }
+            }
+          ]
+        }}
+      />
       {/* 1. HERO BANNER WITH VIDEO BACKGROUND */}
       <section className="relative overflow-hidden min-h-[460px] sm:min-h-[520px] flex items-center justify-center border-b border-pink-100 py-16">
         {/* Background Video */}

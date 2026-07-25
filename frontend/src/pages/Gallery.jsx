@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 import { FiStar, FiHeart, FiMaximize2, FiX, FiCheckCircle, FiAward, FiFilter } from 'react-icons/fi';
 
 const Gallery = () => {
@@ -35,6 +36,19 @@ const Gallery = () => {
 
   return (
     <div className="bg-[#FCF9FA] min-h-screen pb-20">
+      <SEO 
+        title="Our Work Gallery | Bridal Makeup, Aari Work & Skin Treatments Tirunelveli"
+        description="Browse photos of our real bridal transformations, Aari work designer blouses, Hydra Facial results, microblading eyebrows, and Mehendi designs in Tirunelveli."
+        keywords="bridal makeover gallery Tirunelveli, Aari work blouse photos, Hydra facial results Tirunelveli, mehendi designs photos, salon gallery Ramayanpatti"
+        canonical="/gallery"
+        ogImage="/bride1.webp"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "ImageGallery",
+          "name": "Skin Infinity & Majesty Work Portfolio",
+          "description": "Visual showcase of bridal makeovers, Aari embroidery work, and skin care treatments."
+        }}
+      />
       
       {/* 1. HERO BANNER WITH VIDEO BACKGROUND & LUXURY CONTENT */}
       <section className="relative overflow-hidden min-h-[440px] sm:min-h-[500px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-12 shadow-md">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 import { FiStar, FiCheckCircle, FiMessageSquare, FiSend, FiUser, FiAward } from 'react-icons/fi';
 
 const Reviews = () => {
@@ -103,6 +104,25 @@ const Reviews = () => {
 
   return (
     <div className="bg-[#FCF9FA] min-h-screen pb-20">
+      <SEO 
+        title="Client Reviews & Ratings | Skin Infinity & Majesty Salon Tirunelveli"
+        description="Read 5-star customer reviews and testimonials for Skin Infinity & Majesty in Ramayanpatti, Tirunelveli. Highly rated for Hydra Facial, Bridal Makeover & Aari Work Blouses."
+        keywords="Skin Infinity reviews Tirunelveli, best beauty salon rating Ramayanpatti, bridal makeover testimonials Tirunelveli, hydra facial reviews Tirunelveli"
+        canonical="/reviews"
+        ogImage="/bg3.webp"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "BeautySalon",
+          "name": "Skin Infinity & Majesty Makeover and Designer Studio",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5.0",
+            "reviewCount": "128",
+            "bestRating": "5",
+            "worstRating": "1"
+          }
+        }}
+      />
       
       {/* 1. HERO SECTION WITH PERFECT MOBILE BRIDE FACE CLARITY */}
       <section className="relative overflow-hidden min-h-[520px] sm:min-h-[500px] flex items-end sm:items-center justify-center border-b border-pink-200/60 py-10 sm:py-16 mb-12 shadow-sm">

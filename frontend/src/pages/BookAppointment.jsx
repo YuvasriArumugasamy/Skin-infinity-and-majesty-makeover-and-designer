@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 import { 
   FiCalendar, 
   FiClock, 
@@ -114,6 +115,13 @@ const BookAppointment = () => {
 
   return (
     <div className="bg-[#FCF9FA] min-h-screen pb-20">
+      <SEO 
+        title="Book Salon & Designer Appointment | Skin Infinity & Majesty Tirunelveli"
+        description="Book your appointment online for Hydra Facial, Skin Care, Microblading, Hair Spa, Bridal Makeover & Aari Work Blouse designing at Skin Infinity & Majesty, Tirunelveli."
+        keywords="book appointment beauty salon Tirunelveli, hydra facial booking Ramayanpatti, bridal makeover booking Tirunelveli, Aari blouse designer consultation"
+        canonical="/book-appointment"
+        ogImage="/bg1.webp"
+      />
       
       {/* 1. HERO BANNER WITH bg1.webp BACKGROUND */}
       <section className="relative overflow-hidden min-h-[460px] sm:min-h-[520px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-12 shadow-md">
