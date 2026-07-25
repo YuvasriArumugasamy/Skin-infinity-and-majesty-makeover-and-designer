@@ -25,9 +25,14 @@ const Navbar = () => {
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('mobile-menu-open');
     } else {
       document.body.style.overflow = 'unset';
+      document.body.classList.remove('mobile-menu-open');
     }
+    return () => {
+      document.body.classList.remove('mobile-menu-open');
+    };
   }, [menuOpen]);
 
   const navLinks = [
@@ -140,7 +145,7 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMenuOpen(false)}
-              className="fixed inset-0 bg-black/65 backdrop-blur-md z-50 lg:hidden"
+              className="fixed inset-0 bg-black/65 backdrop-blur-md z-[60] lg:hidden"
             />
 
             {/* Side-Sliding Luxury Drawer */}
@@ -149,7 +154,7 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', damping: 26, stiffness: 240 }}
-              className="fixed top-0 right-0 bottom-0 w-full sm:w-[380px] max-w-full bg-[#FFFDFE] z-50 lg:hidden shadow-2xl flex flex-col justify-between overflow-y-auto border-l border-pink-200/80"
+              className="fixed top-0 right-0 bottom-0 w-full sm:w-[380px] max-w-full bg-[#FFFDFE] z-[60] lg:hidden shadow-2xl flex flex-col justify-between overflow-y-auto border-l border-pink-200/80"
             >
               <div>
                 

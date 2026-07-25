@@ -4,7 +4,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 
 const FloatingContactButtons = () => {
   return (
-    <div className="fixed right-3 sm:right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3 items-center">
+    <div className="fixed right-3 sm:right-4 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-3 items-center [.mobile-menu-open_&]:hidden">
       <a 
         href="tel:6380850488" 
         className="w-11 h-11 sm:w-12 sm:h-12 bg-white/95 backdrop-blur-md border border-pink-200 text-[#C57488] hover:bg-[#C57488] hover:text-white rounded-full shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 group"
