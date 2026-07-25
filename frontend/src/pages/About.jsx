@@ -87,14 +87,14 @@ const About = () => {
             >
               {/* Overlapping Flower Image */}
               <img 
-                src="/flower.png" 
+                src="/flower.webp" 
                 alt="Flower Decor" 
                 className="absolute -left-12 sm:-left-16 top-1/2 -translate-y-1/2 w-36 sm:w-44 z-0 pointer-events-none mix-blend-multiply"
               />
               
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-pink-200/80 z-10 max-w-[280px] sm:max-w-xs bg-white">
                 <img
-                  src="/maha1.png"
+                  src="/maha1.webp"
                   alt="S. Mahalakshmi Founder"
                   className="w-full h-[360px] sm:h-[420px] object-cover object-center"
                 />

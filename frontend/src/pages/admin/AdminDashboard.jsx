@@ -69,11 +69,11 @@ const AdminDashboard = () => {
 
   // Portfolio Gallery Items
   const initialGallery = [
-    { _id: 'g1', title: 'Royal Muhurtham HD Makeup Look', category: 'Bridal Makeover', image: '/bride1.jpg', status: 'Published' },
-    { _id: 'g2', title: 'Handcrafted Zardozi Aari Work Blouse', category: 'Bespoke Couture', image: '/ari work.png', status: 'Published' },
-    { _id: 'g3', title: 'Advance Hydra-Facial Glow Treatment', category: 'Skin Therapy', image: '/advance hydrs facial.png', status: 'Published' },
-    { _id: 'g4', title: 'Reception Glam Hair Spa & Styling', category: 'Hair Care', image: '/hair spa.png', status: 'Published' },
-    { _id: 'g5', title: 'Custom Designer Blouse Embroidery', category: 'Bespoke Couture', image: '/Machine embroider work.png', status: 'Published' }
+    { _id: 'g1', title: 'Royal Muhurtham HD Makeup Look', category: 'Bridal Makeover', image: '/bride1.webp', status: 'Published' },
+    { _id: 'g2', title: 'Handcrafted Zardozi Aari Work Blouse', category: 'Bespoke Couture', image: '/ari work.webp', status: 'Published' },
+    { _id: 'g3', title: 'Advance Hydra-Facial Glow Treatment', category: 'Skin Therapy', image: '/advance hydrs facial.webp', status: 'Published' },
+    { _id: 'g4', title: 'Reception Glam Hair Spa & Styling', category: 'Hair Care', image: '/hair spa.webp', status: 'Published' },
+    { _id: 'g5', title: 'Custom Designer Blouse Embroidery', category: 'Bespoke Couture', image: '/Machine embroider work.webp', status: 'Published' }
   ];
 
   // Salon Services Suite
@@ -794,7 +794,7 @@ const AdminDashboard = () => {
           <div className="p-4 rounded-2xl bg-gradient-to-br from-[#FFF0F5] to-white border border-pink-200/60 shadow-sm flex items-center gap-3">
             <div className="w-12 h-12 rounded-full overflow-hidden bg-white p-0.5 border-2 border-[#C57488] shadow-sm shrink-0 flex items-center justify-center">
               <img 
-                src="/logo.png" 
+                src="/logo.webp" 
                 alt="Skin Infinity & Majesty" 
                 className="w-full h-full object-cover rounded-full"
               />

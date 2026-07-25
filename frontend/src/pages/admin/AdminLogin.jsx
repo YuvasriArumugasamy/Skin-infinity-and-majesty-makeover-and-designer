@@ -90,7 +90,7 @@ const AdminLogin = () => {
           <div className="text-center space-y-2.5">
             <div className="w-20 h-20 mx-auto rounded-full overflow-hidden border-2 border-[#C57488] shadow-md p-0.5 bg-white shrink-0 flex items-center justify-center">
               <img 
-                src="/logo.png" 
+                src="/logo.webp" 
                 alt="Skin Infinity & Majesty" 
                 className="w-full h-full object-cover rounded-full"
               />

@@ -115,12 +115,12 @@ const BookAppointment = () => {
   return (
     <div className="bg-[#FCF9FA] min-h-screen pb-20">
       
-      {/* 1. HERO BANNER WITH bg1.png BACKGROUND */}
+      {/* 1. HERO BANNER WITH bg1.webp BACKGROUND */}
       <section className="relative overflow-hidden min-h-[460px] sm:min-h-[520px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-12 shadow-md">
         
-        {/* Background Image: bg1.png - object-[15%_center] on mobile pushes model hair to the right */}
+        {/* Background Image: bg1.webp - object-[15%_center] on mobile pushes model hair to the right */}
         <img 
-          src="/bg1.png" 
+          src="/bg1.webp" 
           alt="Skin Infinity & Majesty Background" 
           className="absolute inset-0 w-full h-full object-cover object-[15%_center] sm:object-center z-0 opacity-90 sm:opacity-100"
         />

@@ -11,25 +11,25 @@ const Services = () => {
         {
           title: 'Facial',
           desc: 'Deep cleansing and nourishment for glowing, healthy skin.',
-          img: '/facial.png',
+          img: '/facial.webp',
           icon: FiHeart
         },
         {
           title: 'Advance Hydra Facial',
           desc: 'Advanced technology for deep hydration and skin rejuvenation.',
-          img: '/advance hydrs facial.png',
+          img: '/advance hydrs facial.webp',
           icon: FiAward
         },
         {
           title: 'Skin Lightening Chemical Peeling',
           desc: 'Reduce pigmentation and blemishes for a brighter, even-toned skin.',
-          img: '/skin lightening chemical peeling.png',
+          img: '/skin lightening chemical peeling.webp',
           icon: FiAward
         },
         {
           title: 'Aroma Oil Therapy',
           desc: 'Relax your mind and body with essential oil therapy.',
-          img: '/ChatGPT Image Jul 22, 2026, 11_17_31 AM.png',
+          img: '/ChatGPT Image Jul 22, 2026, 11_17_31 AM.webp',
           icon: FiHeart
         }
       ]
@@ -40,13 +40,13 @@ const Services = () => {
         {
           title: 'Hair Spa',
           desc: 'Nourish and strengthen your hair with deep conditioning.',
-          img: '/hair spa.png',
+          img: '/hair spa.webp',
           icon: FiScissors
         },
         {
           title: 'All Types of Hair Cuts',
           desc: 'Trendy and stylish hair cuts for women, men & kids.',
-          img: '/ChatGPT Image Jul 22, 2026, 11_17_44 AM.png',
+          img: '/ChatGPT Image Jul 22, 2026, 11_17_44 AM.webp',
           icon: FiScissors
         }
       ]
@@ -57,13 +57,13 @@ const Services = () => {
         {
           title: 'Manicure & Pedicure',
           desc: 'Pamper your hands and feet with our relaxing manicure & pedicure.',
-          img: '/manicure & pedicure.png',
+          img: '/manicure & pedicure.webp',
           icon: FiHeart
         },
         {
           title: 'Microblading',
           desc: 'Semi-permanent eyebrow embroidery for natural, fuller brows.',
-          img: '/microblading.png',
+          img: '/microblading.webp',
           icon: FiStar
         }
       ]
@@ -74,19 +74,19 @@ const Services = () => {
     {
       title: 'Mehandi Service',
       desc: 'Exquisite bridal & festive mehendi designs by professional artists.',
-      img: '/ChatGPT Image Jul 22, 2026, 11_28_36 AM.png',
+      img: '/ChatGPT Image Jul 22, 2026, 11_28_36 AM.webp',
       icon: FiHeart
     },
     {
       title: 'Blouse Stitching & Aari Work',
       desc: 'Custom designer blouse stitching with intricate handcrafted Aari embroidery.',
-      img: '/ari work.png',
+      img: '/ari work.webp',
       icon: FiAward
     },
     {
       title: 'Machine Embroidery Work',
       desc: 'Precision computer embroidery designs for blouses, sarees & lehengas.',
-      img: '/Machine embroider work.png',
+      img: '/Machine embroider work.webp',
       icon: FiStar
     }
   ];

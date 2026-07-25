@@ -92,10 +92,10 @@ const Home = () => {
   return (
     <div className="relative overflow-hidden bg-white text-gray-800">
 
-      {/* 1. HERO SECTION WITH bg5.png BACKGROUND */}
+      {/* 1. HERO SECTION WITH bg5.webp BACKGROUND */}
       <section 
         className="relative min-h-[85vh] lg:min-h-[90vh] bg-cover bg-no-repeat bg-[92%_top] sm:bg-[85%_center] lg:bg-center flex items-start sm:items-center pt-6 pb-12 sm:py-12 lg:py-20"
-        style={{ backgroundImage: `url('/bg5.png')` }}
+        style={{ backgroundImage: `url('/bg5.webp')` }}
       >
         {/* Soft, light gradient overlay - ensures text readability on left while keeping girl's face on right 100% sharp */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-pink-50/50 to-transparent sm:bg-gradient-to-r sm:from-white/80 sm:via-pink-50/40 sm:to-transparent"></div>
@@ -206,7 +206,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 2. ABOUT US SECTION WITH shop3.png & shop4.png */}
+      {/* 2. ABOUT US SECTION WITH shop3.webp & shop4.webp */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
@@ -217,7 +217,7 @@ const Home = () => {
               {/* Soft Ambient Luxury Glow behind the frames */}
               <div className="absolute -inset-4 bg-gradient-to-tr from-[#C57488]/30 via-amber-200/40 to-pink-200/40 rounded-[52px] rounded-tl-[112px] blur-2xl opacity-75"></div>
 
-              {/* Main Photo (shop3.png): Animated Rotating Conic Gradient Border Hugging Image Directly */}
+              {/* Main Photo (shop3.webp): Animated Rotating Conic Gradient Border Hugging Image Directly */}
               <div className="relative z-10 p-[4px] sm:p-[5px] rounded-[40px] rounded-tl-[100px] overflow-hidden shadow-[0_22px_50px_rgba(44,34,37,0.22)] group hover:shadow-[0_30px_60px_rgba(197,116,136,0.35)] transition-all duration-500">
                 {/* Continuous 360-degree Rotating Conic Gradient Layer */}
                 <div className="absolute -inset-[100%] bg-[conic-gradient(from_0deg,#F5D77F,#C57488,#E8A5BD,#F5D77F,#ab5b70,#F5D77F)] animate-spin-border"></div>
@@ -225,7 +225,7 @@ const Home = () => {
                 {/* Direct Image Container with zero white padding */}
                 <div className="relative z-10 w-full h-full rounded-[36px] rounded-tl-[96px] overflow-hidden">
                   <img 
-                    src="/shop3.png" 
+                    src="/shop3.webp" 
                     alt="Skin Infinity Salon Interior" 
                     loading="lazy"
                     decoding="async"
@@ -234,7 +234,7 @@ const Home = () => {
                 </div>
               </div>
 
-              {/* Secondary Overlapping Photo (maha1.png): Positioned lower with zero white ring border */}
+              {/* Secondary Overlapping Photo (maha1.webp): Positioned lower with zero white ring border */}
               <div className="absolute -bottom-12 sm:-bottom-14 right-0 sm:-right-6 z-20 w-[58%] sm:w-3/5 p-[3.5px] sm:p-[4px] rounded-[30px] overflow-hidden shadow-[0_20px_45px_rgba(0,0,0,0.35)] group/sub hover:shadow-[0_25px_50px_rgba(197,116,136,0.5)] transition-all duration-500">
                 {/* Continuous Rotating Conic Gradient Layer (Reverse direction) */}
                 <div className="absolute -inset-[100%] bg-[conic-gradient(from_0deg,#C57488,#F5D77F,#E8A5BD,#C57488,#F5D77F,#C57488)] animate-spin-border-reverse"></div>
@@ -242,7 +242,7 @@ const Home = () => {
                 {/* Direct Image Container with zero white padding */}
                 <div className="relative z-10 w-full h-full rounded-[26px] overflow-hidden">
                   <img 
-                    src="/maha1.png" 
+                    src="/maha1.webp" 
                     alt="S. Mahalakshmi Bridal Makeover" 
                     loading="lazy"
                     decoding="async"
@@ -351,42 +351,42 @@ const Home = () => {
               {
                 title: 'Facial',
                 subtitle: 'Glow & Shine',
-                img: '/facial.png'
+                img: '/facial.webp'
               },
               {
                 title: 'Hair Spa',
                 subtitle: 'Nourish & Strengthen',
-                img: '/hair spa.png'
+                img: '/hair spa.webp'
               },
               {
                 title: 'Aroma Oil Therapy',
                 subtitle: 'Relax & Rejuvenate',
-                img: '/ChatGPT Image Jul 22, 2026, 11_17_31 AM.png'
+                img: '/ChatGPT Image Jul 22, 2026, 11_17_31 AM.webp'
               },
               {
                 title: 'Manicure & Pedicure',
                 subtitle: 'Perfect Care',
-                img: '/manicure & pedicure.png'
+                img: '/manicure & pedicure.webp'
               },
               {
                 title: 'Skin Lightening Chemical Peeling',
                 subtitle: 'Even & Bright Skin',
-                img: '/skin lightening chemical peeling.png'
+                img: '/skin lightening chemical peeling.webp'
               },
               {
                 title: 'Microblading',
                 subtitle: 'Perfect Your Brows',
-                img: '/microblading.png'
+                img: '/microblading.webp'
               },
               {
                 title: 'All Types of Hair Cuts',
                 subtitle: 'Style Your Hair',
-                img: '/ChatGPT Image Jul 22, 2026, 11_17_44 AM.png'
+                img: '/ChatGPT Image Jul 22, 2026, 11_17_44 AM.webp'
               },
               {
                 title: 'Mehandi Service',
                 subtitle: 'Art on Your Hands',
-                img: '/ChatGPT Image Jul 22, 2026, 11_28_36 AM.png'
+                img: '/ChatGPT Image Jul 22, 2026, 11_28_36 AM.webp'
               }
             ].map((srv, idx) => (
               <motion.div 
@@ -511,47 +511,47 @@ const Home = () => {
             {[
               {
                 title: 'Hair Styling & Care',
-                img: '/hair.jpeg'
+                img: '/hair.webp'
               },
               {
                 title: 'Hair Treatment',
-                img: '/hair.png'
+                img: '/hair.webp'
               },
               {
                 title: 'Hair Styling',
-                img: '/hair1.png'
+                img: '/hair1.webp'
               },
               {
                 title: 'Facial Care',
-                img: '/facial1.png'
+                img: '/facial1.webp'
               },
               {
                 title: 'Glowing Facial',
-                img: '/facial2.png'
+                img: '/facial2.webp'
               },
               {
                 title: 'Bridal Makeover',
-                img: '/marriage.png'
+                img: '/marriage.webp'
               },
               {
                 title: 'Bridal Styling',
-                img: '/marriage1.png'
+                img: '/marriage1.webp'
               },
               {
                 title: 'Bridal Transformation',
-                img: '/marriage2.png'
+                img: '/marriage2.webp'
               },
               {
                 title: 'Bridal Elegance',
-                img: '/marriage3.png'
+                img: '/marriage3.webp'
               },
               {
                 title: 'Bridal Beauty',
-                img: '/marriage4.png'
+                img: '/marriage4.webp'
               },
               {
                 title: 'Bridal Glow',
-                img: '/marriage5.png'
+                img: '/marriage5.webp'
               }
             ].map((item, idx) => (
               <div key={idx} className="bg-pink-50/50 rounded-2xl overflow-hidden border border-pink-100 shadow-sm group">
@@ -643,7 +643,7 @@ const Home = () => {
               {/* Background Bridal Image Wrapper */}
               <div className="relative">
                 <img 
-                  src="/bg3.png" 
+                  src="/bg3.webp" 
                   alt="Bridal Appointment Background" 
                   loading="lazy"
                   decoding="async"
@@ -763,13 +763,13 @@ const Home = () => {
           {/* Row of 7 Photos */}
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
             {[
-              '/shop1.png',
-              '/shop2.png',
-              '/bride1.jpg',
-              '/bride2.jpg',
-              '/ari work.png',
-              '/Machine embroider work.png',
-              '/shop.png'
+              '/shop1.webp',
+              '/shop2.webp',
+              '/bride1.webp',
+              '/bride2.webp',
+              '/ari work.webp',
+              '/Machine embroider work.webp',
+              '/shop.webp'
             ].map((img, idx) => (
               <a
                 key={idx}

@@ -107,10 +107,10 @@ const Reviews = () => {
       {/* 1. HERO SECTION WITH PERFECT MOBILE BRIDE FACE CLARITY */}
       <section className="relative overflow-hidden min-h-[520px] sm:min-h-[500px] flex items-end sm:items-center justify-center border-b border-pink-200/60 py-10 sm:py-16 mb-12 shadow-sm">
         
-        {/* Background Image - bg3.png with object-[85%_10%] so face is at top-right on mobile */}
+        {/* Background Image - bg3.webp with object-[85%_10%] so face is at top-right on mobile */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/bg3.png" 
+            src="/bg3.webp" 
             alt="Skin Infinity & Majesty Client Reviews" 
             className="w-full h-full object-cover object-[85%_10%] sm:object-center"
           />

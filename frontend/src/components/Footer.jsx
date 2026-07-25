@@ -14,7 +14,7 @@ const Footer = () => {
           <Link to="/" className="flex items-center gap-3 group">
             <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border-2 border-[#C57488] shadow-md p-0.5 bg-white shrink-0 group-hover:scale-105 transition-transform duration-300">
               <img 
-                src="/logo.png" 
+                src="/logo.webp" 
                 alt="Skin Infinity & Majesty" 
                 className="w-full h-full object-cover rounded-full"
               />

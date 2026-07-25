@@ -8,22 +8,22 @@ const Gallery = () => {
   const [selectedItem, setSelectedItem] = useState(null);
 
   const images = [
-    { id: 1, title: 'Luxury Bridal Makeover', cat: 'Bridal', url: '/bride1.jpg', desc: 'Flawless HD Bridal Makeup & Signature Hair Styling' },
-    { id: 2, title: 'Royal South Indian Bride', cat: 'Bridal', url: '/bride2.jpg', desc: 'Traditional Bridal Look with Antique Jewelry Match' },
-    { id: 3, title: 'Advance Hydra Facial', cat: 'Skin Care', url: '/advance hydrs facial.png', desc: 'Deep Pore Cleansing, Exfoliation & Glow Hydration' },
-    { id: 4, title: 'Skin Lightening & Chemical Peel', cat: 'Skin Care', url: '/skin lightening chemical peeling.png', desc: 'Dermat-Approved Pigmentation Care & Tone Renewal' },
-    { id: 5, title: 'Radiant Skin Rejuvenation', cat: 'Skin Care', url: '/facial.png', desc: 'Signature Herbal & Glow Facial Therapy' },
-    { id: 6, title: 'Botanical Hair Spa Therapy', cat: 'Hair Care', url: '/hair spa.png', desc: 'Deep Conditioning, Anti-Dandruff & Scalp Repair' },
-    { id: 7, title: 'Handcrafted Aari Work Blouse', cat: 'Designer Services', url: '/ari work.png', desc: 'Intricate Zardosi, Beadwork & Peacock Motif Embroidery' },
-    { id: 8, title: 'Precision Machine Embroidery', cat: 'Designer Services', url: '/Machine embroider work.png', desc: 'Custom Bridal & Designer Partywear Embroidery' },
-    { id: 9, title: 'Designer Bridal Blouse Work', cat: 'Designer Services', url: '/blouse.png', desc: 'Custom Aari & Thread Work Designer Blouse' },
-    { id: 10, title: 'Royal Embroidery Blouse Design', cat: 'Designer Services', url: '/blouse1.png', desc: 'Bespoke Bridal Silk Blouse Embroidery' },
-    { id: 11, title: 'Handcrafted Designer Blouse', cat: 'Designer Services', url: '/blouse4.png', desc: 'Intricate Pattern & Maggam Work Blouse' },
-    { id: 12, title: 'Signature Bridal Blouse Art', cat: 'Designer Services', url: '/blouse5.png', desc: 'Custom Designer Blouse Tailoring & Ornamentation' },
-    { id: 13, title: 'Microblading & Brow Design', cat: 'Beauty Care', url: '/microblading.png', desc: 'Semi-Permanent Eyebrow Shaping & Micro-Feathering' },
-    { id: 14, title: 'Luxury Manicure & Pedicure', cat: 'Beauty Care', url: '/manicure & pedicure.png', desc: 'Relaxing Hand & Foot Spa with Cuticle Care' },
-    { id: 15, title: 'Skin Infinity Studio Ambiance', cat: 'Salon Interior', url: '/shop1.png', desc: 'Modern, Private & Hygienic Facial & Spa Rooms' },
-    { id: 16, title: 'Majesty Designer Boutique Lounge', cat: 'Salon Interior', url: '/shop3.png', desc: 'Bespoke Designer Fitting & Bridal Consultation Lounge' }
+    { id: 1, title: 'Luxury Bridal Makeover', cat: 'Bridal', url: '/bride1.webp', desc: 'Flawless HD Bridal Makeup & Signature Hair Styling' },
+    { id: 2, title: 'Royal South Indian Bride', cat: 'Bridal', url: '/bride2.webp', desc: 'Traditional Bridal Look with Antique Jewelry Match' },
+    { id: 3, title: 'Advance Hydra Facial', cat: 'Skin Care', url: '/advance hydrs facial.webp', desc: 'Deep Pore Cleansing, Exfoliation & Glow Hydration' },
+    { id: 4, title: 'Skin Lightening & Chemical Peel', cat: 'Skin Care', url: '/skin lightening chemical peeling.webp', desc: 'Dermat-Approved Pigmentation Care & Tone Renewal' },
+    { id: 5, title: 'Radiant Skin Rejuvenation', cat: 'Skin Care', url: '/facial.webp', desc: 'Signature Herbal & Glow Facial Therapy' },
+    { id: 6, title: 'Botanical Hair Spa Therapy', cat: 'Hair Care', url: '/hair spa.webp', desc: 'Deep Conditioning, Anti-Dandruff & Scalp Repair' },
+    { id: 7, title: 'Handcrafted Aari Work Blouse', cat: 'Designer Services', url: '/ari work.webp', desc: 'Intricate Zardosi, Beadwork & Peacock Motif Embroidery' },
+    { id: 8, title: 'Precision Machine Embroidery', cat: 'Designer Services', url: '/Machine embroider work.webp', desc: 'Custom Bridal & Designer Partywear Embroidery' },
+    { id: 9, title: 'Designer Bridal Blouse Work', cat: 'Designer Services', url: '/blouse.webp', desc: 'Custom Aari & Thread Work Designer Blouse' },
+    { id: 10, title: 'Royal Embroidery Blouse Design', cat: 'Designer Services', url: '/blouse1.webp', desc: 'Bespoke Bridal Silk Blouse Embroidery' },
+    { id: 11, title: 'Handcrafted Designer Blouse', cat: 'Designer Services', url: '/blouse4.webp', desc: 'Intricate Pattern & Maggam Work Blouse' },
+    { id: 12, title: 'Signature Bridal Blouse Art', cat: 'Designer Services', url: '/blouse5.webp', desc: 'Custom Designer Blouse Tailoring & Ornamentation' },
+    { id: 13, title: 'Microblading & Brow Design', cat: 'Beauty Care', url: '/microblading.webp', desc: 'Semi-Permanent Eyebrow Shaping & Micro-Feathering' },
+    { id: 14, title: 'Luxury Manicure & Pedicure', cat: 'Beauty Care', url: '/manicure & pedicure.webp', desc: 'Relaxing Hand & Foot Spa with Cuticle Care' },
+    { id: 15, title: 'Skin Infinity Studio Ambiance', cat: 'Salon Interior', url: '/shop1.webp', desc: 'Modern, Private & Hygienic Facial & Spa Rooms' },
+    { id: 16, title: 'Majesty Designer Boutique Lounge', cat: 'Salon Interior', url: '/shop3.webp', desc: 'Bespoke Designer Fitting & Bridal Consultation Lounge' }
   ];
 
   const categories = ['All', 'Bridal', 'Skin Care', 'Hair Care', 'Beauty Care', 'Designer Services', 'Salon Interior'];

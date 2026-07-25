@@ -7,7 +7,7 @@ const Bridal = () => {
   const packages = [
     {
       title: 'ENGAGEMENT MAKEUP',
-      img: '/bride2.jpg',
+      img: '/bride2.webp',
       features: [
         'HD Makeup',
         'Hairstyling',
@@ -18,7 +18,7 @@ const Bridal = () => {
     },
     {
       title: 'BRIDAL MAKEUP',
-      img: '/bride1.jpg',
+      img: '/bride1.webp',
       popular: true,
       features: [
         'HD/Airbrush Makeup',
@@ -31,7 +31,7 @@ const Bridal = () => {
     },
     {
       title: 'RECEPTION MAKEUP',
-      img: '/ChatGPT Image Jul 24, 2026, 09_03_32 PM.png',
+      img: '/ChatGPT Image Jul 24, 2026, 09_03_32 PM.webp',
       features: [
         'HD Makeup',
         'Hairstyling',
@@ -42,7 +42,7 @@ const Bridal = () => {
     },
     {
       title: 'PRE-BRIDAL CARE',
-      img: '/ChatGPT Image Jul 24, 2026, 09_01_31 PM.png',
+      img: '/ChatGPT Image Jul 24, 2026, 09_01_31 PM.webp',
       features: [
         'Facial',
         'Hair Spa',

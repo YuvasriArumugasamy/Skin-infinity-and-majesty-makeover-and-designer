@@ -34,13 +34,13 @@ const Contact = () => {
   return (
     <div className="bg-[#FCF9FA] min-h-screen pb-20">
       
-      {/* 1. HERO BANNER WITH bg.png BACKGROUND */}
+      {/* 1. HERO BANNER WITH bg.webp BACKGROUND */}
       <section className="relative overflow-hidden min-h-[380px] sm:min-h-[440px] flex items-center justify-center border-b border-pink-200/60 py-16 mb-12 shadow-md">
         
-        {/* Background Image - bg.png */}
+        {/* Background Image - bg.webp */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="/bg.png" 
+            src="/bg.webp" 
             alt="Skin Infinity & Majesty Studio Storefront" 
             className="w-full h-full object-cover object-center opacity-40"
           />

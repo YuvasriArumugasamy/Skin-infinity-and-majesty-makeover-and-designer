@@ -55,7 +55,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center gap-2 sm:gap-3 group">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-[#C57488] shadow-md bg-white shrink-0 group-hover:scale-105 transition-transform duration-300">
               <img 
-                src="/logo.png" 
+                src="/logo.webp" 
                 alt="Skin Infinity & Majesty" 
                 className="w-full h-full object-cover"
               />
@@ -162,7 +162,7 @@ const Navbar = () => {
                 <div className="p-6 border-b border-pink-100 flex items-center justify-between bg-gradient-to-r from-pink-50/80 to-white">
                   <div className="flex items-center gap-3">
                     <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-[#C57488] shadow-sm bg-white shrink-0">
-                      <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" />
+                      <img src="/logo.webp" alt="Logo" className="w-full h-full object-cover" />
                     </div>
                     <div>
                       <h3 className="font-serif-luxury font-bold text-sm text-gray-800 leading-tight">
