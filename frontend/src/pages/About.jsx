@@ -10,7 +10,7 @@ const About = () => {
       <SEO 
         title="About S. Mahalakshmi & Skin Infinity & Majesty | Tirunelveli Beauty Salon & Designer Studio"
         description="Learn about Skin Infinity & Majesty founded by S. Mahalakshmi in Ramayanpatti, Tirunelveli. Certified specialists in clinical skin care, Hydra Facial, microblading, and designer Aari embroidery."
-        keywords="about Skin Infinity Tirunelveli, S Mahalakshmi beauty salon, top salon owner Tirunelveli, Ramayanpatti skin specialist, certified hydra facial practitioner"
+        keywords="about skin infinity majesty, S Mahalakshmi salon Tirunelveli, beauty salon Ramayanpatti, skin care clinic Tirunelveli, best beauty salon Tirunelveli, hydra facial Tirunelveli, microblading Tirunelveli"
         canonical="/about"
         ogImage="/maha.webp"
         schema={{

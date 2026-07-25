@@ -107,7 +107,7 @@ const Reviews = () => {
       <SEO 
         title="Client Reviews & Ratings | Skin Infinity & Majesty Salon Tirunelveli"
         description="Read 5-star customer reviews and testimonials for Skin Infinity & Majesty in Ramayanpatti, Tirunelveli. Highly rated for Hydra Facial, Bridal Makeover & Aari Work Blouses."
-        keywords="Skin Infinity reviews Tirunelveli, best beauty salon rating Ramayanpatti, bridal makeover testimonials Tirunelveli, hydra facial reviews Tirunelveli"
+        keywords="beauty salon Tirunelveli reviews, skin infinity majesty reviews, S Mahalakshmi salon rating, bridal makeover Tirunelveli reviews, hydra facial Tirunelveli reviews, best beauty salon Tirunelveli"
         canonical="/reviews"
         ogImage="/bg3.webp"
         schema={{

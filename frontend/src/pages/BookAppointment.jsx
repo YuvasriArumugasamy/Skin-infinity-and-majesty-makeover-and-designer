@@ -118,7 +118,7 @@ const BookAppointment = () => {
       <SEO 
         title="Book Salon & Designer Appointment | Skin Infinity & Majesty Tirunelveli"
         description="Book your appointment online for Hydra Facial, Skin Care, Microblading, Hair Spa, Bridal Makeover & Aari Work Blouse designing at Skin Infinity & Majesty, Tirunelveli."
-        keywords="book appointment beauty salon Tirunelveli, hydra facial booking Ramayanpatti, bridal makeover booking Tirunelveli, Aari blouse designer consultation"
+        keywords="book appointment beauty salon Tirunelveli, hydra facial booking Tirunelveli, bridal makeover booking Tirunelveli, aari work booking Tirunelveli, beauty salon near me booking, skin care near me, hair spa near me"
         canonical="/book-appointment"
         ogImage="/bg1.webp"
       />

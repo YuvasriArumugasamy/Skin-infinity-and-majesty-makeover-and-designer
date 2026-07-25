@@ -39,7 +39,7 @@ const Gallery = () => {
       <SEO 
         title="Our Work Gallery | Bridal Makeup, Aari Work & Skin Treatments Tirunelveli"
         description="Browse photos of our real bridal transformations, Aari work designer blouses, Hydra Facial results, microblading eyebrows, and Mehendi designs in Tirunelveli."
-        keywords="bridal makeover gallery Tirunelveli, Aari work blouse photos, Hydra facial results Tirunelveli, mehendi designs photos, salon gallery Ramayanpatti"
+        keywords="bridal makeover Tirunelveli, aari work Tirunelveli, blouse stitching Tirunelveli, hydra facial Tirunelveli, microblading Tirunelveli, mehandi Tirunelveli, beauty salon gallery Tirunelveli, skin infinity majesty"
         canonical="/gallery"
         ogImage="/bride1.webp"
         schema={{

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { HelmetProvider } from 'react-helmet-async';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -22,6 +23,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 
 function App() {
   return (
+    <HelmetProvider>
     <BrowserRouter>
       <ScrollToTop />
       <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
@@ -58,6 +60,7 @@ function App() {
 
       </Routes>
     </BrowserRouter>
+    </HelmetProvider>
   );
 }
 

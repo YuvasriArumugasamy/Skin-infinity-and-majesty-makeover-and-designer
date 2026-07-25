@@ -59,7 +59,7 @@ const Bridal = () => {
       <SEO 
         title="Bridal Makeover, HD Makeup & Designer Aari Work Studio Tirunelveli | Skin Infinity & Majesty"
         description="Transform into a royal bride with S. Mahalakshmi. Luxury Bridal HD & Airbrush Makeup, Engagement Looks, Pre-Bridal Packages, and Custom Designer Aari Work Blouses in Tirunelveli."
-        keywords="bridal makeover Tirunelveli, bridal HD makeup Ramayanpatti, airbrush makeup Tirunelveli, best bridal artist Tirunelveli, designer Aari blouse Tirunelveli, reception makeup, pre-bridal packages Tirunelveli"
+        keywords="bridal makeover Tirunelveli, bridal HD makeup Tirunelveli, bridal makeup near me, airbrush makeup Tirunelveli, best bridal artist Tirunelveli, aari work Tirunelveli, blouse stitching Tirunelveli, beauty salon Tirunelveli, S Mahalakshmi salon Tirunelveli, skin infinity majesty"
         canonical="/bridal"
         ogImage="/bride1.webp"
         schema={{

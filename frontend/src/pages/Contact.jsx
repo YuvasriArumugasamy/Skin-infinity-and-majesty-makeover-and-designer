@@ -56,7 +56,7 @@ const Contact = () => {
       <SEO 
         title="Contact Skin Infinity & Majesty | Ramayanpatti, Tirunelveli - Call 63808 50488"
         description="Contact S. Mahalakshmi at Skin Infinity & Majesty. Located at Tirunelveli - Sankarankoil Rd, Ramayanpatti. Call or WhatsApp +91 63808 50488 for appointments."
-        keywords="contact Skin Infinity Tirunelveli, beauty salon address Ramayanpatti, Mahalakshmi salon phone number, Sankarankoil road salon"
+        keywords="contact beauty salon Tirunelveli, beauty salon Ramayanpatti, S Mahalakshmi salon phone, skin infinity majesty address, book appointment beauty salon Tirunelveli"
         canonical="/contact"
         ogImage="/bg.webp"
         schema={{

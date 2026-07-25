@@ -114,7 +114,7 @@ const Services = () => {
       <SEO 
         title="Skin Care, Hydra Facial, Hair Spa & Beauty Services in Tirunelveli | Skin Infinity & Majesty"
         description="Explore premium salon & skin care services in Tirunelveli by S. Mahalakshmi. Advance Hydra Facial, Microblading, Chemical Peels, Hair Spa, Mehendi & Aari Work Blouses."
-        keywords="skin care Tirunelveli, hydra facial price Tirunelveli, chemical peeling Ramayanpatti, microblading eyebrows Tirunelveli, hair spa treatment, designer Aari work blouse, Mehendi designs Tirunelveli"
+        keywords="skin care clinic Tirunelveli, hydra facial Tirunelveli, advance hydra facial Tirunelveli, skin lightening chemical peeling Tirunelveli, microblading Tirunelveli, hair spa Tirunelveli, manicure pedicure Tirunelveli, aari work Tirunelveli, blouse stitching Tirunelveli, mehandi Tirunelveli, beauty salon Tirunelveli, facial near me, skin care near me, hair spa near me"
         canonical="/services"
         ogImage="/advance hydrs facial.webp"
         schema={{

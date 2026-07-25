@@ -95,7 +95,7 @@ const Home = () => {
       <SEO 
         title="Skin Infinity & Majesty | Best Beauty Salon, Skin Care & Designer Studio in Tirunelveli"
         description="Skin Infinity & Majesty by S. Mahalakshmi in Ramayanpatti, Tirunelveli. Premium Hydra Facial, Skin Care, Hair Spa, Microblading, Bridal HD Makeover & Designer Aari Work Studio."
-        keywords="beauty salon Tirunelveli, skin care clinic Ramayanpatti, hydra facial Tirunelveli, microblading Tirunelveli, bridal makeover Tirunelveli, Aari work designer studio, S Mahalakshmi salon, hair spa Tirunelveli, Mehendi artist Ramayanpatti"
+        keywords="beauty salon Tirunelveli, skin care clinic Tirunelveli, hydra facial Tirunelveli, advance hydra facial Tirunelveli, microblading Tirunelveli, bridal makeover Tirunelveli, bridal HD makeup Tirunelveli, hair spa Tirunelveli, manicure pedicure Tirunelveli, aari work Tirunelveli, blouse stitching Tirunelveli, mehandi Tirunelveli, skin lightening chemical peeling Tirunelveli, beauty salon Ramayanpatti, S Mahalakshmi salon Tirunelveli, skin infinity majesty, beauty salon near me, bridal makeup near me, skin care near me, hair spa near me, facial near me"
         canonical="/"
         ogImage="/shop.webp"
         schema={{
