@@ -117,7 +117,7 @@ const AdminLogin = () => {
                   required
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  placeholder="admin@skininfinity.com"
+                  placeholder="Username or Email"
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/90 backdrop-blur-md border border-pink-200 text-luxuryDark placeholder-gray-400 text-xs focus:outline-none focus:border-luxuryRoseGold focus:bg-white transition font-medium shadow-sm"
                 />
               </div>
