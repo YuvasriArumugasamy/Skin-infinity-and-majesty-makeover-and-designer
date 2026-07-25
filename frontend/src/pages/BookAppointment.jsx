@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import api from '../api/axios';
+import { saveAppointmentToCloud } from '../api/cloudSync';
 import toast from 'react-hot-toast';
+
 import SEO from '../components/SEO';
 import { 
   FiCalendar, 
@@ -102,6 +104,10 @@ const BookAppointment = () => {
         localStorage.setItem('appointments', JSON.stringify([tempApt, ...existing]));
       } catch (_) {}
     }
+
+    // Save to Cloud Storage across all devices
+    await saveAppointmentToCloud(aptPayload);
+
 
     setSuccessModal(true);
     toast.success('Appointment Request Submitted Successfully!');

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../../api/axios';
+import { fetchAppointmentsFromCloud } from '../../api/cloudSync';
+
 
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -210,12 +212,19 @@ const AdminDashboard = () => {
       localMsgs = JSON.parse(localStorage.getItem('contactMessages') || '[]');
     } catch (e) {}
 
-    // Fetch Appointments from API
+    // Fetch Appointments from API & Cloud Sync
     try {
-      const res = await api.get('/api/appointments');
-      const apiData = (res.data?.success && Array.isArray(res.data?.data)) ? res.data.data : [];
-      const combined = [...apiData, ...localData];
-      const unique = Array.from(new Map(combined.map(item => [String(item._id || item.phone || Math.random()), item])).values());
+      const cloudData = await fetchAppointmentsFromCloud();
+      let apiData = [];
+      try {
+        const res = await api.get('/api/appointments');
+        if (res.data?.success && Array.isArray(res.data?.data)) {
+          apiData = res.data.data;
+        }
+      } catch (_) {}
+
+      const combined = [...apiData, ...cloudData, ...localData];
+      const unique = Array.from(new Map(combined.map(item => [String(item._id || (item.customerName + item.phone)), item])).values());
       if (unique.length > 0) {
         setAppointments(unique);
         localStorage.setItem('appointments', JSON.stringify(unique));
@@ -223,6 +232,7 @@ const AdminDashboard = () => {
     } catch (e) {
       if (localData.length > 0) setAppointments(localData);
     }
+
 
 
     // Fetch Contact Messages from API

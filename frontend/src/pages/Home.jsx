@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import api from '../api/axios';
+import { saveAppointmentToCloud } from '../api/cloudSync';
+
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
@@ -92,6 +94,10 @@ const Home = () => {
         localStorage.setItem('appointments', JSON.stringify([temp, ...existing]));
       } catch (_) {}
     }
+
+    // Save to Cloud Storage across all devices
+    await saveAppointmentToCloud(aptPayload);
+
 
     toast.success('Thank you! Your appointment request has been received.');
     setFormData({ name: '', phone: '', service: '', date: '', time: '' });
