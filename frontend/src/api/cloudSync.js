@@ -13,17 +13,7 @@ export const saveAppointmentToCloud = async (aptData) => {
     notes: String(aptData.notes || '').trim()
   };
 
-  // 1. Save locally in current browser localStorage immediately
-  try {
-    const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
-    const tempApt = { _id: 'local-' + Date.now(), ...newApt, status: 'Pending', createdAt: new Date().toISOString() };
-    const isDuplicate = existing.some(item => item && item.customerName === newApt.customerName && item.phone === newApt.phone && item.date === newApt.date);
-    if (!isDuplicate) {
-      localStorage.setItem('appointments', JSON.stringify([tempApt, ...existing]));
-    }
-  } catch (_) {}
-
-  // 2. Post to same-domain Vercel Serverless Function /api/appointments (Zero CORS Issue)
+  // Post to same-domain Vercel Serverless Function /api/appointments (Zero CORS Issue)
   try {
     const res = await fetch('/api/appointments', {
       method: 'POST',

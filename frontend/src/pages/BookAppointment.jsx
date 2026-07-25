@@ -89,7 +89,6 @@ const BookAppointment = () => {
     try {
       const res = await api.post('/api/appointments', aptPayload);
 
-      // Save API response to localStorage for admin sync
       if (res.data?.data) {
         try {
           const existing = JSON.parse(localStorage.getItem('appointments') || '[]');

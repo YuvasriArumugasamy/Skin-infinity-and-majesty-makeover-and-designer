@@ -87,7 +87,7 @@ const Home = () => {
         } catch (_) {}
       }
     } catch (_) {
-      // Offline fallback
+      // If the server request fails, keep the booking locally for fallback
       try {
         const temp = { _id: 'temp-' + Date.now(), ...aptPayload, status: 'Pending', createdAt: new Date().toISOString() };
         const existing = JSON.parse(localStorage.getItem('appointments') || '[]');

@@ -224,10 +224,20 @@ const AdminDashboard = () => {
       } catch (_) {}
 
       const combined = [...apiData, ...cloudData, ...localData];
-      const unique = Array.from(new Map(combined.map(item => [String(item._id || (item.customerName + item.phone)), item])).values());
+      const unique = Array.from(
+        new Map(
+          combined.map(item => [
+            String(item._id || `${item.customerName || item.name || ''}-${item.phone || ''}-${item.date || ''}`),
+            item
+          ])
+        ).values()
+      );
+
       if (unique.length > 0) {
         setAppointments(unique);
         localStorage.setItem('appointments', JSON.stringify(unique));
+      } else if (localData.length > 0) {
+        setAppointments(localData);
       }
     } catch (e) {
       if (localData.length > 0) setAppointments(localData);
