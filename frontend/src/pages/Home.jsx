@@ -514,10 +514,6 @@ const Home = () => {
                 img: '/hair.webp'
               },
               {
-                title: 'Hair Treatment',
-                img: '/hair.webp'
-              },
-              {
                 title: 'Hair Styling',
                 img: '/hair1.webp'
               },
