@@ -23,10 +23,13 @@ const Gallery = () => {
     { id: 13, title: 'Microblading & Brow Design', cat: 'Beauty Care', url: '/microblading.webp', desc: 'Semi-Permanent Eyebrow Shaping & Micro-Feathering' },
     { id: 14, title: 'Luxury Manicure & Pedicure', cat: 'Beauty Care', url: '/manicure & pedicure.webp', desc: 'Relaxing Hand & Foot Spa with Cuticle Care' },
     { id: 15, title: 'Skin Infinity Studio Ambiance', cat: 'Salon Interior', url: '/shop1.webp', desc: 'Modern, Private & Hygienic Facial & Spa Rooms' },
-    { id: 16, title: 'Majesty Designer Boutique Lounge', cat: 'Salon Interior', url: '/shop3.webp', desc: 'Bespoke Designer Fitting & Bridal Consultation Lounge' }
+    { id: 16, title: 'Majesty Designer Boutique Lounge', cat: 'Salon Interior', url: '/shop3.webp', desc: 'Bespoke Designer Fitting & Bridal Consultation Lounge' },
+    { id: 17, title: 'Royal Grand Bridal Mehandi', cat: 'Mehandi Art', url: '/Mehandi 1.png', desc: 'Full Hands & Feet Intricate Bridal Mehendi with Portrait Artwork' },
+    { id: 18, title: 'Traditional Bridal Mehandi', cat: 'Mehandi Art', url: '/Mehandi2.png', desc: 'Exquisite Custom Palm & Arm Bridal Pattern with Lotus Motifs' },
+    { id: 19, title: 'Arabic & Designer Mehandi', cat: 'Mehandi Art', url: '/Mehandi3.png', desc: 'Floral Arabic & Festive Mehendi Work for Special Occasions' }
   ];
 
-  const categories = ['All', 'Bridal', 'Skin Care', 'Hair Care', 'Beauty Care', 'Designer Services', 'Salon Interior'];
+  const categories = ['All', 'Bridal', 'Skin Care', 'Hair Care', 'Beauty Care', 'Mehandi Art', 'Designer Services', 'Salon Interior'];
 
   const filtered = filter === 'All' ? images : images.filter(img => img.cat === filter);
 

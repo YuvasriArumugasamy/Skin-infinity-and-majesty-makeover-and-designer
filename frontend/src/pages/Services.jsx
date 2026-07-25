@@ -67,16 +67,33 @@ const Services = () => {
           icon: FiStar
         }
       ]
+    },
+    {
+      title: 'MEHANDI ART & SERVICES',
+      cards: [
+        {
+          title: 'Royal Grand Bridal Mehandi',
+          desc: 'Full hands & feet intricate bridal mehendi with portrait & mandala artwork.',
+          img: '/Mehandi 1.png',
+          icon: FiHeart
+        },
+        {
+          title: 'Traditional Bridal Mehandi',
+          desc: 'Exquisite palm & arm mehendi designs with lotus & peacock motifs.',
+          img: '/Mehandi2.png',
+          icon: FiHeart
+        },
+        {
+          title: 'Arabic & Designer Mehandi',
+          desc: 'Elegant floral Arabic & festive mehendi patterns for all special occasions.',
+          img: '/Mehandi3.png',
+          icon: FiStar
+        }
+      ]
     }
   ];
 
   const designerCards = [
-    {
-      title: 'Mehandi Service',
-      desc: 'Exquisite bridal & festive mehendi designs by professional artists.',
-      img: '/Mehandi2.png',
-      icon: FiHeart
-    },
     {
       title: 'Blouse Stitching & Aari Work',
       desc: 'Custom designer blouse stitching with intricate handcrafted Aari embroidery.',
