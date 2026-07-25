@@ -86,7 +86,14 @@ const AdminDashboard = () => {
     { _id: 's4', name: 'Designer Blouse Embroidery & Saree Draping', category: 'Couture', price: '₹8,000', duration: '2 Hours', status: 'Active' }
   ];
 
-  const [appointments, setAppointments] = useState([]);
+  const [appointments, setAppointments] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('appointments') || '[]');
+    } catch (_) {
+      return [];
+    }
+  });
+
   const [bridalRecords, setBridalRecords] = useState(() => {
     try { return JSON.parse(localStorage.getItem('bridalRecords') || '[]'); } catch (_) { return []; }
   });
@@ -206,19 +213,17 @@ const AdminDashboard = () => {
     // Fetch Appointments from API
     try {
       const res = await api.get('/api/appointments');
-      const apiData = res.data?.data || [];
-      if (Array.isArray(apiData) && apiData.length > 0) {
-        // Merge API + localStorage, deduplicate by _id
-        const combined = [...apiData, ...localData];
-        const unique = Array.from(new Map(combined.map(item => [String(item._id), item])).values());
+      const apiData = (res.data?.success && Array.isArray(res.data?.data)) ? res.data.data : [];
+      const combined = [...apiData, ...localData];
+      const unique = Array.from(new Map(combined.map(item => [String(item._id || item.phone || Math.random()), item])).values());
+      if (unique.length > 0) {
         setAppointments(unique);
         localStorage.setItem('appointments', JSON.stringify(unique));
-      } else if (localData.length > 0) {
-        setAppointments(localData);
       }
     } catch (e) {
       if (localData.length > 0) setAppointments(localData);
     }
+
 
     // Fetch Contact Messages from API
     try {
