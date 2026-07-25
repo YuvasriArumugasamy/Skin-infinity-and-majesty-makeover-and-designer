@@ -1,13 +1,10 @@
 const axios = require('axios');
 
-// Shared Cloud Bin ID for Skin Infinity & Majesty studio
-let BLOB_ID = '1332555555555555555';
-const BLOB_BASE = 'https://jsonblob.com/api/jsonBlob';
+const KV_STORE_URL = 'https://kvdb.io/skininfinity2026majesty/appointments';
 
-// Initial sample data if cloud is empty
 const defaultAppointments = [
   {
-    _id: 'apt-default-1',
+    _id: 'apt-sample-1',
     customerName: 'yuvasri',
     phone: '9876543210',
     email: 'yuvasri@skininfinity.com',
@@ -21,56 +18,37 @@ const defaultAppointments = [
   }
 ];
 
-/**
- * Helper to fetch persistent appointments array from Cloud Storage
- */
-async function getCloudAppointments() {
+async function getAppointments() {
   try {
-    const res = await axios.get(`${BLOB_BASE}/${BLOB_ID}`, { timeout: 4000 });
-    if (Array.isArray(res.data) && res.data.length > 0) {
+    const res = await axios.get(KV_STORE_URL, { timeout: 4000 });
+    if (res.data && Array.isArray(res.data)) {
       return res.data;
     }
+    if (typeof res.data === 'string') {
+      const parsed = JSON.parse(res.data);
+      if (Array.isArray(parsed)) return parsed;
+    }
   } catch (e) {
-    // If Blob ID 404s or is missing, auto-create a new Cloud Bin via POST
     try {
-      const createRes = await axios.post(BLOB_BASE, defaultAppointments, {
-        headers: { 'Content-Type': 'application/json' },
+      await axios.post(KV_STORE_URL, JSON.stringify(defaultAppointments), {
+        headers: { 'Content-Type': 'text/plain' },
         timeout: 4000
       });
-      if (createRes.headers && createRes.headers.location) {
-        const parts = createRes.headers.location.split('/');
-        BLOB_ID = parts[parts.length - 1];
-        return defaultAppointments;
-      }
     } catch (_) {}
   }
   return defaultAppointments;
 }
 
-/**
- * Helper to save persistent appointments array to Cloud Storage
- */
-async function saveCloudAppointments(list) {
+async function saveAppointments(list) {
   try {
-    await axios.put(`${BLOB_BASE}/${BLOB_ID}`, list, {
-      headers: { 'Content-Type': 'application/json' },
+    await axios.post(KV_STORE_URL, JSON.stringify(list), {
+      headers: { 'Content-Type': 'text/plain' },
       timeout: 4000
     });
     return true;
   } catch (e) {
-    try {
-      const createRes = await axios.post(BLOB_BASE, list, {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 4000
-      });
-      if (createRes.headers && createRes.headers.location) {
-        const parts = createRes.headers.location.split('/');
-        BLOB_ID = parts[parts.length - 1];
-        return true;
-      }
-    } catch (_) {}
+    return false;
   }
-  return false;
 }
 
 module.exports = async (req, res) => {
@@ -86,7 +64,7 @@ module.exports = async (req, res) => {
 
   // GET /api/appointments
   if (req.method === 'GET') {
-    const data = await getCloudAppointments();
+    const data = await getAppointments();
     return res.status(200).json({ success: true, count: data.length, data });
   }
 
@@ -111,29 +89,29 @@ module.exports = async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
-    const currentList = await getCloudAppointments();
+    const currentList = await getAppointments();
     const updatedList = [created, ...currentList.filter(item => item && (item.phone !== created.phone || item.date !== created.date))];
 
-    await saveCloudAppointments(updatedList);
+    await saveAppointments(updatedList);
 
     return res.status(201).json({ success: true, message: 'Appointment booked successfully!', data: created });
   }
 
-  // PATCH /api/appointments/:id/status
+  // PATCH /api/appointments
   if (req.method === 'PATCH' || req.method === 'PUT') {
     const { id, status } = req.body || {};
-    const currentList = await getCloudAppointments();
+    const currentList = await getAppointments();
     const updatedList = currentList.map(item => item._id === id ? { ...item, status: status || item.status } : item);
-    await saveCloudAppointments(updatedList);
+    await saveAppointments(updatedList);
     return res.status(200).json({ success: true, message: 'Status updated', data: updatedList });
   }
 
-  // DELETE /api/appointments/:id
+  // DELETE /api/appointments
   if (req.method === 'DELETE') {
     const { id } = req.query || req.body || {};
-    const currentList = await getCloudAppointments();
+    const currentList = await getAppointments();
     const updatedList = currentList.filter(item => item._id !== id);
-    await saveCloudAppointments(updatedList);
+    await saveAppointments(updatedList);
     return res.status(200).json({ success: true, message: 'Appointment deleted' });
   }
 

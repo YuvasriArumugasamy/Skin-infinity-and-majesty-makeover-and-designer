@@ -1,10 +1,9 @@
 import axios from 'axios';
 
-// Primary Cloud Bin URL
-let cloudBinUrl = 'https://jsonblob.com/api/jsonBlob/1332456789012345678';
+const KV_STORE_URL = 'https://kvdb.io/skininfinity2026majesty/appointments';
 
 /**
- * Save an appointment to shared Cloud Store across all devices & browsers
+ * Save an appointment to shared permanent Cloud Store across all devices & browsers
  */
 export const saveAppointmentToCloud = async (aptData) => {
   const newApt = {
@@ -21,7 +20,7 @@ export const saveAppointmentToCloud = async (aptData) => {
     createdAt: new Date().toISOString()
   };
 
-  // Save locally in current browser localStorage first
+  // 1. Save locally in current browser localStorage immediately
   try {
     const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
     const isDuplicate = existing.some(item => item && item.customerName === newApt.customerName && item.phone === newApt.phone && item.date === newApt.date);
@@ -30,13 +29,16 @@ export const saveAppointmentToCloud = async (aptData) => {
     }
   } catch (_) {}
 
-  // Post to Cloud Bin for cross-device sync
+  // 2. Save to Permanent Cloud Key
   try {
     let currentList = [];
     try {
-      const getRes = await axios.get(cloudBinUrl, { timeout: 3500 });
-      if (Array.isArray(getRes.data)) {
-        currentList = getRes.data;
+      const res = await axios.get(KV_STORE_URL, { timeout: 3500 });
+      if (res.data && Array.isArray(res.data)) {
+        currentList = res.data;
+      } else if (typeof res.data === 'string') {
+        const parsed = JSON.parse(res.data);
+        if (Array.isArray(parsed)) currentList = parsed;
       }
     } catch (_) {}
 
@@ -45,23 +47,11 @@ export const saveAppointmentToCloud = async (aptData) => {
       ...currentList.filter(item => item && (item.phone !== newApt.phone || item.date !== newApt.date))
     ];
 
-    try {
-      await axios.put(cloudBinUrl, updatedList, {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 4000
-      });
-      return true;
-    } catch (putErr) {
-      // If PUT fails, create a new Cloud Bin via POST
-      const createRes = await axios.post('https://jsonblob.com/api/jsonBlob', updatedList, {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 4000
-      });
-      if (createRes.headers && createRes.headers.location) {
-        cloudBinUrl = createRes.headers.location.replace('http:', 'https:');
-      }
-      return true;
-    }
+    await axios.post(KV_STORE_URL, JSON.stringify(updatedList), {
+      headers: { 'Content-Type': 'text/plain' },
+      timeout: 4000
+    });
+    return true;
   } catch (error) {
     console.warn('Cloud Sync notice:', error?.message);
     return false;
@@ -69,13 +59,17 @@ export const saveAppointmentToCloud = async (aptData) => {
 };
 
 /**
- * Fetch all appointments from shared Cloud Store across all devices
+ * Fetch all appointments from permanent Cloud Store across all devices
  */
 export const fetchAppointmentsFromCloud = async () => {
   try {
-    const res = await axios.get(cloudBinUrl, { timeout: 4000 });
-    if (Array.isArray(res.data)) {
+    const res = await axios.get(KV_STORE_URL, { timeout: 4000 });
+    if (res.data && Array.isArray(res.data)) {
       return res.data;
+    }
+    if (typeof res.data === 'string') {
+      const parsed = JSON.parse(res.data);
+      if (Array.isArray(parsed)) return parsed;
     }
   } catch (error) {
     console.warn('Cloud Sync fetch notice:', error?.message);
