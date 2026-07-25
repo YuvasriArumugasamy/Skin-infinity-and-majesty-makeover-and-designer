@@ -6,7 +6,7 @@ import {
   FiPhone, FiCalendar, FiArrowRight, FiCheck, FiStar, 
   FiAward, FiHeart, FiShield, FiChevronLeft, FiChevronRight, FiMapPin 
 } from 'react-icons/fi';
-import { FaWhatsapp } from 'react-icons/fa';
+import { FaWhatsapp, FaLeaf } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 
 const Home = () => {
