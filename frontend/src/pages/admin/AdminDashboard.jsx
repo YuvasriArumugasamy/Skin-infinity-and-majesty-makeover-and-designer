@@ -8,8 +8,9 @@ import {
   FiGrid, FiCalendar, FiScissors, FiStar, 
   FiLogOut, FiCheck, FiX, FiRefreshCw,
   FiPlus, FiSearch, FiClock, FiTrash2, FiMenu, FiDollarSign,
-  FiHeart, FiImage, FiUpload, FiInbox, FiExternalLink
+  FiHeart, FiImage, FiUpload, FiInbox, FiExternalLink, FiBell
 } from 'react-icons/fi';
+
 import { FaWhatsapp } from 'react-icons/fa';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 
@@ -160,7 +161,40 @@ const AdminDashboard = () => {
 
     return result.length > 0 ? result : [{ name: 'Today', revenue: 0 }];
   }, [appointments]);
+  const handleTestNotification = () => {
+    toast.custom(
+      (t) => (
+        <div
+          className={`${
+            t.visible ? 'animate-enter' : 'animate-leave'
+          } max-w-md w-full bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl pointer-events-auto flex ring-1 ring-black/5 border border-pink-200 p-4 gap-3.5 items-center`}
+        >
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-100 to-amber-100 text-[#B76E79] flex items-center justify-center text-xl shrink-0 shadow-xs">
+            👑
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-xs font-bold text-[#2C2225] uppercase tracking-wider flex items-center gap-1.5">
+              <span>System Notification Active</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            </p>
+            <p className="text-[11px] text-gray-600 mt-0.5 font-medium leading-tight">
+              Real-time live notification system is working perfectly! ✨ ({new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })})
+            </p>
+          </div>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="px-2.5 py-1 rounded-lg bg-pink-50 hover:bg-pink-100 text-[11px] font-bold text-[#B76E79] transition shrink-0 border border-pink-200"
+          >
+            Close
+          </button>
+        </div>
+      ),
+      { duration: 4500, position: 'top-right' }
+    );
+  };
+
   const fetchData = async () => {
+
     setLoading(true);
     let localData = [];
     let localMsgs = [];
@@ -948,6 +982,15 @@ const AdminDashboard = () => {
 
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button 
+              onClick={handleTestNotification} 
+              className="p-2 sm:px-3 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-50 to-pink-50 text-[#B76E79] text-xs font-bold hover:bg-pink-100 border border-pink-200/80 transition flex items-center gap-1.5 shadow-2xs group"
+              title="Test Live Notification"
+            >
+              <FiBell className="text-sm text-[#C57488] group-hover:rotate-12 transition-transform" />
+              <span className="hidden sm:inline">Test Notification</span>
+            </button>
+
+            <button 
               onClick={fetchData} 
               className="p-2 sm:p-2.5 rounded-xl bg-pink-50 text-[#B76E79] text-xs font-bold hover:bg-pink-100 border border-pink-200 transition flex items-center gap-1.5"
               title="Refresh Live Data"
@@ -955,6 +998,7 @@ const AdminDashboard = () => {
               <FiRefreshCw className={`text-sm ${loading ? 'animate-spin' : ''}`} />
               <span className="hidden sm:inline">Sync Live</span>
             </button>
+
 
             <button
               onClick={() => setBookingModalOpen(true)}
