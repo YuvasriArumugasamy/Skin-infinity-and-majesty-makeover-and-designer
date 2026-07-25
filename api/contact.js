@@ -1,8 +1,52 @@
 const axios = require('axios');
 
-const FIRESTORE_URL = 'https://firestore.googleapis.com/v1/projects/skin-infinity/databases/(default)/documents/contact_messages';
+let BLOB_ID = '1332666666666666666';
+const BLOB_BASE = 'https://jsonblob.com/api/jsonBlob';
 
-let inMemoryMsgs = [];
+const defaultMsgs = [];
+
+async function getCloudMsgs() {
+  try {
+    const res = await axios.get(`${BLOB_BASE}/${BLOB_ID}`, { timeout: 4000 });
+    if (Array.isArray(res.data)) return res.data;
+  } catch (e) {
+    try {
+      const createRes = await axios.post(BLOB_BASE, defaultMsgs, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 4000
+      });
+      if (createRes.headers && createRes.headers.location) {
+        const parts = createRes.headers.location.split('/');
+        BLOB_ID = parts[parts.length - 1];
+        return defaultMsgs;
+      }
+    } catch (_) {}
+  }
+  return defaultMsgs;
+}
+
+async function saveCloudMsgs(list) {
+  try {
+    await axios.put(`${BLOB_BASE}/${BLOB_ID}`, list, {
+      headers: { 'Content-Type': 'application/json' },
+      timeout: 4000
+    });
+    return true;
+  } catch (e) {
+    try {
+      const createRes = await axios.post(BLOB_BASE, list, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 4000
+      });
+      if (createRes.headers && createRes.headers.location) {
+        const parts = createRes.headers.location.split('/');
+        BLOB_ID = parts[parts.length - 1];
+        return true;
+      }
+    } catch (_) {}
+  }
+  return false;
+}
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -15,29 +59,8 @@ module.exports = async (req, res) => {
   }
 
   if (req.method === 'GET') {
-    try {
-      const fsRes = await axios.get(FIRESTORE_URL, { timeout: 4000 });
-      const docs = fsRes.data?.documents || [];
-      const cloudMsgs = docs.map(doc => {
-        const fields = doc.fields || {};
-        return {
-          _id: fields.docId?.stringValue || doc.name.split('/').pop(),
-          fullName: fields.fullName?.stringValue || 'Sender',
-          phone: fields.phone?.stringValue || '',
-          email: fields.email?.stringValue || '',
-          subject: fields.subject?.stringValue || 'General Inquiry',
-          message: fields.message?.stringValue || '',
-          readStatus: fields.readStatus?.booleanValue || false,
-          createdAt: fields.createdAt?.stringValue || new Date().toISOString()
-        };
-      });
-
-      const combined = [...cloudMsgs, ...inMemoryMsgs];
-      const unique = Array.from(new Map(combined.map(item => [String(item._id), item])).values());
-      return res.status(200).json({ success: true, count: unique.length, data: unique });
-    } catch (e) {
-      return res.status(200).json({ success: true, count: inMemoryMsgs.length, data: inMemoryMsgs });
-    }
+    const data = await getCloudMsgs();
+    return res.status(200).json({ success: true, count: data.length, data });
   }
 
   if (req.method === 'POST') {
@@ -46,9 +69,8 @@ module.exports = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Full name, phone and message are required' });
     }
 
-    const docId = 'c_' + Date.now();
     const created = {
-      _id: docId,
+      _id: 'c-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
       fullName: String(fullName).trim(),
       phone: String(phone).trim(),
       email: email ? String(email).trim() : '',
@@ -58,23 +80,9 @@ module.exports = async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
-    inMemoryMsgs.unshift(created);
-
-    try {
-      const payload = {
-        fields: {
-          docId: { stringValue: docId },
-          fullName: { stringValue: created.fullName },
-          phone: { stringValue: created.phone },
-          email: { stringValue: created.email },
-          subject: { stringValue: created.subject },
-          message: { stringValue: created.message },
-          readStatus: { booleanValue: false },
-          createdAt: { stringValue: created.createdAt }
-        }
-      };
-      await axios.post(`${FIRESTORE_URL}?documentId=${docId}`, payload, { timeout: 4000 });
-    } catch (err) {}
+    const currentList = await getCloudMsgs();
+    const updatedList = [created, ...currentList];
+    await saveCloudMsgs(updatedList);
 
     return res.status(201).json({ success: true, message: 'Message sent successfully!', data: created });
   }

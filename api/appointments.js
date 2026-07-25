@@ -1,24 +1,80 @@
 const axios = require('axios');
 
-const FIRESTORE_URL = 'https://firestore.googleapis.com/v1/projects/skin-infinity/databases/(default)/documents/appointments';
+// Shared Cloud Bin ID for Skin Infinity & Majesty studio
+let BLOB_ID = '1332555555555555555';
+const BLOB_BASE = 'https://jsonblob.com/api/jsonBlob';
 
-// In-memory fallback for instant Vercel serverless response
-let inMemoryStore = [
+// Initial sample data if cloud is empty
+const defaultAppointments = [
   {
-    _id: 'sample-1',
+    _id: 'apt-default-1',
     customerName: 'yuvasri',
     phone: '9876543210',
-    service: 'Skin Lightening Chemical Peeling',
+    email: 'yuvasri@skininfinity.com',
     category: 'Skin Care',
+    service: 'Skin Lightening Chemical Peeling',
     date: '2026-07-31',
     time: '10:00 AM',
+    notes: 'Sample booking',
     status: 'Pending',
     createdAt: new Date().toISOString()
   }
 ];
 
+/**
+ * Helper to fetch persistent appointments array from Cloud Storage
+ */
+async function getCloudAppointments() {
+  try {
+    const res = await axios.get(`${BLOB_BASE}/${BLOB_ID}`, { timeout: 4000 });
+    if (Array.isArray(res.data) && res.data.length > 0) {
+      return res.data;
+    }
+  } catch (e) {
+    // If Blob ID 404s or is missing, auto-create a new Cloud Bin via POST
+    try {
+      const createRes = await axios.post(BLOB_BASE, defaultAppointments, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 4000
+      });
+      if (createRes.headers && createRes.headers.location) {
+        const parts = createRes.headers.location.split('/');
+        BLOB_ID = parts[parts.length - 1];
+        return defaultAppointments;
+      }
+    } catch (_) {}
+  }
+  return defaultAppointments;
+}
+
+/**
+ * Helper to save persistent appointments array to Cloud Storage
+ */
+async function saveCloudAppointments(list) {
+  try {
+    await axios.put(`${BLOB_BASE}/${BLOB_ID}`, list, {
+      headers: { 'Content-Type': 'application/json' },
+      timeout: 4000
+    });
+    return true;
+  } catch (e) {
+    try {
+      const createRes = await axios.post(BLOB_BASE, list, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 4000
+      });
+      if (createRes.headers && createRes.headers.location) {
+        const parts = createRes.headers.location.split('/');
+        BLOB_ID = parts[parts.length - 1];
+        return true;
+      }
+    } catch (_) {}
+  }
+  return false;
+}
+
 module.exports = async (req, res) => {
-  // CORS Headers
+  // CORS Headers for Vercel Serverless
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -30,32 +86,8 @@ module.exports = async (req, res) => {
 
   // GET /api/appointments
   if (req.method === 'GET') {
-    try {
-      const fsRes = await axios.get(FIRESTORE_URL, { timeout: 4000 });
-      const docs = fsRes.data?.documents || [];
-      const cloudData = docs.map(doc => {
-        const fields = doc.fields || {};
-        return {
-          _id: fields.docId?.stringValue || doc.name.split('/').pop(),
-          customerName: fields.customerName?.stringValue || 'Client',
-          phone: fields.phone?.stringValue || '',
-          email: fields.email?.stringValue || '',
-          category: fields.category?.stringValue || 'Beauty Care',
-          service: fields.service?.stringValue || 'General Treatment',
-          date: fields.date?.stringValue || new Date().toISOString().split('T')[0],
-          time: fields.time?.stringValue || '10:00 AM',
-          notes: fields.notes?.stringValue || '',
-          status: fields.status?.stringValue || 'Pending',
-          createdAt: fields.createdAt?.stringValue || new Date().toISOString()
-        };
-      });
-
-      const combined = [...cloudData, ...inMemoryStore];
-      const unique = Array.from(new Map(combined.map(item => [String(item._id), item])).values());
-      return res.status(200).json({ success: true, count: unique.length, data: unique });
-    } catch (e) {
-      return res.status(200).json({ success: true, count: inMemoryStore.length, data: inMemoryStore });
-    }
+    const data = await getCloudAppointments();
+    return res.status(200).json({ success: true, count: data.length, data });
   }
 
   // POST /api/appointments
@@ -65,9 +97,8 @@ module.exports = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Customer name and phone are required' });
     }
 
-    const docId = 'apt_' + Date.now();
     const created = {
-      _id: docId,
+      _id: 'apt-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
       customerName: String(customerName).trim(),
       phone: String(phone).trim(),
       email: email ? String(email).trim() : '',
@@ -80,31 +111,30 @@ module.exports = async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
-    inMemoryStore.unshift(created);
+    const currentList = await getCloudAppointments();
+    const updatedList = [created, ...currentList.filter(item => item && (item.phone !== created.phone || item.date !== created.date))];
 
-    // Save to Firestore Cloud in background
-    try {
-      const payload = {
-        fields: {
-          docId: { stringValue: docId },
-          customerName: { stringValue: created.customerName },
-          phone: { stringValue: created.phone },
-          email: { stringValue: created.email },
-          category: { stringValue: created.category },
-          service: { stringValue: created.service },
-          date: { stringValue: created.date },
-          time: { stringValue: created.time },
-          notes: { stringValue: created.notes },
-          status: { stringValue: created.status },
-          createdAt: { stringValue: created.createdAt }
-        }
-      };
-      await axios.post(`${FIRESTORE_URL}?documentId=${docId}`, payload, { timeout: 4000 });
-    } catch (err) {
-      console.warn('Firestore cloud save notice:', err.message);
-    }
+    await saveCloudAppointments(updatedList);
 
     return res.status(201).json({ success: true, message: 'Appointment booked successfully!', data: created });
+  }
+
+  // PATCH /api/appointments/:id/status
+  if (req.method === 'PATCH' || req.method === 'PUT') {
+    const { id, status } = req.body || {};
+    const currentList = await getCloudAppointments();
+    const updatedList = currentList.map(item => item._id === id ? { ...item, status: status || item.status } : item);
+    await saveCloudAppointments(updatedList);
+    return res.status(200).json({ success: true, message: 'Status updated', data: updatedList });
+  }
+
+  // DELETE /api/appointments/:id
+  if (req.method === 'DELETE') {
+    const { id } = req.query || req.body || {};
+    const currentList = await getCloudAppointments();
+    const updatedList = currentList.filter(item => item._id !== id);
+    await saveCloudAppointments(updatedList);
+    return res.status(200).json({ success: true, message: 'Appointment deleted' });
   }
 
   return res.status(405).json({ success: false, message: 'Method Not Allowed' });
