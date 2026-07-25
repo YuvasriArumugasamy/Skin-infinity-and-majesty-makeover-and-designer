@@ -220,21 +220,21 @@ const Gallery = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedItem(null)}
-              className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 sm:p-6"
+              className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
             >
               <motion.div
                 initial={{ scale: 0.9, y: 20 }}
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.9, y: 20 }}
                 onClick={(e) => e.stopPropagation()}
-                className="bg-white max-w-4xl w-full rounded-3xl overflow-hidden shadow-2xl border border-pink-200 grid grid-cols-1 md:grid-cols-12 max-h-[90vh]"
+                className="bg-white max-w-4xl w-full rounded-3xl overflow-hidden shadow-2xl border border-pink-200 grid grid-cols-1 md:grid-cols-12 max-h-[92vh] my-auto overflow-y-auto md:overflow-hidden"
               >
                 {/* Left: Image */}
-                <div className="md:col-span-7 bg-black flex items-center justify-center p-2 relative min-h-[300px] md:min-h-[450px]">
+                <div className="md:col-span-7 bg-black flex items-center justify-center p-2 relative min-h-[220px] sm:min-h-[280px] md:min-h-[450px]">
                   <img 
                     src={selectedItem.url} 
                     alt={selectedItem.title} 
-                    className="max-h-[70vh] md:max-h-[80vh] w-full object-contain" 
+                    className="max-h-[250px] sm:max-h-[320px] md:max-h-[80vh] w-full object-contain" 
                   />
                   <span className="absolute top-4 left-4 bg-black/60 text-amber-300 text-xs font-bold px-3 py-1 rounded-full border border-amber-300/30">
                     {selectedItem.cat}
@@ -242,26 +242,26 @@ const Gallery = () => {
                 </div>
 
                 {/* Right: Details & Action */}
-                <div className="md:col-span-5 p-6 sm:p-8 flex flex-col justify-between bg-white relative">
+                <div className="md:col-span-5 p-5 sm:p-8 flex flex-col justify-between bg-white relative overflow-y-auto md:max-h-[90vh]">
                   
                   {/* Close button */}
                   <button
                     onClick={() => setSelectedItem(null)}
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 bg-pink-50 hover:bg-pink-100 p-2 rounded-full transition"
+                    className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 bg-pink-50 hover:bg-pink-100 p-2 rounded-full transition z-10"
                   >
                     <FiX className="text-xl" />
                   </button>
 
-                  <div className="space-y-4 pt-2">
-                    <span className="text-[10px] font-bold tracking-widest text-[#C57488] uppercase bg-pink-50 px-2.5 py-1 rounded-md border border-pink-100">
+                  <div className="space-y-3 sm:space-y-4 pt-1">
+                    <span className="text-[10px] font-bold tracking-widest text-[#C57488] uppercase bg-pink-50 px-2.5 py-1 rounded-md border border-pink-100 inline-block">
                       SKIN INFINITY & MAJESTY
                     </span>
                     
-                    <h2 className="text-2xl font-serif-luxury font-bold text-gray-800">
+                    <h2 className="text-xl sm:text-2xl font-serif-luxury font-bold text-gray-800 pr-6">
                       {selectedItem.title}
                     </h2>
 
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed border-t border-b border-pink-100 py-3">
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed border-t border-b border-pink-100 py-2.5">
                       {selectedItem.desc}
                     </p>
 
@@ -275,7 +275,7 @@ const Gallery = () => {
                     </div>
                   </div>
 
-                  <div className="pt-6 space-y-3">
+                  <div className="pt-4 sm:pt-6 space-y-2.5">
                     <Link
                       to="/contact"
                       onClick={() => setSelectedItem(null)}
