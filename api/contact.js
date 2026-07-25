@@ -1,51 +1,37 @@
-const axios = require('axios');
-
-let BLOB_ID = '1332666666666666666';
-const BLOB_BASE = 'https://jsonblob.com/api/jsonBlob';
+const KV_STORE_URL = 'https://kvdb.io/skininfinity2026majesty/contact_messages';
 
 const defaultMsgs = [];
 
-async function getCloudMsgs() {
+async function getMsgs() {
   try {
-    const res = await axios.get(`${BLOB_BASE}/${BLOB_ID}`, { timeout: 4000 });
-    if (Array.isArray(res.data)) return res.data;
+    const res = await fetch(KV_STORE_URL);
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) return data;
+    }
   } catch (e) {
     try {
-      const createRes = await axios.post(BLOB_BASE, defaultMsgs, {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 4000
+      await fetch(KV_STORE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(defaultMsgs)
       });
-      if (createRes.headers && createRes.headers.location) {
-        const parts = createRes.headers.location.split('/');
-        BLOB_ID = parts[parts.length - 1];
-        return defaultMsgs;
-      }
     } catch (_) {}
   }
   return defaultMsgs;
 }
 
-async function saveCloudMsgs(list) {
+async function saveMsgs(list) {
   try {
-    await axios.put(`${BLOB_BASE}/${BLOB_ID}`, list, {
-      headers: { 'Content-Type': 'application/json' },
-      timeout: 4000
+    const res = await fetch(KV_STORE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(list)
     });
-    return true;
+    return res.ok;
   } catch (e) {
-    try {
-      const createRes = await axios.post(BLOB_BASE, list, {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 4000
-      });
-      if (createRes.headers && createRes.headers.location) {
-        const parts = createRes.headers.location.split('/');
-        BLOB_ID = parts[parts.length - 1];
-        return true;
-      }
-    } catch (_) {}
+    return false;
   }
-  return false;
 }
 
 module.exports = async (req, res) => {
@@ -59,12 +45,13 @@ module.exports = async (req, res) => {
   }
 
   if (req.method === 'GET') {
-    const data = await getCloudMsgs();
+    const data = await getMsgs();
     return res.status(200).json({ success: true, count: data.length, data });
   }
 
   if (req.method === 'POST') {
-    const { fullName, phone, email, subject, message } = req.body || {};
+    const body = req.body || {};
+    const { fullName, phone, email, subject, message } = body;
     if (!fullName || !phone || !message) {
       return res.status(400).json({ success: false, message: 'Full name, phone and message are required' });
     }
@@ -80,9 +67,9 @@ module.exports = async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
-    const currentList = await getCloudMsgs();
+    const currentList = await getMsgs();
     const updatedList = [created, ...currentList];
-    await saveCloudMsgs(updatedList);
+    await saveMsgs(updatedList);
 
     return res.status(201).json({ success: true, message: 'Message sent successfully!', data: created });
   }

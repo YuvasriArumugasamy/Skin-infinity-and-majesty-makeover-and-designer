@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 const KV_STORE_URL = 'https://kvdb.io/skininfinity2026majesty/appointments';
 
 const defaultAppointments = [
@@ -20,19 +18,17 @@ const defaultAppointments = [
 
 async function getAppointments() {
   try {
-    const res = await axios.get(KV_STORE_URL, { timeout: 4000 });
-    if (res.data && Array.isArray(res.data)) {
-      return res.data;
-    }
-    if (typeof res.data === 'string') {
-      const parsed = JSON.parse(res.data);
-      if (Array.isArray(parsed)) return parsed;
+    const res = await fetch(KV_STORE_URL);
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) return data;
     }
   } catch (e) {
     try {
-      await axios.post(KV_STORE_URL, JSON.stringify(defaultAppointments), {
+      await fetch(KV_STORE_URL, {
+        method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
-        timeout: 4000
+        body: JSON.stringify(defaultAppointments)
       });
     } catch (_) {}
   }
@@ -41,11 +37,12 @@ async function getAppointments() {
 
 async function saveAppointments(list) {
   try {
-    await axios.post(KV_STORE_URL, JSON.stringify(list), {
+    const res = await fetch(KV_STORE_URL, {
+      method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
-      timeout: 4000
+      body: JSON.stringify(list)
     });
-    return true;
+    return res.ok;
   } catch (e) {
     return false;
   }
@@ -70,7 +67,8 @@ module.exports = async (req, res) => {
 
   // POST /api/appointments
   if (req.method === 'POST') {
-    const { customerName, phone, email, category, service, date, time, notes } = req.body || {};
+    const body = req.body || {};
+    const { customerName, phone, email, category, service, date, time, notes } = body;
     if (!customerName || !phone) {
       return res.status(400).json({ success: false, message: 'Customer name and phone are required' });
     }

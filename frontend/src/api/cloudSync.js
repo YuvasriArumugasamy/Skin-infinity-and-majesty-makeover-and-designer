@@ -1,13 +1,8 @@
-import axios from 'axios';
-
-const KV_STORE_URL = 'https://kvdb.io/skininfinity2026majesty/appointments';
-
 /**
  * Save an appointment to shared permanent Cloud Store across all devices & browsers
  */
 export const saveAppointmentToCloud = async (aptData) => {
   const newApt = {
-    _id: 'cloud-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
     customerName: String(aptData.customerName || 'Client').trim(),
     phone: String(aptData.phone || '').trim(),
     email: String(aptData.email || '').trim(),
@@ -15,64 +10,56 @@ export const saveAppointmentToCloud = async (aptData) => {
     service: String(aptData.service || 'General Treatment'),
     date: String(aptData.date || new Date().toISOString().split('T')[0]),
     time: String(aptData.time || '10:00 AM'),
-    notes: String(aptData.notes || '').trim(),
-    status: 'Pending',
-    createdAt: new Date().toISOString()
+    notes: String(aptData.notes || '').trim()
   };
 
   // 1. Save locally in current browser localStorage immediately
   try {
     const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
+    const tempApt = { _id: 'local-' + Date.now(), ...newApt, status: 'Pending', createdAt: new Date().toISOString() };
     const isDuplicate = existing.some(item => item && item.customerName === newApt.customerName && item.phone === newApt.phone && item.date === newApt.date);
     if (!isDuplicate) {
-      localStorage.setItem('appointments', JSON.stringify([newApt, ...existing]));
+      localStorage.setItem('appointments', JSON.stringify([tempApt, ...existing]));
     }
   } catch (_) {}
 
-  // 2. Save to Permanent Cloud Key
+  // 2. Post to same-domain Vercel Serverless Function /api/appointments (Zero CORS Issue)
   try {
-    let currentList = [];
-    try {
-      const res = await axios.get(KV_STORE_URL, { timeout: 3500 });
-      if (res.data && Array.isArray(res.data)) {
-        currentList = res.data;
-      } else if (typeof res.data === 'string') {
-        const parsed = JSON.parse(res.data);
-        if (Array.isArray(parsed)) currentList = parsed;
-      }
-    } catch (_) {}
-
-    const updatedList = [
-      newApt,
-      ...currentList.filter(item => item && (item.phone !== newApt.phone || item.date !== newApt.date))
-    ];
-
-    await axios.post(KV_STORE_URL, JSON.stringify(updatedList), {
-      headers: { 'Content-Type': 'text/plain' },
-      timeout: 4000
+    const res = await fetch('/api/appointments', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newApt)
     });
-    return true;
+    if (res.ok) {
+      const json = await res.json();
+      return json?.data;
+    }
   } catch (error) {
-    console.warn('Cloud Sync notice:', error?.message);
-    return false;
+    console.warn('Cloud Sync save notice:', error?.message);
   }
+  return null;
 };
 
 /**
- * Fetch all appointments from permanent Cloud Store across all devices
+ * Fetch all appointments from Vercel Serverless /api/appointments
  */
 export const fetchAppointmentsFromCloud = async () => {
   try {
-    const res = await axios.get(KV_STORE_URL, { timeout: 4000 });
-    if (res.data && Array.isArray(res.data)) {
-      return res.data;
-    }
-    if (typeof res.data === 'string') {
-      const parsed = JSON.parse(res.data);
-      if (Array.isArray(parsed)) return parsed;
+    const res = await fetch('/api/appointments');
+    if (res.ok) {
+      const json = await res.json();
+      if (json?.data && Array.isArray(json.data)) {
+        return json.data;
+      }
     }
   } catch (error) {
     console.warn('Cloud Sync fetch notice:', error?.message);
   }
-  return [];
+
+  // LocalStorage Fallback
+  try {
+    return JSON.parse(localStorage.getItem('appointments') || '[]');
+  } catch (_) {
+    return [];
+  }
 };
