@@ -1,38 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import SEO from '../components/SEO';
 import { FiStar, FiHeart, FiMaximize2, FiX, FiCheckCircle, FiAward, FiFilter } from 'react-icons/fi';
+
+// Fallback static images (shown if API is down)
+const staticImages = [
+  { _id: '1', title: 'Luxury Bridal Makeover', category: 'Bridal', image: '/bride1.webp', desc: 'Flawless HD Bridal Makeup & Signature Hair Styling' },
+  { _id: '2', title: 'Royal South Indian Bride', category: 'Bridal', image: '/bride2.webp', desc: 'Traditional Bridal Look with Antique Jewelry Match' },
+  { _id: '3', title: 'Advance Hydra Facial', category: 'Skin Care', image: '/advance hydrs facial.webp', desc: 'Deep Pore Cleansing, Exfoliation & Glow Hydration' },
+  { _id: '4', title: 'Skin Lightening & Chemical Peel', category: 'Skin Care', image: '/skin lightening chemical peeling.webp', desc: 'Dermat-Approved Pigmentation Care & Tone Renewal' },
+  { _id: '5', title: 'Radiant Skin Rejuvenation', category: 'Skin Care', image: '/facial.webp', desc: 'Signature Herbal & Glow Facial Therapy' },
+  { _id: '6', title: 'Botanical Hair Spa Therapy', category: 'Hair Care', image: '/hair spa.webp', desc: 'Deep Conditioning, Anti-Dandruff & Scalp Repair' },
+  { _id: '7', title: 'Handcrafted Aari Work Blouse', category: 'Designer Services', image: '/ari work.webp', desc: 'Intricate Zardosi, Beadwork & Peacock Motif Embroidery' },
+  { _id: '8', title: 'Precision Machine Embroidery', category: 'Designer Services', image: '/Machine embroider work.webp', desc: 'Custom Bridal & Designer Partywear Embroidery' },
+  { _id: '9', title: 'Designer Bridal Blouse Work', category: 'Designer Services', image: '/blouse.webp', desc: 'Custom Aari & Thread Work Designer Blouse' },
+  { _id: '10', title: 'Royal Embroidery Blouse Design', category: 'Designer Services', image: '/blouse1.webp', desc: 'Bespoke Bridal Silk Blouse Embroidery' },
+  { _id: '11', title: 'Microblading & Brow Design', category: 'Beauty Care', image: '/microblading.webp', desc: 'Semi-Permanent Eyebrow Shaping & Micro-Feathering' },
+  { _id: '12', title: 'Luxury Manicure & Pedicure', category: 'Beauty Care', image: '/manicure & pedicure.webp', desc: 'Relaxing Hand & Foot Spa with Cuticle Care' },
+  { _id: '13', title: 'Royal Grand Bridal Mehandi', category: 'Mehandi Art', image: '/Mehandi 1.webp', desc: 'Full Hands & Feet Intricate Bridal Mehendi with Portrait Artwork' },
+  { _id: '14', title: 'Traditional Bridal Mehandi', category: 'Mehandi Art', image: '/Mehandi2.webp', desc: 'Exquisite Custom Palm & Arm Bridal Pattern with Lotus Motifs' },
+  { _id: '15', title: 'Arabic & Designer Mehandi', category: 'Mehandi Art', image: '/Mehandi3.webp', desc: 'Floral Arabic & Festive Mehendi for Special Occasions' },
+  { _id: '16', title: 'Skin Infinity Studio Ambiance', category: 'Salon Interior', image: '/shop1.webp', desc: 'Modern, Private & Hygienic Facial & Spa Rooms' },
+  { _id: '17', title: 'Majesty Designer Boutique Lounge', category: 'Salon Interior', image: '/shop3.webp', desc: 'Bespoke Designer Fitting & Bridal Consultation Lounge' }
+];
 
 const Gallery = () => {
   const [filter, setFilter] = useState('All');
   const [selectedItem, setSelectedItem] = useState(null);
+  const [images, setImages] = useState(staticImages);
+  const [loadingGallery, setLoadingGallery] = useState(true);
 
-  const images = [
-    { id: 1, title: 'Luxury Bridal Makeover', cat: 'Bridal', url: '/bride1.webp', desc: 'Flawless HD Bridal Makeup & Signature Hair Styling' },
-    { id: 2, title: 'Royal South Indian Bride', cat: 'Bridal', url: '/bride2.webp', desc: 'Traditional Bridal Look with Antique Jewelry Match' },
-    { id: 3, title: 'Advance Hydra Facial', cat: 'Skin Care', url: '/advance hydrs facial.webp', desc: 'Deep Pore Cleansing, Exfoliation & Glow Hydration' },
-    { id: 4, title: 'Skin Lightening & Chemical Peel', cat: 'Skin Care', url: '/skin lightening chemical peeling.webp', desc: 'Dermat-Approved Pigmentation Care & Tone Renewal' },
-    { id: 5, title: 'Radiant Skin Rejuvenation', cat: 'Skin Care', url: '/facial.webp', desc: 'Signature Herbal & Glow Facial Therapy' },
-    { id: 6, title: 'Botanical Hair Spa Therapy', cat: 'Hair Care', url: '/hair spa.webp', desc: 'Deep Conditioning, Anti-Dandruff & Scalp Repair' },
-    { id: 7, title: 'Handcrafted Aari Work Blouse', cat: 'Designer Services', url: '/ari work.webp', desc: 'Intricate Zardosi, Beadwork & Peacock Motif Embroidery' },
-    { id: 8, title: 'Precision Machine Embroidery', cat: 'Designer Services', url: '/Machine embroider work.webp', desc: 'Custom Bridal & Designer Partywear Embroidery' },
-    { id: 9, title: 'Designer Bridal Blouse Work', cat: 'Designer Services', url: '/blouse.webp', desc: 'Custom Aari & Thread Work Designer Blouse' },
-    { id: 10, title: 'Royal Embroidery Blouse Design', cat: 'Designer Services', url: '/blouse1.webp', desc: 'Bespoke Bridal Silk Blouse Embroidery' },
-    { id: 11, title: 'Handcrafted Designer Blouse', cat: 'Designer Services', url: '/blouse4.webp', desc: 'Intricate Pattern & Maggam Work Blouse' },
-    { id: 12, title: 'Signature Bridal Blouse Art', cat: 'Designer Services', url: '/blouse5.webp', desc: 'Custom Designer Blouse Tailoring & Ornamentation' },
-    { id: 13, title: 'Microblading & Brow Design', cat: 'Beauty Care', url: '/microblading.webp', desc: 'Semi-Permanent Eyebrow Shaping & Micro-Feathering' },
-    { id: 14, title: 'Luxury Manicure & Pedicure', cat: 'Beauty Care', url: '/manicure & pedicure.webp', desc: 'Relaxing Hand & Foot Spa with Cuticle Care' },
-    { id: 15, title: 'Skin Infinity Studio Ambiance', cat: 'Salon Interior', url: '/shop1.webp', desc: 'Modern, Private & Hygienic Facial & Spa Rooms' },
-    { id: 16, title: 'Majesty Designer Boutique Lounge', cat: 'Salon Interior', url: '/shop3.webp', desc: 'Bespoke Designer Fitting & Bridal Consultation Lounge' },
-    { id: 17, title: 'Royal Grand Bridal Mehandi', cat: 'Mehandi Art', url: '/Mehandi 1.webp', desc: 'Full Hands & Feet Intricate Bridal Mehendi with Portrait Artwork' },
-    { id: 18, title: 'Traditional Bridal Mehandi', cat: 'Mehandi Art', url: '/Mehandi2.webp', desc: 'Exquisite Custom Palm & Arm Bridal Pattern with Lotus Motifs' },
-    { id: 19, title: 'Arabic & Designer Mehandi', cat: 'Mehandi Art', url: '/Mehandi3.webp', desc: 'Floral Arabic & Festive Mehendi Work for Special Occasions' }
-  ];
+  useEffect(() => {
+    const fetchGallery = async () => {
+      try {
+        const res = await axios.get('/api/gallery');
+        if (res.data.success && res.data.data.length > 0) {
+          // Map API data to consistent format
+          const mapped = res.data.data.map(item => ({
+            _id: item._id,
+            title: item.title,
+            category: item.category,
+            image: item.image,
+            desc: item.desc || item.title
+          }));
+          setImages(mapped);
+        }
+      } catch (_) {
+        // fallback to static images already set
+      } finally {
+        setLoadingGallery(false);
+      }
+    };
+    fetchGallery();
+  }, []);
 
   const categories = ['All', 'Bridal', 'Skin Care', 'Hair Care', 'Beauty Care', 'Mehandi Art', 'Designer Services', 'Salon Interior'];
-
-  const filtered = filter === 'All' ? images : images.filter(img => img.cat === filter);
+  const filtered = filter === 'All' ? images : images.filter(img => img.category === filter);
 
   return (
     <div className="bg-[#FCF9FA] min-h-screen pb-20">
@@ -144,7 +169,7 @@ const Gallery = () => {
             <FiFilter className="text-sm" /> FILTER:
           </div>
           {categories.map((cat) => {
-            const count = cat === 'All' ? images.length : images.filter(i => i.cat === cat).length;
+            const count = cat === 'All' ? images.length : images.filter(i => i.category === cat).length;
             const isActive = filter === cat;
             return (
               <button
@@ -180,21 +205,22 @@ const Gallery = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.4 }}
-                key={item.id}
+                key={item._id}
                 onClick={() => setSelectedItem(item)}
                 className="group relative rounded-3xl overflow-hidden bg-white shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer border border-pink-100/80 flex flex-col h-[340px]"
               >
                 {/* Image Container */}
                 <div className="relative w-full h-[300px] overflow-hidden bg-pink-50/30">
                   <img 
-                    src={item.url} 
+                    src={item.image} 
                     alt={item.title} 
+                    loading="lazy"
                     className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 ease-out" 
                   />
                   
                   {/* Floating Category Badge */}
                   <span className="absolute top-3 left-3 bg-black/50 backdrop-blur-md text-amber-200 text-[10px] font-bold px-3 py-1 rounded-full border border-white/20 shadow-sm uppercase tracking-wider">
-                    {item.cat}
+                    {item.category}
                   </span>
 
                   {/* Hover Overlay with Expand Icon */}
@@ -246,12 +272,12 @@ const Gallery = () => {
                 {/* Left: Image */}
                 <div className="md:col-span-7 bg-black flex items-center justify-center p-2 relative min-h-[220px] sm:min-h-[280px] md:min-h-[450px]">
                   <img 
-                    src={selectedItem.url} 
+                    src={selectedItem.image} 
                     alt={selectedItem.title} 
                     className="max-h-[250px] sm:max-h-[320px] md:max-h-[80vh] w-full object-contain" 
                   />
                   <span className="absolute top-4 left-4 bg-black/60 text-amber-300 text-xs font-bold px-3 py-1 rounded-full border border-amber-300/30">
-                    {selectedItem.cat}
+                    {selectedItem.category}
                   </span>
                 </div>
 

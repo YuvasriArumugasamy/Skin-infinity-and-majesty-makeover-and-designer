@@ -67,7 +67,7 @@ const AdminDashboard = () => {
     'Dhana L. (Designer Draper)'
   ];
 
-  // Portfolio Gallery Items
+  // Portfolio Gallery Items - loaded from API
   const initialGallery = [
     { _id: 'g1', title: 'Royal Muhurtham HD Makeup Look', category: 'Bridal Makeover', image: '/bride1.webp', status: 'Published' },
     { _id: 'g2', title: 'Handcrafted Zardozi Aari Work Blouse', category: 'Bespoke Couture', image: '/ari work.webp', status: 'Published' },
@@ -166,38 +166,49 @@ const AdminDashboard = () => {
       localMsgs = JSON.parse(localStorage.getItem('contactMessages') || '[]');
     } catch (e) {}
 
+    // Fetch Appointments from API
     try {
       const res = await axios.get('/api/appointments');
-      const apiData = res.data?.data || res.data || [];
+      const apiData = res.data?.data || [];
       if (Array.isArray(apiData) && apiData.length > 0) {
+        // Merge API + localStorage, deduplicate by _id
         const combined = [...apiData, ...localData];
-        const unique = Array.from(new Map(combined.map(item => [item._id || item.phone, item])).values());
+        const unique = Array.from(new Map(combined.map(item => [String(item._id), item])).values());
         setAppointments(unique);
         localStorage.setItem('appointments', JSON.stringify(unique));
       } else if (localData.length > 0) {
         setAppointments(localData);
       }
     } catch (e) {
-      if (localData.length > 0) {
-        setAppointments(localData);
-      }
+      if (localData.length > 0) setAppointments(localData);
     }
 
+    // Fetch Contact Messages from API
     try {
       const msgRes = await axios.get('/api/contact');
-      const apiMsgs = msgRes.data?.data || msgRes.data || [];
+      const apiMsgs = msgRes.data?.data || [];
       if (Array.isArray(apiMsgs) && apiMsgs.length > 0) {
         const combinedMsgs = [...apiMsgs, ...localMsgs];
-        const uniqueMsgs = Array.from(new Map(combinedMsgs.map(item => [item._id || item.phone + (item.createdAt || ''), item])).values());
+        const uniqueMsgs = Array.from(new Map(combinedMsgs.map(item => [String(item._id), item])).values());
         setContactMessages(uniqueMsgs);
       } else {
         setContactMessages(localMsgs);
       }
     } catch (e) {
       setContactMessages(localMsgs);
-    } finally {
-      setLoading(false);
     }
+
+    // Fetch Gallery from API
+    try {
+      const galRes = await axios.get('/api/gallery/all');
+      if (galRes.data?.success && galRes.data.data.length > 0) {
+        setGallery(galRes.data.data);
+      }
+    } catch (e) {
+      // keep initialGallery
+    }
+
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -220,7 +231,7 @@ const AdminDashboard = () => {
   }, []);
 
   // Handle Form Submissions
-  const handleCreateBooking = (e) => {
+  const handleCreateBooking = async (e) => {
     e.preventDefault();
     if (!newBooking.customerName || !newBooking.phone) {
       toast.error('Please enter Client Name and Phone number');
@@ -229,9 +240,35 @@ const AdminDashboard = () => {
     const created = {
       _id: Date.now().toString(),
       ...newBooking,
-      status: 'Confirmed'
+      status: 'Confirmed',
+      createdAt: new Date().toISOString()
     };
-    setAppointments(prev => [created, ...prev]);
+    // Save to localStorage immediately
+    setAppointments(prev => {
+      const updated = [created, ...prev];
+      localStorage.setItem('appointments', JSON.stringify(updated));
+      return updated;
+    });
+    // POST to API
+    try {
+      const res = await axios.post('/api/appointments', {
+        customerName: newBooking.customerName,
+        phone: newBooking.phone,
+        service: newBooking.service,
+        date: newBooking.date,
+        time: newBooking.time,
+        category: 'Bridal Suite',
+        notes: `Staff: ${newBooking.staff}`
+      });
+      if (res.data?.data?._id) {
+        // Update local with real DB _id
+        setAppointments(prev => {
+          const updated = prev.map(a => a._id === created._id ? { ...a, _id: res.data.data._id } : a);
+          localStorage.setItem('appointments', JSON.stringify(updated));
+          return updated;
+        });
+      }
+    } catch (_) {}
     toast.success(`Booking created for ${newBooking.customerName}! ✨`);
     setBookingModalOpen(false);
     setNewBooking({
@@ -289,7 +326,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleCreateGallery = (e) => {
+  const handleCreateGallery = async (e) => {
     e.preventDefault();
     if (!newGallery.title) {
       toast.error('Please enter Photo Title');
@@ -300,35 +337,34 @@ const AdminDashboard = () => {
       ...newGallery,
       status: 'Published'
     };
-    setGallery(prev => {
-      const updated = [created, ...prev];
-      localStorage.setItem('gallery', JSON.stringify(updated));
-      return updated;
-    });
+    setGallery(prev => [created, ...prev]);
+    // POST to API
+    try {
+      await axios.post('/api/gallery', newGallery);
+    } catch (_) {}
     toast.success('Photo added to Portfolio! 🖼️');
     setGalleryModalOpen(false);
-    setNewGallery({
-      title: '',
-      category: 'Bridal Makeover',
-      image: ''
-    });
+    setNewGallery({ title: '', category: 'Bridal Makeover', image: '' });
   };
 
-  const handleToggleGalleryStatus = (id) => {
+  const handleToggleGalleryStatus = async (id) => {
     setGallery(prev => {
       const updated = prev.map(g => g._id === id ? { ...g, status: g.status === 'Published' ? 'Draft' : 'Published' } : g);
-      localStorage.setItem('gallery', JSON.stringify(updated));
       return updated;
     });
+    const item = gallery.find(g => g._id === id);
+    const newStatus = item?.status === 'Published' ? 'Draft' : 'Published';
+    try {
+      await axios.patch(`/api/gallery/${id}/status`, { status: newStatus });
+    } catch (_) {}
     toast.success('Gallery Status Updated!');
   };
 
-  const handleDeleteGalleryItem = (id) => {
-    setGallery(prev => {
-      const updated = prev.filter(g => g._id !== id);
-      localStorage.setItem('gallery', JSON.stringify(updated));
-      return updated;
-    });
+  const handleDeleteGalleryItem = async (id) => {
+    setGallery(prev => prev.filter(g => g._id !== id));
+    try {
+      await axios.delete(`/api/gallery/${id}`);
+    } catch (_) {}
     toast.success('Photo removed');
   };
 
@@ -1660,12 +1696,15 @@ const AdminDashboard = () => {
                             <FaWhatsapp className="text-sm" /> WhatsApp Reply
                           </a>
                           <button
-                            onClick={() => {
+                            onClick={async () => {
                               setContactMessages(prev => {
                                 const updated = prev.filter(m => m._id !== msg._id);
                                 localStorage.setItem('contactMessages', JSON.stringify(updated));
                                 return updated;
                               });
+                              try {
+                                await axios.delete(`/api/contact/${msg._id}`);
+                              } catch (_) {}
                               toast.success('Message removed');
                             }}
                             className="p-2.5 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-100 transition"

@@ -93,10 +93,10 @@ const Reviews = () => {
         toast.success('Thank you! Review submitted for admin approval.');
         setFormData({ customerName: '', email: '', service: 'Bridal HD Makeover', rating: 5, reviewText: '' });
       } else {
-        toast.success('Thank you! Review recorded successfully.');
+        toast.error('Could not submit review. Please try again.');
       }
     } catch (err) {
-      toast.success('Thank you! Review recorded successfully.');
+      toast.error('Could not submit review. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }
