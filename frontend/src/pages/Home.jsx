@@ -415,7 +415,7 @@ const Home = () => {
               {
                 title: 'Aroma Oil Therapy',
                 subtitle: 'Relax & Rejuvenate',
-                img: '/Aroma Oil Therapy.png'
+                img: '/Aroma Oil Therapy.webp'
               },
               {
                 title: 'Manicure & Pedicure',
@@ -440,7 +440,7 @@ const Home = () => {
               {
                 title: 'Mehandi Service',
                 subtitle: 'Art on Your Hands',
-                img: '/Mehandi2.png'
+                img: '/Mehandi2.webp'
               }
             ].map((srv, idx) => (
               <motion.div 
@@ -573,7 +573,7 @@ const Home = () => {
               },
               {
                 title: 'Hair Transformation & Spa',
-                img: '/hair2.jpeg'
+                img: '/hair2.webp'
               },
               {
                 title: 'Facial Care',

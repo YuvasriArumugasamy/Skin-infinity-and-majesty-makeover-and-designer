@@ -30,7 +30,7 @@ const Services = () => {
         {
           title: 'Aroma Oil Therapy',
           desc: 'Relax your mind and body with essential oil therapy.',
-          img: '/Aroma Oil Therapy.png',
+          img: '/Aroma Oil Therapy.webp',
           icon: FiHeart
         }
       ]
@@ -75,19 +75,19 @@ const Services = () => {
         {
           title: 'Royal Grand Bridal Mehandi',
           desc: 'Full hands & feet intricate bridal mehendi with portrait & mandala artwork.',
-          img: '/Mehandi 1.png',
+          img: '/Mehandi 1.webp',
           icon: FiHeart
         },
         {
           title: 'Traditional Bridal Mehandi',
           desc: 'Exquisite palm & arm mehendi designs with lotus & peacock motifs.',
-          img: '/Mehandi2.png',
+          img: '/Mehandi2.webp',
           icon: FiHeart
         },
         {
           title: 'Arabic & Designer Mehandi',
           desc: 'Elegant floral Arabic & festive mehendi patterns for all special occasions.',
-          img: '/Mehandi3.png',
+          img: '/Mehandi3.webp',
           icon: FiStar
         }
       ]
