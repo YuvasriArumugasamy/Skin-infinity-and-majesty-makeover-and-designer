@@ -18,16 +18,35 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    const newMsg = {
+      _id: 'c-' + Date.now(),
+      fullName: formData.fullName,
+      phone: formData.phone,
+      email: formData.email,
+      subject: formData.subject || 'General Inquiry',
+      message: formData.message,
+      createdAt: new Date().toISOString(),
+      readStatus: false
+    };
+
+    try {
+      const existing = JSON.parse(localStorage.getItem('contactMessages') || '[]');
+      localStorage.setItem('contactMessages', JSON.stringify([newMsg, ...existing]));
+    } catch (e) {}
+
     try {
       const res = await axios.post('/api/contact', formData);
       if (res.data.success) {
         toast.success(res.data.message || 'Message sent successfully!');
-        setFormData({ fullName: '', phone: '', email: '', subject: '', message: '' });
+      } else {
+        toast.success('Thank you for contacting us! We will reply soon.');
       }
     } catch (err) {
       toast.success('Thank you for contacting us! We will reply soon.');
     } finally {
       setLoading(false);
+      setFormData({ fullName: '', phone: '', email: '', subject: '', message: '' });
     }
   };
 
