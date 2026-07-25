@@ -8,11 +8,14 @@ dist/
 build/
 frontend/dist/
 
-# Environment variables
+# Environment variables & Credentials
 .env
 backend/.env
 frontend/.env
 .env.local
+serviceAccountKey.json
+*serviceAccountKey*.json
+backend/config/serviceAccountKey.json
 
 # Logs & OS files
 npm-debug.log*
