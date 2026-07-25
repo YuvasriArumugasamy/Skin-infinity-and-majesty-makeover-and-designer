@@ -95,8 +95,9 @@ const Home = () => {
       } catch (_) {}
     }
 
-    // Save to Cloud Storage across all devices
-    await saveAppointmentToCloud(aptPayload);
+    // Save to Cloud Storage across all devices (non-blocking)
+    saveAppointmentToCloud(aptPayload).catch(e => console.warn('Cloud sync background notice:', e));
+
 
 
     toast.success('Thank you! Your appointment request has been received.');

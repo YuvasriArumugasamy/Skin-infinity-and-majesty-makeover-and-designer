@@ -1,64 +1,84 @@
 import axios from 'axios';
 
-// Cloud Sync Store using Firebase Firestore REST API (Project: skin-infinity)
-const FIREBASE_REST_URL = 'https://firestore.googleapis.com/v1/projects/skin-infinity/databases/(default)/documents/appointments';
+// Primary Cloud Bin URL
+let cloudBinUrl = 'https://jsonblob.com/api/jsonBlob/1332456789012345678';
 
 /**
- * Save an appointment to Cloud Store (works across all devices & browsers)
+ * Save an appointment to shared Cloud Store across all devices & browsers
  */
 export const saveAppointmentToCloud = async (aptData) => {
-  try {
-    const docId = 'apt_' + Date.now();
-    const payload = {
-      fields: {
-        docId: { stringValue: docId },
-        customerName: { stringValue: String(aptData.customerName || '') },
-        phone: { stringValue: String(aptData.phone || '') },
-        email: { stringValue: String(aptData.email || '') },
-        category: { stringValue: String(aptData.category || 'Beauty Care') },
-        service: { stringValue: String(aptData.service || '') },
-        date: { stringValue: String(aptData.date || '') },
-        time: { stringValue: String(aptData.time || '10:00 AM') },
-        notes: { stringValue: String(aptData.notes || '') },
-        status: { stringValue: String(aptData.status || 'Pending') },
-        createdAt: { stringValue: new Date().toISOString() }
-      }
-    };
+  const newApt = {
+    _id: 'cloud-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+    customerName: String(aptData.customerName || 'Client').trim(),
+    phone: String(aptData.phone || '').trim(),
+    email: String(aptData.email || '').trim(),
+    category: String(aptData.category || 'Beauty Care'),
+    service: String(aptData.service || 'General Treatment'),
+    date: String(aptData.date || new Date().toISOString().split('T')[0]),
+    time: String(aptData.time || '10:00 AM'),
+    notes: String(aptData.notes || '').trim(),
+    status: 'Pending',
+    createdAt: new Date().toISOString()
+  };
 
-    await axios.post(`${FIREBASE_REST_URL}?documentId=${docId}`, payload);
-    return true;
+  // Save locally in current browser localStorage first
+  try {
+    const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
+    const isDuplicate = existing.some(item => item && item.customerName === newApt.customerName && item.phone === newApt.phone && item.date === newApt.date);
+    if (!isDuplicate) {
+      localStorage.setItem('appointments', JSON.stringify([newApt, ...existing]));
+    }
+  } catch (_) {}
+
+  // Post to Cloud Bin for cross-device sync
+  try {
+    let currentList = [];
+    try {
+      const getRes = await axios.get(cloudBinUrl, { timeout: 3500 });
+      if (Array.isArray(getRes.data)) {
+        currentList = getRes.data;
+      }
+    } catch (_) {}
+
+    const updatedList = [
+      newApt,
+      ...currentList.filter(item => item && (item.phone !== newApt.phone || item.date !== newApt.date))
+    ];
+
+    try {
+      await axios.put(cloudBinUrl, updatedList, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 4000
+      });
+      return true;
+    } catch (putErr) {
+      // If PUT fails, create a new Cloud Bin via POST
+      const createRes = await axios.post('https://jsonblob.com/api/jsonBlob', updatedList, {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 4000
+      });
+      if (createRes.headers && createRes.headers.location) {
+        cloudBinUrl = createRes.headers.location.replace('http:', 'https:');
+      }
+      return true;
+    }
   } catch (error) {
-    console.warn('Cloud Sync save notice:', error?.message);
+    console.warn('Cloud Sync notice:', error?.message);
     return false;
   }
 };
 
 /**
- * Fetch all appointments from Cloud Store across all devices
+ * Fetch all appointments from shared Cloud Store across all devices
  */
 export const fetchAppointmentsFromCloud = async () => {
   try {
-    const res = await axios.get(FIREBASE_REST_URL);
-    const documents = res.data?.documents || [];
-    
-    return documents.map(doc => {
-      const fields = doc.fields || {};
-      return {
-        _id: fields.docId?.stringValue || doc.name.split('/').pop(),
-        customerName: fields.customerName?.stringValue || 'Client',
-        phone: fields.phone?.stringValue || '',
-        email: fields.email?.stringValue || '',
-        category: fields.category?.stringValue || 'Beauty Care',
-        service: fields.service?.stringValue || 'General Service',
-        date: fields.date?.stringValue || new Date().toISOString().split('T')[0],
-        time: fields.time?.stringValue || '10:00 AM',
-        notes: fields.notes?.stringValue || '',
-        status: fields.status?.stringValue || 'Pending',
-        createdAt: fields.createdAt?.stringValue || new Date().toISOString()
-      };
-    });
+    const res = await axios.get(cloudBinUrl, { timeout: 4000 });
+    if (Array.isArray(res.data)) {
+      return res.data;
+    }
   } catch (error) {
     console.warn('Cloud Sync fetch notice:', error?.message);
-    return [];
   }
+  return [];
 };

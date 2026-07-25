@@ -105,8 +105,8 @@ const BookAppointment = () => {
       } catch (_) {}
     }
 
-    // Save to Cloud Storage across all devices
-    await saveAppointmentToCloud(aptPayload);
+    // Save to Cloud Storage across all devices (non-blocking)
+    saveAppointmentToCloud(aptPayload).catch(e => console.warn('Cloud sync background notice:', e));
 
 
     setSuccessModal(true);
