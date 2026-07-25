@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FiAward, FiHeart, FiCheck, FiStar } from 'react-icons/fi';
+import { FiAward, FiHeart, FiCheck, FiStar, FiUsers } from 'react-icons/fi';
 
 const About = () => {
   return (

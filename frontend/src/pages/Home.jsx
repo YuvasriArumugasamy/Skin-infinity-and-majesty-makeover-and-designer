@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
   FiPhone, FiCalendar, FiArrowRight, FiCheck, FiStar, 
-  FiAward, FiHeart, FiShield, FiChevronLeft, FiChevronRight, FiMapPin 
+  FiAward, FiHeart, FiShield, FiChevronLeft, FiChevronRight, FiMapPin, FiSliders 
 } from 'react-icons/fi';
 import { FaWhatsapp, FaLeaf } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';

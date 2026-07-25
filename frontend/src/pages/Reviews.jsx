@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { FiStar, FiCheckCircle, FiMessageSquare, FiSend, FiUser } from 'react-icons/fi';
+import { FiStar, FiCheckCircle, FiMessageSquare, FiSend, FiUser, FiAward } from 'react-icons/fi';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
