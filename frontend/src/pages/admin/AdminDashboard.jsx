@@ -995,10 +995,11 @@ const AdminDashboard = () => {
                   </div>
                   <div className="flex items-baseline justify-between pt-1">
                     <h3 className="text-4xl font-serif-luxury font-bold text-[#2C2225] tracking-tight">{appointments.length}</h3>
-                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 shadow-2xs flex items-center gap-1.5">
+                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 shadow-2xs flex items-center gap-1.5 whitespace-nowrap shrink-0">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block" />
                       Live Sync
                     </span>
+
                   </div>
                 </motion.div>
 
@@ -1159,9 +1160,10 @@ const AdminDashboard = () => {
                     <h3 className="font-serif text-lg font-bold text-[#2C2225]">Studio Revenue Trajectory</h3>
                     <p className="text-xs text-gray-500">Live dynamic revenue computed from real customer bookings</p>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-xs font-bold text-[#B76E79]">
+                  <span className="px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-xs font-bold text-[#B76E79] whitespace-nowrap shrink-0">
                     Live Real-Time Data
                   </span>
+
                 </div>
                 <div className="h-64 w-full">
                   <ResponsiveContainer width="100%" height="100%">
