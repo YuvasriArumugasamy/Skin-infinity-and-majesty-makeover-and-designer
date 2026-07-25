@@ -74,7 +74,7 @@ const Services = () => {
     {
       title: 'Mehandi Service',
       desc: 'Exquisite bridal & festive mehendi designs by professional artists.',
-      img: '/ChatGPT Image Jul 22, 2026, 11_28_36 AM.webp',
+      img: '/Mehandi2.png',
       icon: FiHeart
     },
     {

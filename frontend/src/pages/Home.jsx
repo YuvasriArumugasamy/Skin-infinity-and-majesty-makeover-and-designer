@@ -386,7 +386,7 @@ const Home = () => {
               {
                 title: 'Mehandi Service',
                 subtitle: 'Art on Your Hands',
-                img: '/ChatGPT Image Jul 22, 2026, 11_28_36 AM.webp'
+                img: '/Mehandi2.png'
               }
             ].map((srv, idx) => (
               <motion.div 
