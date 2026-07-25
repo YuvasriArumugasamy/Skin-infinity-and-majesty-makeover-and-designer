@@ -29,7 +29,7 @@ const Services = () => {
         {
           title: 'Aroma Oil Therapy',
           desc: 'Relax your mind and body with essential oil therapy.',
-          img: '/ChatGPT Image Jul 22, 2026, 11_17_31 AM.webp',
+          img: '/Aroma Oil Therapy.png',
           icon: FiHeart
         }
       ]

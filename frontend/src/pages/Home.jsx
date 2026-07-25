@@ -361,7 +361,7 @@ const Home = () => {
               {
                 title: 'Aroma Oil Therapy',
                 subtitle: 'Relax & Rejuvenate',
-                img: '/ChatGPT Image Jul 22, 2026, 11_17_31 AM.webp'
+                img: '/Aroma Oil Therapy.png'
               },
               {
                 title: 'Manicure & Pedicure',
