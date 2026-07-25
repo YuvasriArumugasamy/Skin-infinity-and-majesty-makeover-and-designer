@@ -203,23 +203,18 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchData();
 
-    // Auto sync on storage update & interval
-    const interval = setInterval(() => {
+    // Storage event-ல் மட்டும் sync — 2s polling remove (performance fix)
+    const handleStorageChange = () => {
       try {
         const stored = JSON.parse(localStorage.getItem('appointments') || '[]');
         setAppointments(stored);
         const storedMsgs = JSON.parse(localStorage.getItem('contactMessages') || '[]');
         setContactMessages(storedMsgs);
       } catch (e) {}
-    }, 2000);
-
-    const handleStorageChange = () => {
-      fetchData();
     };
 
     window.addEventListener('storage', handleStorageChange);
     return () => {
-      clearInterval(interval);
       window.removeEventListener('storage', handleStorageChange);
     };
   }, []);

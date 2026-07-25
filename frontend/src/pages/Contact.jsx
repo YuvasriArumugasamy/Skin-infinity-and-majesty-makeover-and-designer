@@ -39,12 +39,13 @@ const Contact = () => {
     try {
       const res = await axios.post('/api/contact', formData);
       if (res.data.success) {
-        toast.success(res.data.message || 'Message sent successfully!');
+        toast.success(res.data.message || 'Message sent! We will contact you soon.');
       } else {
-        toast.success('Thank you for contacting us! We will reply soon.');
+        toast.success('Thank you! Your message has been saved. We will reply soon.');
       }
     } catch (err) {
-      toast.success('Thank you for contacting us! We will reply soon.');
+      // localStorage-ல் save ஆகியிருக்கு — user-க்கு confirm பண்ணலாம்
+      toast.success('Thank you! Your message has been saved. We will contact you soon.');
     } finally {
       setLoading(false);
       setFormData({ fullName: '', phone: '', email: '', subject: '', message: '' });

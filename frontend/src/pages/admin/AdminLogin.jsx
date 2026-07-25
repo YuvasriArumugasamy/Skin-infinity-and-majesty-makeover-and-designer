@@ -3,11 +3,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
-import { FiLock, FiMail, FiEye, FiEyeOff, FiShield, FiArrowLeft, FiCheckCircle, FiStar, FiKey } from 'react-icons/fi';
+import { FiLock, FiMail, FiEye, FiEyeOff, FiShield, FiArrowLeft, FiCheckCircle, FiStar } from 'react-icons/fi';
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState('admin@skininfinity.com');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -15,40 +15,25 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     if (e) e.preventDefault();
     setLoading(true);
-    
-    setTimeout(async () => {
-      try {
-        const res = await axios.post('/api/auth/login', { email, password });
-        if (res.data && res.data.success) {
-          localStorage.setItem('adminToken', res.data.token);
-          toast.success('Welcome to Skin Infinity & Majesty Portal!', {
-            icon: '👑',
-            style: { background: '#FFF5F8', color: '#B76E79', border: '1px solid #F4C2D7' }
-          });
-          navigate('/admin/dashboard');
-          return;
-        }
-      } catch (err) {
-        if ((email.trim().toLowerCase() === 'admin@skininfinity.com' || email.trim().toLowerCase() === 'admin') && password === 'admin123') {
-          localStorage.setItem('adminToken', 'demo_admin_jwt_token_2026');
-          toast.success('Demo Admin Authorized Successfully!', {
-            icon: '✨',
-            style: { background: '#FFF5F8', color: '#B76E79', border: '1px solid #F4C2D7' }
-          });
-          navigate('/admin/dashboard');
-        } else {
-          toast.error('Invalid email or password');
-        }
-      } finally {
-        setLoading(false);
-      }
-    }, 600);
-  };
 
-  const handleQuickDemoLogin = () => {
-    setEmail('admin@skininfinity.com');
-    setPassword('admin123');
-    toast.success('Demo Credentials Auto-filled!', { icon: '⚡' });
+    try {
+      const res = await axios.post('/api/auth/login', { email, password });
+      if (res.data && res.data.success) {
+        localStorage.setItem('adminToken', res.data.token);
+        toast.success('Welcome to Skin Infinity & Majesty Portal!', {
+          icon: '👑',
+          style: { background: '#FFF5F8', color: '#B76E79', border: '1px solid #F4C2D7' }
+        });
+        navigate('/admin/dashboard');
+      } else {
+        toast.error('Invalid email or password');
+      }
+    } catch (err) {
+      const msg = err?.response?.data?.message || 'Invalid email or password';
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

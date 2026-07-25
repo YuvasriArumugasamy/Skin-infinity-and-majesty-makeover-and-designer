@@ -28,6 +28,7 @@ const BookAppointment = () => {
 
   const [loading, setLoading] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+  const [bookedInfo, setBookedInfo] = useState({ name: '', service: '', date: '', time: '' });
 
   const categories = {
     'Skin Care': ['Facial & Glow Care', 'Advance Hydra Facial', 'Skin Lightening Chemical Peeling', 'Aroma Oil Therapy'],
@@ -58,59 +59,55 @@ const BookAppointment = () => {
 
     setLoading(true);
 
-    try {
-      const newApt = {
-        _id: Date.now().toString(),
-        customerName: formData.customerName,
-        phone: formData.phone,
-        email: formData.email,
-        category: formData.category,
-        service: formData.service,
-        date: formData.date || new Date().toISOString().split('T')[0],
-        time: formData.time || '10:00 AM',
-        notes: formData.notes,
-        status: 'Confirmed',
-        amount: '₹4,500',
-        createdAt: new Date().toISOString()
-      };
+    const newApt = {
+      _id: Date.now().toString(),
+      customerName: formData.customerName,
+      phone: formData.phone,
+      email: formData.email,
+      category: formData.category,
+      service: formData.service,
+      date: formData.date || new Date().toISOString().split('T')[0],
+      time: formData.time || '10:00 AM',
+      notes: formData.notes,
+      status: 'Confirmed',
+      createdAt: new Date().toISOString()
+    };
 
-      // Save to localStorage for instant real-time sync across admin tabs
+    // Save name & service before reset for success modal
+    const bookedName = formData.customerName;
+    const bookedService = formData.service;
+    const bookedDate = formData.date;
+    const bookedTime = formData.time;
+
+    // Save to localStorage for admin dashboard sync
+    try {
       const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
       localStorage.setItem('appointments', JSON.stringify([newApt, ...existing]));
+    } catch (_) {}
 
-      await axios.post('/api/appointments', formData);
-      setSuccessModal(true);
-      toast.success('Appointment Request Submitted Successfully!');
-      setFormData({
-        customerName: '',
-        phone: '',
-        email: '',
-        gender: 'Female',
-        age: '',
-        category: 'Skin Care',
-        service: 'Advance Hydra Facial',
-        date: '',
-        time: '10:00 AM',
-        notes: ''
-      });
-    } catch (err) {
-      setSuccessModal(true);
-      toast.success('Appointment Request Submitted!');
-      setFormData({
-        customerName: '',
-        phone: '',
-        email: '',
-        gender: 'Female',
-        age: '',
-        category: 'Skin Care',
-        service: 'Advance Hydra Facial',
-        date: '',
-        time: '10:00 AM',
-        notes: ''
-      });
-    } finally {
-      setLoading(false);
+    try {
+      await axios.post('/api/appointments', newApt);
+    } catch (_) {
+      // localStorage-ல் save ஆகியிருக்கு — offline fallback
     }
+
+    setSuccessModal(true);
+    toast.success('Appointment Request Submitted Successfully!');
+    setFormData({
+      customerName: '',
+      phone: '',
+      email: '',
+      gender: 'Female',
+      age: '',
+      category: 'Skin Care',
+      service: 'Advance Hydra Facial',
+      date: '',
+      time: '10:00 AM',
+      notes: ''
+    });
+    // Store booked info separately for modal display
+    setBookedInfo({ name: bookedName, service: bookedService, date: bookedDate, time: bookedTime });
+    setLoading(false);
   };
 
   return (
@@ -369,7 +366,7 @@ const BookAppointment = () => {
               </div>
               <h3 className="font-serif-luxury text-2xl font-bold text-[#2C2225]">Appointment Requested!</h3>
               <p className="text-xs text-gray-600 leading-relaxed">
-                Thank you <span className="font-bold text-[#2C2225]">{formData.customerName}</span>. Your appointment request for <span className="font-bold text-[#C57488]">{formData.service}</span> on <span className="font-bold">{formData.date}</span> at <span className="font-bold">{formData.time}</span> has been received!
+                Thank you <span className="font-bold text-[#2C2225]">{bookedInfo.name}</span>. Your appointment request for <span className="font-bold text-[#C57488]">{bookedInfo.service}</span> on <span className="font-bold">{bookedInfo.date}</span> at <span className="font-bold">{bookedInfo.time}</span> has been received!
               </p>
               <button
                 onClick={() => setSuccessModal(false)}

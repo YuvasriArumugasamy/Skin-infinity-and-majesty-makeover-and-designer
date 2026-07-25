@@ -3,37 +3,24 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
 
-// Helper to generate JWT token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'secret123', { expiresIn: '7d' });
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '7d' });
 };
 
 // Login Route
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  
-  // Default master admin fallback for instant access & testing
-  if ((email === 'admin@skininfinity.com' || email === 'admin') && password === 'admin123') {
-    const token = jwt.sign({ id: 'admin123', email }, process.env.JWT_SECRET || 'secret123', { expiresIn: '7d' });
-    return res.json({
-      success: true,
-      message: 'Admin authentication successful',
-      token,
-      admin: {
-        id: 'admin123',
-        name: 'S. Mahalakshmi',
-        email: 'admin@skininfinity.com',
-        role: 'super_admin'
-      }
-    });
+
+  if (!email || !password) {
+    return res.status(400).json({ success: false, message: 'Email and password are required' });
   }
 
   try {
-    const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ email: email.toLowerCase().trim() });
     if (admin && (await admin.matchPassword(password))) {
       return res.json({
         success: true,
-        message: 'Admin Login successful',
+        message: 'Login successful',
         token: generateToken(admin._id),
         admin: {
           id: admin._id,
@@ -46,7 +33,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ success: false, message: 'Invalid email or password' });
     }
   } catch (err) {
-    return res.status(500).json({ success: false, message: err.message });
+    return res.status(500).json({ success: false, message: 'Server error. Please try again.' });
   }
 });
 
