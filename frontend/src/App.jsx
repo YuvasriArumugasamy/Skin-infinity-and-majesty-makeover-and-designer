@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import FloatingContactButtons from './components/FloatingContactButtons';
 import ScrollToTop from './components/ScrollToTop';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Lazy load all pages — reduces initial bundle size
 const Home            = lazy(() => import('./pages/Home'));
@@ -38,6 +39,7 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+        <ErrorBoundary>
         <Suspense fallback={<PageLoader />}>
           <Routes>
 
@@ -81,6 +83,7 @@ function App() {
 
           </Routes>
         </Suspense>
+        </ErrorBoundary>
       </BrowserRouter>
     </HelmetProvider>
   );

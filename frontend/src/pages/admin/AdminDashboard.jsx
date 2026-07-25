@@ -85,7 +85,9 @@ const AdminDashboard = () => {
   ];
 
   const [appointments, setAppointments] = useState([]);
-  const [bridalRecords, setBridalRecords] = useState([]);
+  const [bridalRecords, setBridalRecords] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('bridalRecords') || '[]'); } catch (_) { return []; }
+  });
   const [gallery, setGallery] = useState(initialGallery);
   const [services, setServices] = useState(initialServices);
   const [contactMessages, setContactMessages] = useState([]);
@@ -297,7 +299,11 @@ const AdminDashboard = () => {
       sleeve: newBride.sleeve || '10.5"',
       deliveryStatus: 'Consultation Completed'
     };
-    setBridalRecords(prev => [created, ...prev]);
+    setBridalRecords(prev => {
+      const updated = [created, ...prev];
+      localStorage.setItem('bridalRecords', JSON.stringify(updated));
+      return updated;
+    });
     toast.success(`Bride Record created for ${newBride.clientName}! 👰`);
     setBrideModalOpen(false);
     setNewBride({

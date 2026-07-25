@@ -59,40 +59,45 @@ const BookAppointment = () => {
 
     setLoading(true);
 
-    const newApt = {
-      _id: Date.now().toString(),
-      customerName: formData.customerName,
-      phone: formData.phone,
-      email: formData.email,
-      category: formData.category,
-      service: formData.service,
-      date: formData.date || new Date().toISOString().split('T')[0],
-      time: formData.time || '10:00 AM',
-      notes: formData.notes,
-      status: 'Confirmed',
-      createdAt: new Date().toISOString()
-    };
-
-    // Save name & service before reset for success modal
+    // Save display info before reset (for success modal)
     const bookedName = formData.customerName;
     const bookedService = formData.service;
     const bookedDate = formData.date;
     const bookedTime = formData.time;
 
-    // Save to localStorage for admin dashboard sync
-    try {
-      const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
-      localStorage.setItem('appointments', JSON.stringify([newApt, ...existing]));
-    } catch (_) {}
+    // POST clean data to API (no client-generated _id)
+    const aptPayload = {
+      customerName: formData.customerName,
+      phone: formData.phone,
+      email: formData.email || '',
+      category: formData.category,
+      service: formData.service,
+      date: formData.date || new Date().toISOString().split('T')[0],
+      time: formData.time || '10:00 AM',
+      notes: formData.notes || ''
+    };
 
     try {
-      await axios.post('/api/appointments', newApt);
+      const res = await axios.post('/api/appointments', aptPayload);
+      // Save API response to localStorage for admin sync
+      if (res.data?.data) {
+        try {
+          const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
+          localStorage.setItem('appointments', JSON.stringify([res.data.data, ...existing]));
+        } catch (_) {}
+      }
     } catch (_) {
-      // localStorage-ல் save ஆகியிருக்கு — offline fallback
+      // Offline fallback — save locally with temp id
+      try {
+        const tempApt = { _id: 'temp-' + Date.now(), ...aptPayload, status: 'Pending', createdAt: new Date().toISOString() };
+        const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
+        localStorage.setItem('appointments', JSON.stringify([tempApt, ...existing]));
+      } catch (_) {}
     }
 
     setSuccessModal(true);
     toast.success('Appointment Request Submitted Successfully!');
+    setBookedInfo({ name: bookedName, service: bookedService, date: bookedDate, time: bookedTime });
     setFormData({
       customerName: '',
       phone: '',
@@ -105,8 +110,6 @@ const BookAppointment = () => {
       time: '10:00 AM',
       notes: ''
     });
-    // Store booked info separately for modal display
-    setBookedInfo({ name: bookedName, service: bookedService, date: bookedDate, time: bookedTime });
     setLoading(false);
   };
 

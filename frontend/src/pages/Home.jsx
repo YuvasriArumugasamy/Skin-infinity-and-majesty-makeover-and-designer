@@ -55,8 +55,9 @@ const Home = () => {
       return;
     }
 
-    const newApt = {
-      _id: Date.now().toString(),
+    // Save to localStorage for instant live sync across Admin Dashboard
+    // Submit to Backend API (clean payload, no client-generated _id)
+    const aptPayload = {
       customerName: formData.name,
       phone: formData.phone,
       email: '',
@@ -64,26 +65,24 @@ const Home = () => {
       service: formData.service || 'General Beauty Care',
       date: formData.date || new Date().toISOString().split('T')[0],
       time: formData.time || '10:00 AM',
-      notes: 'Submitted via Homepage Quick Booking',
-      status: 'Confirmed',
-      amount: '₹3,500',
-      createdAt: new Date().toISOString()
+      notes: 'Submitted via Homepage Quick Booking'
     };
 
-    // Save to localStorage for instant live sync across Admin Dashboard
     try {
-      const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
-      const updated = [newApt, ...existing];
-      localStorage.setItem('appointments', JSON.stringify(updated));
-    } catch (err) {
-      console.error('Storage error', err);
-    }
-
-    // Submit to Backend API
-    try {
-      await axios.post('/api/appointments', newApt);
-    } catch (err) {
-      // Offline fallback active
+      const res = await axios.post('/api/appointments', aptPayload);
+      if (res.data?.data) {
+        try {
+          const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
+          localStorage.setItem('appointments', JSON.stringify([res.data.data, ...existing]));
+        } catch (_) {}
+      }
+    } catch (_) {
+      // Offline fallback
+      try {
+        const temp = { _id: 'temp-' + Date.now(), ...aptPayload, status: 'Pending', createdAt: new Date().toISOString() };
+        const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
+        localStorage.setItem('appointments', JSON.stringify([temp, ...existing]));
+      } catch (_) {}
     }
 
     toast.success('Thank you! Your appointment request has been received.');
