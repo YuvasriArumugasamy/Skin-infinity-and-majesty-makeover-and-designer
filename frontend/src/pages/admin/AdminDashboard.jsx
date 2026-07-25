@@ -267,7 +267,11 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchData();
 
-    // Storage event-ல் மட்டும் sync — 2s polling remove (performance fix)
+    // 10-second automatic background live polling (No need to click Sync Live!)
+    const liveInterval = setInterval(() => {
+      fetchData();
+    }, 10000);
+
     const handleStorageChange = () => {
       try {
         const stored = JSON.parse(localStorage.getItem('appointments') || '[]');
@@ -279,9 +283,11 @@ const AdminDashboard = () => {
 
     window.addEventListener('storage', handleStorageChange);
     return () => {
+      clearInterval(liveInterval);
       window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
+
 
   // Handle Form Submissions
   const handleCreateBooking = async (e) => {
