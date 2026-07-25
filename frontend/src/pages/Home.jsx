@@ -514,8 +514,12 @@ const Home = () => {
                 img: '/hair.jpeg'
               },
               {
-                title: 'Hair Styling',
+                title: 'Hair Layer Cut & Styling',
                 img: '/hair1.webp'
+              },
+              {
+                title: 'Hair Transformation & Spa',
+                img: '/hair2.jpeg'
               },
               {
                 title: 'Facial Care',
