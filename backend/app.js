@@ -15,6 +15,10 @@ const galleryRoutes = require('./routes/galleryRoutes');
 
 const app = express();
 
+// Trust reverse proxy (Vercel / Cloudflare / Nginx)
+app.set('trust proxy', 1);
+
+
 // CORS — only allow frontend URL
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:5173',

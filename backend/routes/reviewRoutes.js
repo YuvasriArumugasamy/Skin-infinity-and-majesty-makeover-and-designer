@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Review = require('../models/Review');
+const { protectAdmin } = require('../middleware/authMiddleware');
 
-// GET All Approved Reviews (public)
+// GET All Approved Reviews (Public)
 router.get('/', async (req, res) => {
   try {
     const list = await Review.find({ status: 'Approved' }).sort({ createdAt: -1 });
@@ -12,8 +13,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET All Reviews (admin)
-router.get('/all', async (req, res) => {
+// GET All Reviews (Admin Protected)
+router.get('/all', protectAdmin, async (req, res) => {
   try {
     const list = await Review.find().sort({ createdAt: -1 });
     return res.json({ success: true, data: list });
@@ -22,7 +23,7 @@ router.get('/all', async (req, res) => {
   }
 });
 
-// POST Submit Review
+// POST Submit Review (Public)
 router.post('/', async (req, res) => {
   const { customerName, email, service, rating, reviewText } = req.body;
   if (!customerName || !service || !rating || !reviewText) {
@@ -30,11 +31,11 @@ router.post('/', async (req, res) => {
   }
   try {
     const created = await Review.create({
-      customerName,
-      email: email || '',
+      customerName: String(customerName).trim(),
+      email: email ? String(email).trim().toLowerCase() : '',
       service,
-      rating: Number(rating),
-      reviewText,
+      rating: Math.min(5, Math.max(1, Number(rating) || 5)),
+      reviewText: String(reviewText).trim().slice(0, 1000),
       status: 'Pending'
     });
     return res.status(201).json({ success: true, message: 'Review submitted! Pending admin approval.', data: created });
@@ -43,8 +44,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PATCH Approve / Reject Review (admin)
-router.patch('/:id/status', async (req, res) => {
+// PATCH Approve / Reject Review (Admin Protected)
+router.patch('/:id/status', protectAdmin, async (req, res) => {
   const { status } = req.body;
   const valid = ['Pending', 'Approved', 'Rejected'];
   if (!valid.includes(status)) {
@@ -59,8 +60,8 @@ router.patch('/:id/status', async (req, res) => {
   }
 });
 
-// DELETE Review (admin)
-router.delete('/:id', async (req, res) => {
+// DELETE Review (Admin Protected)
+router.delete('/:id', protectAdmin, async (req, res) => {
   try {
     const rev = await Review.findByIdAndDelete(req.params.id);
     if (!rev) return res.status(404).json({ success: false, message: 'Review not found' });

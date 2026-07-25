@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
+import api from '../api/axios';
 import toast from 'react-hot-toast';
 import SEO from '../components/SEO';
 import { FiPhone, FiMapPin, FiClock, FiSend, FiStar } from 'react-icons/fi';
@@ -18,12 +18,19 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const phoneClean = (formData.phone || '').replace(/\D/g, '');
+    if (phoneClean.length < 10) {
+      toast.error('Please enter a valid 10-digit mobile number!');
+      return;
+    }
+
     setLoading(true);
 
     const newMsg = {
       _id: 'c-' + Date.now(),
       fullName: formData.fullName,
-      phone: formData.phone,
+      phone: phoneClean,
       email: formData.email,
       subject: formData.subject || 'General Inquiry',
       message: formData.message,
@@ -37,13 +44,14 @@ const Contact = () => {
     } catch (e) {}
 
     try {
-      const res = await axios.post('/api/contact', formData);
+      const res = await api.post('/api/contact', { ...formData, phone: phoneClean });
       if (res.data.success) {
         toast.success(res.data.message || 'Message sent! We will contact you soon.');
       } else {
         toast.success('Thank you! Your message has been saved. We will reply soon.');
       }
     } catch (err) {
+
       // localStorage-ல் save ஆகியிருக்கு — user-க்கு confirm பண்ணலாம்
       toast.success('Thank you! Your message has been saved. We will contact you soon.');
     } finally {

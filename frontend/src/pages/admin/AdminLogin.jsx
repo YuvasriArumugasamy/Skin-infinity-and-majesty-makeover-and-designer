@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api/axios';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import { FiLock, FiMail, FiEye, FiEyeOff, FiShield, FiArrowLeft, FiCheckCircle, FiStar } from 'react-icons/fi';
@@ -20,7 +20,8 @@ const AdminLogin = () => {
     const isDefaultCreds = (cleanEmail === 'admin@skininfinity.com' || cleanEmail === 'admin') && password === 'admin123';
 
     try {
-      const res = await axios.post('/api/auth/login', { email: cleanEmail, password });
+      const res = await api.post('/api/auth/login', { email: cleanEmail, password });
+
       if (res.data && res.data.success) {
         localStorage.setItem('adminToken', res.data.token || 'demo_admin_token');
         toast.success('Welcome to Skin Infinity & Majesty Portal!', {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
@@ -50,8 +50,15 @@ const Home = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone) {
-      toast.error('Please enter your name and phone number!');
+
+    const phoneClean = (formData.phone || '').replace(/\D/g, '');
+    if (phoneClean.length < 10) {
+      toast.error('Please enter a valid 10-digit mobile number!');
+      return;
+    }
+
+    if (!formData.name) {
+      toast.error('Please enter your name!');
       return;
     }
 
@@ -59,7 +66,7 @@ const Home = () => {
     // Submit to Backend API (clean payload, no client-generated _id)
     const aptPayload = {
       customerName: formData.name,
-      phone: formData.phone,
+      phone: phoneClean,
       email: '',
       category: 'Quick Booking',
       service: formData.service || 'General Beauty Care',
@@ -69,7 +76,8 @@ const Home = () => {
     };
 
     try {
-      const res = await axios.post('/api/appointments', aptPayload);
+      const res = await api.post('/api/appointments', aptPayload);
+
       if (res.data?.data) {
         try {
           const existing = JSON.parse(localStorage.getItem('appointments') || '[]');

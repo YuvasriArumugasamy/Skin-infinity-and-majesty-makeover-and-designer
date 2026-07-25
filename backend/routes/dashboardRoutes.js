@@ -3,9 +3,10 @@ const router = express.Router();
 const Appointment = require('../models/Appointment');
 const Contact = require('../models/Contact');
 const Review = require('../models/Review');
+const { protectAdmin } = require('../middleware/authMiddleware');
 
-// GET Real Dashboard Stats from DB
-router.get('/stats', async (req, res) => {
+// GET Real Dashboard Stats from DB (Admin Protected)
+router.get('/stats', protectAdmin, async (req, res) => {
   try {
     const [
       totalAppointments,

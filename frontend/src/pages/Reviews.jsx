@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import axios from 'axios';
+import api from '../api/axios';
 import toast from 'react-hot-toast';
 import SEO from '../components/SEO';
 import { FiStar, FiCheckCircle, FiMessageSquare, FiSend, FiUser, FiAward } from 'react-icons/fi';
+
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -69,7 +70,7 @@ const Reviews = () => {
 
   const fetchReviews = async () => {
     try {
-      const res = await axios.get('/api/reviews');
+      const res = await api.get('/api/reviews');
       if (res.data.success && res.data.data.length > 0) {
         setReviews(res.data.data);
       } else {
@@ -88,7 +89,7 @@ const Reviews = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await axios.post('/api/reviews', formData);
+      const res = await api.post('/api/reviews', formData);
       if (res.data.success) {
         toast.success('Thank you! Review submitted for admin approval.');
         setFormData({ customerName: '', email: '', service: 'Bridal HD Makeover', rating: 5, reviewText: '' });
@@ -101,6 +102,7 @@ const Reviews = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="bg-[#FCF9FA] min-h-screen pb-20">

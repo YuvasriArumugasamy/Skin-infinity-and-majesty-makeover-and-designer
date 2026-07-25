@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/axios';
 import SEO from '../components/SEO';
 import { FiStar, FiHeart, FiMaximize2, FiX, FiCheckCircle, FiAward, FiFilter } from 'react-icons/fi';
+
 
 // Fallback static images (shown if API is down)
 const staticImages = [
@@ -35,7 +36,8 @@ const Gallery = () => {
   useEffect(() => {
     const fetchGallery = async () => {
       try {
-        const res = await axios.get('/api/gallery');
+        const res = await api.get('/api/gallery');
+
         if (res.data.success && res.data.data.length > 0) {
           // Map API data to consistent format
           const mapped = res.data.data.map(item => ({

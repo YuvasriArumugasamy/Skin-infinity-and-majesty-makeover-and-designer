@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Gallery = require('../models/Gallery');
+const { protectAdmin } = require('../middleware/authMiddleware');
 
 // Default gallery items (seed if empty)
 const defaultItems = [
@@ -20,12 +21,11 @@ const defaultItems = [
   { title: 'Majesty Designer Lounge', category: 'Salon Interior', image: '/shop3.webp', status: 'Published' }
 ];
 
-// GET Published Gallery (public website)
+// GET Published Gallery (Public Website)
 router.get('/', async (req, res) => {
   try {
     let list = await Gallery.find({ status: 'Published' }).sort({ createdAt: -1 });
     if (list.length === 0) {
-      // Seed default items on first load
       await Gallery.insertMany(defaultItems);
       list = await Gallery.find({ status: 'Published' }).sort({ createdAt: -1 });
     }
@@ -35,8 +35,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET All Gallery (admin — includes drafts)
-router.get('/all', async (req, res) => {
+// GET All Gallery (Admin Protected)
+router.get('/all', protectAdmin, async (req, res) => {
   try {
     let list = await Gallery.find().sort({ createdAt: -1 });
     if (list.length === 0) {
@@ -49,8 +49,8 @@ router.get('/all', async (req, res) => {
   }
 });
 
-// POST Add Gallery Item (admin)
-router.post('/', async (req, res) => {
+// POST Add Gallery Item (Admin Protected)
+router.post('/', protectAdmin, async (req, res) => {
   const { title, category, image, status } = req.body;
   if (!title || !category || !image) {
     return res.status(400).json({ success: false, message: 'Title, category and image are required' });
@@ -63,8 +63,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PATCH Toggle Status (admin)
-router.patch('/:id/status', async (req, res) => {
+// PATCH Toggle Status (Admin Protected)
+router.patch('/:id/status', protectAdmin, async (req, res) => {
   const { status } = req.body;
   try {
     const item = await Gallery.findByIdAndUpdate(req.params.id, { status }, { new: true });
@@ -75,8 +75,8 @@ router.patch('/:id/status', async (req, res) => {
   }
 });
 
-// DELETE Gallery Item (admin)
-router.delete('/:id', async (req, res) => {
+// DELETE Gallery Item (Admin Protected)
+router.delete('/:id', protectAdmin, async (req, res) => {
   try {
     const item = await Gallery.findByIdAndDelete(req.params.id);
     if (!item) return res.status(404).json({ success: false, message: 'Item not found' });

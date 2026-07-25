@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api/axios';
+
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -170,7 +171,7 @@ const AdminDashboard = () => {
 
     // Fetch Appointments from API
     try {
-      const res = await axios.get('/api/appointments');
+      const res = await api.get('/api/appointments');
       const apiData = res.data?.data || [];
       if (Array.isArray(apiData) && apiData.length > 0) {
         // Merge API + localStorage, deduplicate by _id
@@ -187,7 +188,7 @@ const AdminDashboard = () => {
 
     // Fetch Contact Messages from API
     try {
-      const msgRes = await axios.get('/api/contact');
+      const msgRes = await api.get('/api/contact');
       const apiMsgs = msgRes.data?.data || [];
       if (Array.isArray(apiMsgs) && apiMsgs.length > 0) {
         const combinedMsgs = [...apiMsgs, ...localMsgs];
@@ -202,13 +203,14 @@ const AdminDashboard = () => {
 
     // Fetch Gallery from API
     try {
-      const galRes = await axios.get('/api/gallery/all');
+      const galRes = await api.get('/api/gallery/all');
       if (galRes.data?.success && galRes.data.data.length > 0) {
         setGallery(galRes.data.data);
       }
     } catch (e) {
       // keep initialGallery
     }
+
 
     setLoading(false);
   };
@@ -253,7 +255,7 @@ const AdminDashboard = () => {
     });
     // POST to API
     try {
-      const res = await axios.post('/api/appointments', {
+      const res = await api.post('/api/appointments', {
         customerName: newBooking.customerName,
         phone: newBooking.phone,
         service: newBooking.service,
@@ -346,7 +348,7 @@ const AdminDashboard = () => {
     setGallery(prev => [created, ...prev]);
     // POST to API
     try {
-      await axios.post('/api/gallery', newGallery);
+      await api.post('/api/gallery', newGallery);
     } catch (_) {}
     toast.success('Photo added to Portfolio! 🖼️');
     setGalleryModalOpen(false);
@@ -361,7 +363,7 @@ const AdminDashboard = () => {
     const item = gallery.find(g => g._id === id);
     const newStatus = item?.status === 'Published' ? 'Draft' : 'Published';
     try {
-      await axios.patch(`/api/gallery/${id}/status`, { status: newStatus });
+      await api.patch(`/api/gallery/${id}/status`, { status: newStatus });
     } catch (_) {}
     toast.success('Gallery Status Updated!');
   };
@@ -369,7 +371,7 @@ const AdminDashboard = () => {
   const handleDeleteGalleryItem = async (id) => {
     setGallery(prev => prev.filter(g => g._id !== id));
     try {
-      await axios.delete(`/api/gallery/${id}`);
+      await api.delete(`/api/gallery/${id}`);
     } catch (_) {}
     toast.success('Photo removed');
   };
@@ -381,7 +383,7 @@ const AdminDashboard = () => {
       return updated;
     });
     try {
-      await axios.patch(`/api/appointments/${id}/status`, { status });
+      await api.patch(`/api/appointments/${id}/status`, { status });
     } catch (e) {}
     toast.success(`Appointment marked as ${status}`);
   };
@@ -403,11 +405,12 @@ const AdminDashboard = () => {
     });
 
     try {
-      await axios.delete(`/api/appointments/${id}`);
+      await api.delete(`/api/appointments/${id}`);
     } catch (e) {}
 
     toast.success('Appointment removed');
   };
+
 
   const handleSendWhatsApp = (apt) => {
     const cleanPhone = (apt.phone || '').replace(/[^0-9]/g, '');

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import toast from 'react-hot-toast';
 import SEO from '../components/SEO';
 import { 
@@ -47,6 +47,13 @@ const BookAppointment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Phone validation
+    const phoneClean = (formData.phone || '').replace(/\D/g, '');
+    if (phoneClean.length < 10) {
+      toast.error('Please enter a valid 10-digit mobile number!');
+      return;
+    }
     
     // Check Sunday
     if (formData.date) {
@@ -68,7 +75,7 @@ const BookAppointment = () => {
     // POST clean data to API (no client-generated _id)
     const aptPayload = {
       customerName: formData.customerName,
-      phone: formData.phone,
+      phone: phoneClean,
       email: formData.email || '',
       category: formData.category,
       service: formData.service,
@@ -78,7 +85,8 @@ const BookAppointment = () => {
     };
 
     try {
-      const res = await axios.post('/api/appointments', aptPayload);
+      const res = await api.post('/api/appointments', aptPayload);
+
       // Save API response to localStorage for admin sync
       if (res.data?.data) {
         try {
