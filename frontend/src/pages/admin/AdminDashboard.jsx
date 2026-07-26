@@ -224,14 +224,26 @@ const AdminDashboard = () => {
       } catch (_) {}
 
       const combined = [...apiData, ...cloudData, ...localData];
-      const unique = Array.from(
-        new Map(
-          combined.map(item => [
-            String(item._id || `${item.customerName || item.name || ''}-${item.phone || ''}-${item.date || ''}`),
-            item
-          ])
-        ).values()
-      );
+      const map = new Map();
+
+      combined.forEach(item => {
+        if (!item) return;
+        const name = (item.customerName || item.name || '').trim().toLowerCase();
+        const phone = (item.phone || '').trim();
+        const date = item.date || '';
+        const service = (item.service || '').trim().toLowerCase();
+        const compositeKey = `${name}_${phone}_${date}_${service}`;
+
+        const existing = map.get(compositeKey);
+        // Prefer item from server with real _id (apt-...) or with newer createdAt/status
+        if (!existing) {
+          map.set(compositeKey, item);
+        } else if (item._id && !item._id.startsWith('temp-')) {
+          map.set(compositeKey, item);
+        }
+      });
+
+      const unique = Array.from(map.values());
 
       if (unique.length > 0) {
         setAppointments(unique);

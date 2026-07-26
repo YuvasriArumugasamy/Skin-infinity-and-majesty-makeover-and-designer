@@ -1,37 +1,77 @@
-const KV_STORE_URL = 'https://kvdb.io/skininfinity2026majesty/contact_messages';
+let memoryCache = null;
+
+const KV_URL_1 = 'https://kvdb.io/skininfinity_majesty_v4_store/contact_messages';
+const KV_URL_2 = 'https://api.npoint.io/skininfinity_contact_backup';
 
 const defaultMsgs = [];
 
-async function getMsgs() {
+async function fetchWithAutoProvision(url, options = {}) {
   try {
-    const res = await fetch(KV_STORE_URL);
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data)) return data;
+    let res = await fetch(url, options);
+    if (res.status === 404 && options.method === 'POST' && url.includes('kvdb.io')) {
+      try {
+        await fetch('https://kvdb.io/', { method: 'POST' });
+        res = await fetch(url, options);
+      } catch (_) {}
     }
+    return res;
   } catch (e) {
+    return null;
+  }
+}
+
+async function getMsgs() {
+  const res1 = await fetchWithAutoProvision(KV_URL_1);
+  if (res1 && res1.ok) {
     try {
-      await fetch(KV_STORE_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(defaultMsgs)
-      });
+      const data = await res1.json();
+      if (Array.isArray(data)) {
+        memoryCache = data;
+        return data;
+      }
     } catch (_) {}
   }
+
+  const res2 = await fetchWithAutoProvision(KV_URL_2);
+  if (res2 && res2.ok) {
+    try {
+      const data = await res2.json();
+      if (Array.isArray(data)) {
+        memoryCache = data;
+        return data;
+      }
+    } catch (_) {}
+  }
+
+  if (Array.isArray(memoryCache)) return memoryCache;
   return defaultMsgs;
 }
 
 async function saveMsgs(list) {
+  memoryCache = list;
+  let saved = false;
+
+  const payload = JSON.stringify(list);
+
   try {
-    const res = await fetch(KV_STORE_URL, {
+    const r1 = await fetchWithAutoProvision(KV_URL_1, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(list)
+      body: payload
     });
-    return res.ok;
-  } catch (e) {
-    return false;
-  }
+    if (r1 && r1.ok) saved = true;
+  } catch (_) {}
+
+  try {
+    const r2 = await fetchWithAutoProvision(KV_URL_2, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: payload
+    });
+    if (r2 && r2.ok) saved = true;
+  } catch (_) {}
+
+  return saved;
 }
 
 module.exports = async (req, res) => {
@@ -76,3 +116,4 @@ module.exports = async (req, res) => {
 
   return res.status(405).json({ success: false, message: 'Method Not Allowed' });
 };
+

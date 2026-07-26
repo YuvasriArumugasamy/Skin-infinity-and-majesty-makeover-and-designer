@@ -15,11 +15,11 @@
   ],
   "routes": [
     {
-      "src": "/api/appointments",
+      "src": "/api/appointments(.*)",
       "dest": "api/appointments.js"
     },
     {
-      "src": "/api/contact",
+      "src": "/api/contact(.*)",
       "dest": "api/contact.js"
     },
     {
