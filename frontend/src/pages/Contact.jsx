@@ -26,37 +26,16 @@ const Contact = () => {
     }
 
     setLoading(true);
-
-    const newMsg = {
-      _id: 'c-' + Date.now(),
-      fullName: formData.fullName,
-      phone: phoneClean,
-      email: formData.email,
-      subject: formData.subject || 'General Inquiry',
-      message: formData.message,
-      createdAt: new Date().toISOString(),
-      readStatus: false
-    };
-
-    try {
-      const existing = JSON.parse(localStorage.getItem('contactMessages') || '[]');
-      localStorage.setItem('contactMessages', JSON.stringify([newMsg, ...existing]));
-    } catch (e) {}
-
     try {
       const res = await api.post('/api/contact', { ...formData, phone: phoneClean });
       if (res.data.success) {
         toast.success(res.data.message || 'Message sent! We will contact you soon.');
-      } else {
-        toast.success('Thank you! Your message has been saved. We will reply soon.');
+        setFormData({ fullName: '', phone: '', email: '', subject: '', message: '' });
       }
-    } catch (err) {
-
-      // localStorage-ல் save ஆகியிருக்கு — user-க்கு confirm பண்ணலாம்
-      toast.success('Thank you! Your message has been saved. We will contact you soon.');
+    } catch (_) {
+      toast.error('Could not send message. Please call or WhatsApp us directly.');
     } finally {
       setLoading(false);
-      setFormData({ fullName: '', phone: '', email: '', subject: '', message: '' });
     }
   };
 

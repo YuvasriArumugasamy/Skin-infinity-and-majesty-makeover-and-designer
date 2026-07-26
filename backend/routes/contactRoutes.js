@@ -34,6 +34,13 @@ router.post('/', async (req, res) => {
       message: String(message).trim().slice(0, 1000),
       readStatus: false
     });
+
+    // 🔔 Real-time push to admin
+    const io = req.app.get('io');
+    if (io) {
+      io.to('admin_room').emit('new_contact', created);
+    }
+
     return res.status(201).json({ success: true, message: 'Message sent successfully! We will contact you soon.', data: created });
   } catch (err) {
     return res.status(500).json({ success: false, message: 'Failed to send message' });

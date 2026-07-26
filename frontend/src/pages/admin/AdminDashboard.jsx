@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../../api/axios';
-import { fetchAppointmentsFromCloud } from '../../api/cloudSync';
+import { connectAdminSocket, disconnectSocket } from '../../api/socket';
 
 
 import toast from 'react-hot-toast';
@@ -197,94 +197,31 @@ const AdminDashboard = () => {
   };
 
   const fetchData = async () => {
-
     setLoading(true);
-    let localData = [];
-    let localMsgs = [];
+
+    // Fetch Appointments — pure API
     try {
-      localData = JSON.parse(localStorage.getItem('appointments') || '[]');
-      localMsgs = JSON.parse(localStorage.getItem('contactMessages') || '[]');
-    } catch (e) {}
-
-    // Fetch Appointments from API & Cloud Sync
-    try {
-      const cloudData = await fetchAppointmentsFromCloud();
-      console.log('☁️ Cloud data fetched:', cloudData?.length || 0, 'appointments');
-      
-      let apiData = [];
-      try {
-        const res = await api.get('/api/appointments');
-        console.log('🔗 API Response Status:', res.status, 'Data count:', res.data?.data?.length || 0);
-        if (res.data?.success && Array.isArray(res.data?.data)) {
-          apiData = res.data.data;
-          console.log('✅ API appointments loaded:', apiData.length);
-        }
-      } catch (apiErr) {
-        console.warn('❌ Admin API fetch failed - Status:', apiErr?.response?.status, 'Message:', apiErr?.message);
+      const res = await api.get('/api/appointments');
+      if (res.data?.success && Array.isArray(res.data?.data)) {
+        setAppointments(res.data.data);
       }
+    } catch (_) {}
 
-      console.log('📊 Merge sources - API:', apiData.length, 'Cloud:', cloudData.length, 'Local:', localData.length);
-      const combined = [...apiData, ...cloudData, ...localData];
-      const map = new Map();
-
-      combined.forEach(item => {
-        if (!item) return;
-        const name = (item.customerName || item.name || '').trim().toLowerCase();
-        const phone = (item.phone || '').trim();
-        const date = item.date || '';
-        const service = (item.service || '').trim().toLowerCase();
-        const compositeKey = `${name}_${phone}_${date}_${service}`;
-
-        const existing = map.get(compositeKey);
-        // Prefer item from server with real _id (apt-...) or with newer createdAt/status
-        if (!existing) {
-          map.set(compositeKey, item);
-        } else if (item._id && !item._id.startsWith('temp-')) {
-          map.set(compositeKey, item);
-        }
-      });
-
-      const unique = Array.from(map.values());
-      console.log('🎯 Final unique appointments after dedup:', unique.length);
-
-      if (unique.length > 0) {
-        setAppointments(unique);
-        localStorage.setItem('appointments', JSON.stringify(unique));
-      } else if (localData.length > 0) {
-        setAppointments(localData);
-      }
-    } catch (e) {
-      console.error('💥 Admin fetch data error:', e?.message);
-      if (localData.length > 0) setAppointments(localData);
-    }
-
-
-
-    // Fetch Contact Messages from API
+    // Fetch Contact Messages — pure API
     try {
       const msgRes = await api.get('/api/contact');
-      const apiMsgs = msgRes.data?.data || [];
-      if (Array.isArray(apiMsgs) && apiMsgs.length > 0) {
-        const combinedMsgs = [...apiMsgs, ...localMsgs];
-        const uniqueMsgs = Array.from(new Map(combinedMsgs.map(item => [String(item._id), item])).values());
-        setContactMessages(uniqueMsgs);
-      } else {
-        setContactMessages(localMsgs);
+      if (msgRes.data?.success && Array.isArray(msgRes.data?.data)) {
+        setContactMessages(msgRes.data.data);
       }
-    } catch (e) {
-      setContactMessages(localMsgs);
-    }
+    } catch (_) {}
 
-    // Fetch Gallery from API
+    // Fetch Gallery — pure API
     try {
       const galRes = await api.get('/api/gallery/all');
       if (galRes.data?.success && galRes.data.data.length > 0) {
         setGallery(galRes.data.data);
       }
-    } catch (e) {
-      // keep initialGallery
-    }
-
+    } catch (_) {}
 
     setLoading(false);
   };
@@ -292,24 +229,55 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchData();
 
-    // 5-second automatic background live polling for real-time updates
-    const liveInterval = setInterval(() => {
-      fetchData();
-    }, 5000);
+    // 🔌 Socket.io — real-time live updates
+    const socket = connectAdminSocket();
 
-    const handleStorageChange = () => {
-      try {
-        const stored = JSON.parse(localStorage.getItem('appointments') || '[]');
-        setAppointments(stored);
-        const storedMsgs = JSON.parse(localStorage.getItem('contactMessages') || '[]');
-        setContactMessages(storedMsgs);
-      } catch (e) {}
-    };
+    // New appointment arrives instantly
+    socket.on('new_appointment', (newApt) => {
+      setAppointments(prev => {
+        // Avoid duplicates
+        const exists = prev.some(a => String(a._id) === String(newApt._id));
+        if (exists) return prev;
+        return [newApt, ...prev];
+      });
+      // Toast notification
+      toast.custom((t) => (
+        <div className={`flex items-center gap-3 bg-white border border-pink-200 rounded-2xl px-4 py-3 shadow-lg ${t.visible ? 'animate-enter' : 'animate-leave'}`}>
+          <span className="text-xl">📅</span>
+          <div>
+            <p className="text-xs font-bold text-[#2C2225]">New Booking! — {newApt.customerName}</p>
+            <p className="text-[11px] text-gray-500">{newApt.service} on {newApt.date}</p>
+          </div>
+        </div>
+      ), { duration: 6000, position: 'top-right' });
+    });
 
-    window.addEventListener('storage', handleStorageChange);
+    // New contact message arrives instantly
+    socket.on('new_contact', (newMsg) => {
+      setContactMessages(prev => {
+        const exists = prev.some(m => String(m._id) === String(newMsg._id));
+        if (exists) return prev;
+        return [newMsg, ...prev];
+      });
+      toast.custom((t) => (
+        <div className={`flex items-center gap-3 bg-white border border-emerald-200 rounded-2xl px-4 py-3 shadow-lg ${t.visible ? 'animate-enter' : 'animate-leave'}`}>
+          <span className="text-xl">📩</span>
+          <div>
+            <p className="text-xs font-bold text-[#2C2225]">New Message! — {newMsg.fullName}</p>
+            <p className="text-[11px] text-gray-500">{newMsg.subject}</p>
+          </div>
+        </div>
+      ), { duration: 6000, position: 'top-right' });
+    });
+
+    // Fallback polling every 60s (if socket disconnects)
+    const fallbackInterval = setInterval(fetchData, 60000);
+
     return () => {
-      clearInterval(liveInterval);
-      window.removeEventListener('storage', handleStorageChange);
+      socket.off('new_appointment');
+      socket.off('new_contact');
+      clearInterval(fallbackInterval);
+      disconnectSocket();
     };
   }, []);
 
@@ -321,19 +289,6 @@ const AdminDashboard = () => {
       toast.error('Please enter Client Name and Phone number');
       return;
     }
-    const created = {
-      _id: Date.now().toString(),
-      ...newBooking,
-      status: 'Confirmed',
-      createdAt: new Date().toISOString()
-    };
-    // Save to localStorage immediately
-    setAppointments(prev => {
-      const updated = [created, ...prev];
-      localStorage.setItem('appointments', JSON.stringify(updated));
-      return updated;
-    });
-    // POST to API
     try {
       const res = await api.post('/api/appointments', {
         customerName: newBooking.customerName,
@@ -344,15 +299,14 @@ const AdminDashboard = () => {
         category: 'Bridal Suite',
         notes: `Staff: ${newBooking.staff}`
       });
-      if (res.data?.data?._id) {
-        // Update local with real DB _id
-        setAppointments(prev => {
-          const updated = prev.map(a => a._id === created._id ? { ...a, _id: res.data.data._id } : a);
-          localStorage.setItem('appointments', JSON.stringify(updated));
-          return updated;
-        });
+      if (res.data?.data) {
+        setAppointments(prev => [res.data.data, ...prev]);
       }
-    } catch (_) {}
+    } catch (_) {
+      // Show optimistic UI
+      const temp = { _id: 'temp-' + Date.now(), ...newBooking, status: 'Confirmed', createdAt: new Date().toISOString() };
+      setAppointments(prev => [temp, ...prev]);
+    }
     toast.success(`Booking created for ${newBooking.customerName}! ✨`);
     setBookingModalOpen(false);
     setNewBooking({
@@ -457,37 +411,23 @@ const AdminDashboard = () => {
   };
 
   const handleStatusChange = async (id, status) => {
-    setAppointments(prev => {
-      const updated = prev.map(a => a._id === id ? { ...a, status } : a);
-      localStorage.setItem('appointments', JSON.stringify(updated));
-      return updated;
-    });
+    setAppointments(prev => prev.map(a => a._id === id ? { ...a, status } : a));
     try {
       await api.patch(`/api/appointments/${id}/status`, { status });
-    } catch (e) {}
+    } catch (_) {}
     toast.success(`Appointment marked as ${status}`);
   };
 
   const handleStaffAssign = (id, staffName) => {
-    setAppointments(prev => {
-      const updated = prev.map(a => a._id === id ? { ...a, staff: staffName } : a);
-      localStorage.setItem('appointments', JSON.stringify(updated));
-      return updated;
-    });
+    setAppointments(prev => prev.map(a => a._id === id ? { ...a, staff: staffName } : a));
     toast.success(`Assigned ${staffName}`);
   };
 
   const handleDeleteAppointment = async (id) => {
-    setAppointments(prev => {
-      const updated = prev.filter(a => a._id !== id);
-      localStorage.setItem('appointments', JSON.stringify(updated));
-      return updated;
-    });
-
+    setAppointments(prev => prev.filter(a => a._id !== id));
     try {
       await api.delete(`/api/appointments/${id}`);
-    } catch (e) {}
-
+    } catch (_) {}
     toast.success('Appointment removed');
   };
 

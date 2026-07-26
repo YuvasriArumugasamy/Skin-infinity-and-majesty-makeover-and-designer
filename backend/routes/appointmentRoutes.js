@@ -41,6 +41,13 @@ router.post('/', async (req, res) => {
       notes: notes ? String(notes).trim().slice(0, 500) : '',
       status: 'Pending'
     });
+
+    // 🔔 Real-time push to admin dashboard instantly
+    const io = req.app.get('io');
+    if (io) {
+      io.to('admin_room').emit('new_appointment', created);
+    }
+
     return res.status(201).json({ success: true, message: 'Appointment booked successfully!', data: created });
   } catch (err) {
     return res.status(500).json({ success: false, message: 'Failed to create appointment' });

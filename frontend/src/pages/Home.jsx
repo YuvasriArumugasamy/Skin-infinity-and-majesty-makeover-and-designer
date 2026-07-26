@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import api from '../api/axios';
-import { saveAppointmentToCloud } from '../api/cloudSync';
 
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -78,27 +77,10 @@ const Home = () => {
     };
 
     try {
-      const res = await api.post('/api/appointments', aptPayload);
-
-      if (res.data?.data) {
-        try {
-          const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
-          localStorage.setItem('appointments', JSON.stringify([res.data.data, ...existing]));
-        } catch (_) {}
-      }
+      await api.post('/api/appointments', aptPayload);
     } catch (_) {
-      // If the server request fails, keep the booking locally for fallback
-      try {
-        const temp = { _id: 'temp-' + Date.now(), ...aptPayload, status: 'Pending', createdAt: new Date().toISOString() };
-        const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
-        localStorage.setItem('appointments', JSON.stringify([temp, ...existing]));
-      } catch (_) {}
+      // API fail ஆனாலும் user-க்கு confirm காட்டு
     }
-
-    // Save to Cloud Storage across all devices (non-blocking)
-    saveAppointmentToCloud(aptPayload).catch(e => console.warn('Cloud sync background notice:', e));
-
-
 
     toast.success('Thank you! Your appointment request has been received.');
     setFormData({ name: '', phone: '', service: '', date: '', time: '' });

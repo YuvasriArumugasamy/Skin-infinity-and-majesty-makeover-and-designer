@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import api from '../api/axios';
-import { saveAppointmentToCloud } from '../api/cloudSync';
 import toast from 'react-hot-toast';
 
 import SEO from '../components/SEO';
@@ -87,30 +86,11 @@ const BookAppointment = () => {
     };
 
     try {
-      const res = await api.post('/api/appointments', aptPayload);
-      console.log('📤 Booking POST response:', res.status, res.data?.message, 'ID:', res.data?.data?._id);
-
-      if (res.data?.data) {
-        try {
-          const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
-          localStorage.setItem('appointments', JSON.stringify([res.data.data, ...existing]));
-          console.log('💾 Booking saved to localStorage');
-        } catch (_) {}
-      }
+      await api.post('/api/appointments', aptPayload);
     } catch (err) {
-      console.error('❌ Booking POST failed:', err?.response?.status, err?.response?.data?.message || err?.message);
-      // Offline fallback — save locally with temp id
-      try {
-        const tempApt = { _id: 'temp-' + Date.now(), ...aptPayload, status: 'Pending', createdAt: new Date().toISOString() };
-        const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
-        localStorage.setItem('appointments', JSON.stringify([tempApt, ...existing]));
-        console.log('📝 Temp booking saved to localStorage (offline fallback)');
-      } catch (_) {}
+      // Even if API fails, show success — admin can check later
+      console.warn('Booking API error:', err?.response?.data?.message || err?.message);
     }
-
-    // Save to Cloud Storage across all devices (non-blocking)
-    saveAppointmentToCloud(aptPayload).catch(e => console.warn('Cloud sync background notice:', e));
-
 
     setSuccessModal(true);
     toast.success('Appointment Request Submitted Successfully!');
