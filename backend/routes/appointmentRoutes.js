@@ -64,6 +64,13 @@ router.patch('/:id/status', protectAdmin, async (req, res) => {
   try {
     const apt = await Appointment.findByIdAndUpdate(req.params.id, { status }, { new: true });
     if (!apt) return res.status(404).json({ success: false, message: 'Appointment not found' });
+
+    // 🔔 Real-time status update broadcast to other admins
+    const io = req.app.get('io');
+    if (io) {
+      io.to('admin_room').emit('update_appointment_status', apt);
+    }
+
     return res.json({ success: true, message: 'Status updated', data: apt });
   } catch (err) {
     return res.status(500).json({ success: false, message: 'Failed to update status' });
@@ -75,6 +82,13 @@ router.delete('/:id', protectAdmin, async (req, res) => {
   try {
     const apt = await Appointment.findByIdAndDelete(req.params.id);
     if (!apt) return res.status(404).json({ success: false, message: 'Appointment not found' });
+
+    // 🔔 Real-time deletion broadcast to other admins
+    const io = req.app.get('io');
+    if (io) {
+      io.to('admin_room').emit('delete_appointment', req.params.id);
+    }
+
     return res.json({ success: true, message: 'Appointment deleted successfully' });
   } catch (err) {
     return res.status(500).json({ success: false, message: 'Failed to delete appointment' });

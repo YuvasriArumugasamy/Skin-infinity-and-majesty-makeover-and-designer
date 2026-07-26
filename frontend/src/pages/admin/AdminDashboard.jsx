@@ -259,6 +259,20 @@ const AdminDashboard = () => {
       ), { duration: 6000, position: 'top-right' });
     });
 
+    // Appointment status updates instantly
+    socket.on('update_appointment_status', (updatedApt) => {
+      setAppointments(prev => prev.map(a => String(a._id) === String(updatedApt._id) ? updatedApt : a));
+      toast.success(`Booking status updated: ${updatedApt.customerName} is now ${updatedApt.status} ✨`, {
+        icon: '🔔',
+        style: { background: '#FFF5F8', color: '#B76E79', border: '1px solid #F4C2D7' }
+      });
+    });
+
+    // Appointment deleted instantly
+    socket.on('delete_appointment', (deletedId) => {
+      setAppointments(prev => prev.filter(a => String(a._id) !== String(deletedId)));
+    });
+
     // New contact message arrives instantly
     socket.on('new_contact', (newMsg) => {
       setContactMessages(prev => {
@@ -282,6 +296,8 @@ const AdminDashboard = () => {
 
     return () => {
       socket.off('new_appointment');
+      socket.off('update_appointment_status');
+      socket.off('delete_appointment');
       socket.off('new_contact');
       clearInterval(fallbackInterval);
       disconnectSocket();
