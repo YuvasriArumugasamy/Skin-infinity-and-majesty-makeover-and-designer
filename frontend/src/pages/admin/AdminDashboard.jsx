@@ -21,6 +21,8 @@ const AdminDashboard = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [appointmentSearchQuery, setAppointmentSearchQuery] = useState('');
   const [messageSearchQuery, setMessageSearchQuery] = useState('');
+  const [reviews, setReviews] = useState([]);
+  const [reviewSearchQuery, setReviewSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [loading, setLoading] = useState(false);
@@ -230,6 +232,14 @@ const AdminDashboard = () => {
       }
     } catch (_) {}
 
+    // Fetch Reviews — pure API
+    try {
+      const revRes = await api.get('/api/reviews/all');
+      if (revRes.data?.success && Array.isArray(revRes.data?.data)) {
+        setReviews(revRes.data.data);
+      }
+    } catch (_) {}
+
     setLoading(false);
   };
 
@@ -395,6 +405,26 @@ const AdminDashboard = () => {
       await api.delete(`/api/bridal/${id}`);
     } catch (_) {}
     toast.success('Bride Record removed');
+  };
+
+  const handleReviewStatusChange = async (id, status) => {
+    setReviews(prev => prev.map(r => r._id === id ? { ...r, status } : r));
+    try {
+      await api.patch(`/api/reviews/${id}/status`, { status });
+      toast.success(`Review marked as ${status}! ✨`);
+    } catch (_) {
+      toast.error('Failed to update review status');
+    }
+  };
+
+  const handleDeleteReview = async (id) => {
+    setReviews(prev => prev.filter(r => r._id !== id));
+    try {
+      await api.delete(`/api/reviews/${id}`);
+      toast.success('Review deleted permanently');
+    } catch (_) {
+      toast.error('Failed to delete review');
+    }
   };
 
   const handleFileChange = (e) => {
@@ -929,6 +959,7 @@ const AdminDashboard = () => {
               { id: 'Overview', label: 'Executive Dashboard', desc: 'Live Metrics & Schedule', icon: <FiGrid /> },
               { id: 'Appointments', label: 'Bookings & Slots', desc: 'Real-Time Slots & WhatsApp', icon: <FiCalendar /> },
               { id: 'Inquiries', label: `Client Messages (${contactMessages.length})`, desc: 'Contact Form Submissions', icon: <FiInbox /> },
+              { id: 'Reviews', label: `Customer Reviews (${reviews.length})`, desc: 'Approve & Manage Reviews', icon: <FiStar /> },
               { id: 'BridalSuite', label: 'Bridal & Couture Studio', desc: 'Bride Notes & Measurements', icon: <FiHeart /> },
               { id: 'GalleryAndServices', label: 'Portfolio & Services', desc: 'Photos & Pricing Suite', icon: <FiImage /> }
             ].map(item => {
@@ -1690,6 +1721,151 @@ const AdminDashboard = () => {
                   ))}
                 </div>
               </div>
+
+            </div>
+          )}
+
+          {/* ==================== TAB: CUSTOMER REVIEWS ==================== */}
+          {activeTab === 'Reviews' && (
+            <div className="space-y-6">
+              
+              {/* Header Banner */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-gradient-to-r from-pink-50 via-white to-pink-50/50 p-6 rounded-3xl border border-pink-100 shadow-sm">
+                <div>
+                  <span className="text-[10px] font-bold tracking-widest text-[#B76E79] uppercase bg-white px-3 py-1 rounded-full border border-pink-200 shadow-xs">
+                    REVIEWS MANAGER
+                  </span>
+                  <h2 className="font-serif text-2xl font-bold text-[#2C2225] mt-2">
+                    Customer Reviews & Feedback ★
+                  </h2>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Approve or Reject customer reviews to be displayed on the public website.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="px-4 py-2 rounded-2xl bg-[#B76E79] text-white text-xs font-bold shadow-sm">
+                    {reviews.length} Reviews Total
+                  </span>
+                </div>
+              </div>
+
+              {/* Search Filter */}
+              <div className="relative">
+                <FiSearch className="absolute left-4 top-3.5 text-gray-400 text-base" />
+                <input
+                  type="text"
+                  placeholder="Search reviews by customer name, service, or comment..."
+                  value={reviewSearchQuery}
+                  onChange={e => setReviewSearchQuery(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3 rounded-2xl border border-pink-200 bg-white text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#B76E79] shadow-xs"
+                />
+              </div>
+
+              {/* Reviews Grid */}
+              {reviews.filter(r => 
+                !reviewSearchQuery || 
+                (r.customerName && r.customerName.toLowerCase().includes(reviewSearchQuery.toLowerCase())) ||
+                (r.service && r.service.toLowerCase().includes(reviewSearchQuery.toLowerCase())) ||
+                (r.reviewText && r.reviewText.toLowerCase().includes(reviewSearchQuery.toLowerCase()))
+              ).length === 0 ? (
+                <div className="bg-white rounded-3xl p-12 text-center border border-pink-100 space-y-3">
+                  <div className="w-14 h-14 rounded-full bg-pink-50 text-[#B76E79] flex items-center justify-center text-2xl mx-auto">
+                    <FiStar />
+                  </div>
+                  <h3 className="font-serif text-lg font-bold text-gray-800">No Reviews Found</h3>
+                  <p className="text-xs text-gray-500 max-w-sm mx-auto">
+                    No matching reviews were found. If users submit reviews, they will automatically appear here.
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {reviews
+                    .filter(r => 
+                      !reviewSearchQuery || 
+                      (r.customerName && r.customerName.toLowerCase().includes(reviewSearchQuery.toLowerCase())) ||
+                      (r.service && r.service.toLowerCase().includes(reviewSearchQuery.toLowerCase())) ||
+                      (r.reviewText && r.reviewText.toLowerCase().includes(reviewSearchQuery.toLowerCase()))
+                    )
+                    .map((rev, i) => (
+                      <div key={rev._id || i} className="bg-white rounded-3xl p-6 border border-pink-100/90 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between">
+                        <div className="space-y-3">
+                          
+                          {/* Header row: Customer & Rating */}
+                          <div className="flex items-start justify-between gap-3 border-b border-pink-50 pb-3">
+                            <div>
+                              <h3 className="font-bold text-base text-gray-900 leading-tight">
+                                {rev.customerName || 'Anonymous User'}
+                              </h3>
+                              <span className="text-[10px] font-semibold text-[#B76E79] bg-pink-50 px-2 py-0.5 rounded-md border border-pink-100 mt-1 inline-block">
+                                {rev.service || 'General Service'}
+                              </span>
+                            </div>
+                            <span className="text-xs font-bold text-amber-500 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200 shadow-2xs whitespace-nowrap">
+                              {'★'.repeat(rev.rating || 5)}{'☆'.repeat(5 - (rev.rating || 5))}
+                            </span>
+                          </div>
+
+                          {/* Review Meta Info */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-600 bg-pink-50/40 p-3 rounded-2xl border border-pink-100/60">
+                            <div>
+                              <span className="text-[10px] text-gray-400 block font-bold uppercase">Status</span>
+                              <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border-0 ${
+                                rev.status === 'Approved' ? 'bg-emerald-100 text-emerald-800' :
+                                rev.status === 'Rejected' ? 'bg-red-100 text-red-800' :
+                                'bg-amber-100 text-amber-800'
+                              }`}>
+                                {rev.status || 'Pending'}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-[10px] text-gray-400 block font-bold uppercase">Submitted On</span>
+                              <span className="font-semibold text-gray-700 block">
+                                {rev.createdAt ? new Date(rev.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recent'}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Review Text */}
+                          <div className="space-y-1">
+                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Review Content</span>
+                            <div className="p-3.5 rounded-2xl bg-gray-50 text-xs text-gray-700 leading-relaxed font-medium border border-gray-100">
+                              "{rev.reviewText || 'No review text provided.'}"
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="pt-3 border-t border-pink-50 flex items-center justify-between gap-3">
+                          <div className="flex gap-2 flex-grow">
+                            {rev.status !== 'Approved' && (
+                              <button
+                                onClick={() => handleReviewStatusChange(rev._id, 'Approved')}
+                                className="flex-1 py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold transition"
+                              >
+                                Approve
+                              </button>
+                            )}
+                            {rev.status !== 'Rejected' && (
+                              <button
+                                onClick={() => handleReviewStatusChange(rev._id, 'Rejected')}
+                                className="flex-1 py-2 px-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition"
+                              >
+                                Reject
+                              </button>
+                            )}
+                          </div>
+                          <button
+                            onClick={() => handleDeleteReview(rev._id)}
+                            className="p-2.5 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-100 transition"
+                            title="Delete Review"
+                          >
+                            <FiTrash2 size={15} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              )}
 
             </div>
           )}
