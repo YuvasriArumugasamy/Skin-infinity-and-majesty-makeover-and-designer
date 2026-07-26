@@ -1152,13 +1152,21 @@ const AdminDashboard = () => {
                               <span className="text-[11px] text-[#B76E79] font-semibold">{apt.service}</span>
                             </div>
                           </div>
-                          <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                            apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
-                            apt.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
-                            'bg-amber-100 text-amber-800'
-                          }`}>
-                            {apt.status || 'Confirmed'}
-                          </span>
+                          <select
+                            value={apt.status || 'Pending'}
+                            onChange={e => handleStatusChange(apt._id, e.target.value)}
+                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border-0 cursor-pointer outline-none ${
+                              apt.status === 'Confirmed'  ? 'bg-emerald-100 text-emerald-800' :
+                              apt.status === 'Completed'  ? 'bg-blue-100 text-blue-800' :
+                              apt.status === 'Cancelled'  ? 'bg-red-100 text-red-800' :
+                              'bg-amber-100 text-amber-800'
+                            }`}
+                          >
+                            <option value="Pending">Pending</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                          </select>
                         </div>
 
                         <div className="p-3 rounded-xl bg-white border border-pink-100 text-xs space-y-1 text-gray-600">
@@ -1334,13 +1342,21 @@ const AdminDashboard = () => {
                                 <span className="text-xs text-[#B76E79] font-semibold block truncate mt-0.5">{apt.service}</span>
                               </div>
                             </div>
-                            <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold shrink-0 ${
-                              apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
-                              apt.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
-                              'bg-amber-100 text-amber-800'
-                            }`}>
-                              {apt.status || 'Confirmed'}
-                            </span>
+                            <select
+                              value={apt.status || 'Pending'}
+                              onChange={e => handleStatusChange(apt._id, e.target.value)}
+                              className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border-0 cursor-pointer outline-none shrink-0 ${
+                                apt.status === 'Confirmed'  ? 'bg-emerald-100 text-emerald-800' :
+                                apt.status === 'Completed'  ? 'bg-blue-100 text-blue-800' :
+                                apt.status === 'Cancelled'  ? 'bg-red-100 text-red-800' :
+                                'bg-amber-100 text-amber-800'
+                              }`}
+                            >
+                              <option value="Pending">Pending</option>
+                              <option value="Confirmed">Confirmed</option>
+                              <option value="Completed">Completed</option>
+                              <option value="Cancelled">Cancelled</option>
+                            </select>
                           </div>
 
                           <div className="p-3 rounded-xl bg-white border border-pink-100 text-xs flex justify-between items-center text-gray-600 gap-2">
@@ -1399,13 +1415,21 @@ const AdminDashboard = () => {
                               <td className="py-3.5 px-4 text-[#B76E79] font-semibold">{apt.service}</td>
                               <td className="py-3.5 px-4 text-gray-600">{apt.date} | {apt.time || '10:00 AM'}</td>
                               <td className="py-3.5 px-4">
-                                <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                                  apt.status === 'Confirmed' ? 'bg-emerald-100 text-emerald-800' :
-                                  apt.status === 'Cancelled' ? 'bg-red-100 text-red-800' :
-                                  'bg-amber-100 text-amber-800'
-                                }`}>
-                                  {apt.status || 'Confirmed'}
-                                </span>
+                                <select
+                                  value={apt.status || 'Pending'}
+                                  onChange={e => handleStatusChange(apt._id, e.target.value)}
+                                  className={`px-2.5 py-1 rounded-full text-[10px] font-bold border-0 cursor-pointer outline-none ${
+                                    apt.status === 'Confirmed'  ? 'bg-emerald-100 text-emerald-800' :
+                                    apt.status === 'Completed'  ? 'bg-blue-100 text-blue-800' :
+                                    apt.status === 'Cancelled'  ? 'bg-red-100 text-red-800' :
+                                    'bg-amber-100 text-amber-800'
+                                  }`}
+                                >
+                                  <option value="Pending">Pending</option>
+                                  <option value="Confirmed">Confirmed</option>
+                                  <option value="Completed">Completed</option>
+                                  <option value="Cancelled">Cancelled</option>
+                                </select>
                               </td>
                               <td className="py-3.5 px-4 text-right">
                                 <div className="flex items-center justify-end gap-2">
