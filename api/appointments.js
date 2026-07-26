@@ -1,82 +1,35 @@
-let memoryCache = null;
+const mongoose = require('mongoose');
 
-const JSONBLOB_URL = 'https://jsonblob.com/api/jsonBlob/1264879201948571024';
-const KEYVALUE_URL = 'https://keyvalue.im/skininfinity_appts_store_2026';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://skininfinitymajesty_db_user:skin123@cluster0.ja74j9f.mongodb.net/skin_infinity_db?appName=Cluster0';
 
-const defaultAppointments = [
-  {
-    _id: 'apt-sample-1',
-    customerName: 'yuvasri',
-    phone: '9876543210',
-    email: 'yuvasri@skininfinity.com',
-    category: 'Skin Care',
-    service: 'Skin Lightening Chemical Peeling',
-    date: '2026-07-31',
-    time: '10:00 AM',
-    notes: 'Sample booking',
-    status: 'Pending',
-    createdAt: new Date().toISOString()
+let cachedDb = null;
+
+async function connectToDatabase() {
+  if (cachedDb && mongoose.connection.readyState === 1) {
+    return cachedDb;
   }
-];
-
-async function fetchCloud(url, options = {}) {
-  try {
-    const res = await fetch(url, options);
-    if (res.ok) {
-      const text = await res.text();
-      try {
-        const data = JSON.parse(text);
-        if (Array.isArray(data) && data.length > 0) return data;
-      } catch (_) {}
-    }
-  } catch (_) {}
-  return null;
+  cachedDb = await mongoose.connect(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  return cachedDb;
 }
 
-async function getAppointments() {
-  const data1 = await fetchCloud(KEYVALUE_URL);
-  if (data1) { memoryCache = data1; return data1; }
+const appointmentSchema = new mongoose.Schema({
+  customerName: { type: String, required: true },
+  phone: { type: String, required: true },
+  email: { type: String, default: '' },
+  gender: { type: String, enum: ['Female', 'Male', 'Other'], default: 'Female' },
+  age: { type: Number },
+  category: { type: String, required: true },
+  service: { type: String, required: true },
+  date: { type: String, required: true },
+  time: { type: String, required: true },
+  notes: { type: String },
+  status: { type: String, enum: ['Pending', 'Confirmed', 'Completed', 'Cancelled'], default: 'Pending' }
+}, { timestamps: true });
 
-  const data2 = await fetchCloud(JSONBLOB_URL, { headers: { 'Accept': 'application/json' } });
-  if (data2) { memoryCache = data2; return data2; }
-
-  if (Array.isArray(memoryCache) && memoryCache.length > 0) return memoryCache;
-
-  return defaultAppointments;
-}
-
-async function saveAppointments(list) {
-  memoryCache = list;
-  const payload = JSON.stringify(list);
-  let saved = false;
-
-  try {
-    const res = await fetch(KEYVALUE_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: payload
-    });
-    if (res.ok) saved = true;
-  } catch (_) {}
-
-  try {
-    let res = await fetch(JSONBLOB_URL, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: payload
-    });
-    if (res.status === 404) {
-      res = await fetch('https://jsonblob.com/api/jsonBlob', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: payload
-      });
-    }
-    if (res.ok) saved = true;
-  } catch (_) {}
-
-  return saved;
-}
+const Appointment = mongoose.models.Appointment || mongoose.model('Appointment', appointmentSchema);
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -86,6 +39,13 @@ module.exports = async (req, res) => {
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
+  }
+
+  try {
+    await connectToDatabase();
+  } catch (error) {
+    console.error('MongoDB connection error in Vercel function:', error);
+    return res.status(500).json({ success: false, message: 'Database connection failed' });
   }
 
   const getTargetId = () => {
@@ -98,13 +58,17 @@ module.exports = async (req, res) => {
   };
 
   if (req.method === 'GET') {
-    const data = await getAppointments();
-    return res.status(200).json({ success: true, count: data.length, data });
+    try {
+      const data = await Appointment.find().sort({ createdAt: -1 });
+      return res.status(200).json({ success: true, count: data.length, data });
+    } catch (err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }
   }
 
   if (req.method === 'POST') {
     const body = req.body || {};
-    const { customerName, phone, email, category, service, date, time, notes } = body;
+    const { customerName, phone, email, gender, age, category, service, date, time, notes } = body;
     if (!customerName || !phone) {
       return res.status(400).json({ success: false, message: 'Customer name and phone are required' });
     }
@@ -115,46 +79,44 @@ module.exports = async (req, res) => {
     const cleanTime = time || '10:00 AM';
     const cleanService = service || 'General Treatment';
 
-    const currentList = await getAppointments();
-
-    const existingIndex = currentList.findIndex(item => 
-      item &&
-      item.customerName?.toLowerCase() === cleanName.toLowerCase() &&
-      item.phone === cleanPhone &&
-      item.date === cleanDate &&
-      item.time === cleanTime
-    );
-
-    if (existingIndex >= 0) {
-      return res.status(200).json({ 
-        success: true, 
-        message: 'Appointment already recorded', 
-        data: currentList[existingIndex] 
+    try {
+      const existing = await Appointment.findOne({
+        customerName: { $regex: new RegExp('^' + cleanName + '$', 'i') },
+        phone: cleanPhone,
+        date: cleanDate,
+        time: cleanTime
       });
+
+      if (existing) {
+        return res.status(200).json({ 
+          success: true, 
+          message: 'Appointment already recorded', 
+          data: existing 
+        });
+      }
+
+      const created = await Appointment.create({
+        customerName: cleanName,
+        phone: cleanPhone,
+        email: email ? String(email).trim() : '',
+        gender: gender || 'Female',
+        age: age ? Number(age) : undefined,
+        category: category || 'Beauty Care',
+        service: cleanService,
+        date: cleanDate,
+        time: cleanTime,
+        notes: notes ? String(notes).trim() : '',
+        status: 'Pending'
+      });
+
+      return res.status(201).json({ 
+        success: true, 
+        message: 'Appointment booked successfully!', 
+        data: created 
+      });
+    } catch (err) {
+      return res.status(500).json({ success: false, message: err.message });
     }
-
-    const created = {
-      _id: 'apt-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
-      customerName: cleanName,
-      phone: cleanPhone,
-      email: email ? String(email).trim() : '',
-      category: category || 'Beauty Care',
-      service: cleanService,
-      date: cleanDate,
-      time: cleanTime,
-      notes: notes ? String(notes).trim() : '',
-      status: 'Pending',
-      createdAt: new Date().toISOString()
-    };
-
-    const updatedList = [created, ...currentList];
-    await saveAppointments(updatedList);
-
-    return res.status(201).json({ 
-      success: true, 
-      message: 'Appointment booked successfully!', 
-      data: created 
-    });
   }
 
   if (req.method === 'PATCH' || req.method === 'PUT') {
@@ -165,13 +127,15 @@ module.exports = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Appointment ID is required for status update' });
     }
 
-    const currentList = await getAppointments();
-    const updatedList = currentList.map(item => 
-      item && item._id === targetId ? { ...item, status: status || item.status } : item
-    );
-
-    await saveAppointments(updatedList);
-    return res.status(200).json({ success: true, message: 'Status updated successfully', data: updatedList });
+    try {
+      const updated = await Appointment.findByIdAndUpdate(targetId, { status }, { new: true });
+      if (!updated) {
+        return res.status(404).json({ success: false, message: 'Appointment not found' });
+      }
+      return res.status(200).json({ success: true, message: 'Status updated successfully', data: updated });
+    } catch (err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }
   }
 
   if (req.method === 'DELETE') {
@@ -180,11 +144,15 @@ module.exports = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Appointment ID is required for deletion' });
     }
 
-    const currentList = await getAppointments();
-    const updatedList = currentList.filter(item => item && item._id !== targetId);
-
-    await saveAppointments(updatedList);
-    return res.status(200).json({ success: true, message: 'Appointment deleted successfully' });
+    try {
+      const deleted = await Appointment.findByIdAndDelete(targetId);
+      if (!deleted) {
+        return res.status(404).json({ success: false, message: 'Appointment not found' });
+      }
+      return res.status(200).json({ success: true, message: 'Appointment deleted successfully' });
+    } catch (err) {
+      return res.status(500).json({ success: false, message: err.message });
+    }
   }
 
   return res.status(405).json({ success: false, message: 'Method Not Allowed' });

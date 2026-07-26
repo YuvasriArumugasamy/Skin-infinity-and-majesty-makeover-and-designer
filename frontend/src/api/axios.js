@@ -10,7 +10,7 @@ const getBaseURL = () => {
       return 'http://localhost:5000';
     }
   }
-  return 'https://skin-infinity-backend.onrender.com';
+  return '';
 };
 
 const api = axios.create({
