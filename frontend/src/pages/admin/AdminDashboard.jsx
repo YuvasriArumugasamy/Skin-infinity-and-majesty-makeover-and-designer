@@ -91,9 +91,7 @@ const AdminDashboard = () => {
 
   const [appointments, setAppointments] = useState([]);
 
-  const [bridalRecords, setBridalRecords] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('bridalRecords') || '[]'); } catch (_) { return []; }
-  });
+  const [bridalRecords, setBridalRecords] = useState([]);
   const [gallery, setGallery] = useState(initialGallery);
   const [services, setServices] = useState(initialServices);
   const [contactMessages, setContactMessages] = useState([]);
@@ -224,6 +222,14 @@ const AdminDashboard = () => {
       }
     } catch (_) {}
 
+    // Fetch Bridal Records — pure API
+    try {
+      const bridalRes = await api.get('/api/bridal');
+      if (bridalRes.data?.success && Array.isArray(bridalRes.data?.data)) {
+        setBridalRecords(bridalRes.data.data);
+      }
+    } catch (_) {}
+
     setLoading(false);
   };
 
@@ -321,14 +327,13 @@ const AdminDashboard = () => {
     });
   };
 
-  const handleCreateBride = (e) => {
+  const handleCreateBride = async (e) => {
     e.preventDefault();
     if (!newBride.clientName || !newBride.functionDate) {
       toast.error('Please enter Bride Name and Function Date');
       return;
     }
-    const created = {
-      _id: Date.now().toString(),
+    const payload = {
       ...newBride,
       bust: newBride.bust || '34"',
       waist: newBride.waist || '28"',
@@ -336,11 +341,21 @@ const AdminDashboard = () => {
       sleeve: newBride.sleeve || '10.5"',
       deliveryStatus: 'Consultation Completed'
     };
-    setBridalRecords(prev => {
-      const updated = [created, ...prev];
-      localStorage.setItem('bridalRecords', JSON.stringify(updated));
-      return updated;
-    });
+
+    try {
+      const res = await api.post('/api/bridal', payload);
+      if (res.data?.success && res.data?.data) {
+        setBridalRecords(prev => [res.data.data, ...prev]);
+      }
+    } catch (_) {
+      // Optimistic UI Fallback
+      const created = {
+        _id: 'temp-' + Date.now().toString(),
+        ...payload
+      };
+      setBridalRecords(prev => [created, ...prev]);
+    }
+
     toast.success(`Bride Record created for ${newBride.clientName}! 👰`);
     setBrideModalOpen(false);
     setNewBride({
@@ -356,6 +371,14 @@ const AdminDashboard = () => {
       shoulder: '',
       sleeve: ''
     });
+  };
+
+  const handleDeleteBride = async (id) => {
+    setBridalRecords(prev => prev.filter(b => b._id !== id));
+    try {
+      await api.delete(`/api/bridal/${id}`);
+    } catch (_) {}
+    toast.success('Bride Record removed');
   };
 
   const handleFileChange = (e) => {
@@ -1511,9 +1534,18 @@ const AdminDashboard = () => {
                             <h4 className="font-serif text-lg font-bold text-[#2C2225]">{b.clientName}</h4>
                             <p className="text-xs text-gray-500">Function Date: <strong className="text-gray-800">{b.functionDate}</strong></p>
                           </div>
-                          <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-[#B76E79] text-white shadow-xs">
-                            {b.deliveryStatus}
-                          </span>
+                          <div className="flex flex-col items-end gap-2">
+                            <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-[#B76E79] text-white shadow-xs">
+                              {b.deliveryStatus}
+                            </span>
+                            <button
+                              onClick={() => handleDeleteBride(b._id)}
+                              className="text-rose-600 hover:text-rose-800 transition p-1"
+                              title="Delete Record"
+                            >
+                              <FiTrash2 size={14} />
+                            </button>
+                          </div>
                         </div>
 
                         <div className="space-y-1 text-xs text-gray-700">
