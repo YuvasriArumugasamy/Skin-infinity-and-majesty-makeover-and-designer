@@ -1,3 +1,5 @@
+import api from './axios';
+
 /**
  * Save an appointment to shared permanent Cloud Store across all devices & browsers
  */
@@ -13,16 +15,11 @@ export const saveAppointmentToCloud = async (aptData) => {
     notes: String(aptData.notes || '').trim()
   };
 
-  // Post to same-domain Vercel Serverless Function /api/appointments (Zero CORS Issue)
+  // Post to backend database via centralized API client
   try {
-    const res = await fetch('/api/appointments', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newApt)
-    });
-    if (res.ok) {
-      const json = await res.json();
-      return json?.data;
+    const res = await api.post('/api/appointments', newApt);
+    if (res.data?.success && res.data?.data) {
+      return res.data.data;
     }
   } catch (error) {
     console.warn('Cloud Sync save notice:', error?.message);
@@ -31,16 +28,13 @@ export const saveAppointmentToCloud = async (aptData) => {
 };
 
 /**
- * Fetch all appointments from Vercel Serverless /api/appointments
+ * Fetch all appointments from backend database via centralized API client
  */
 export const fetchAppointmentsFromCloud = async () => {
   try {
-    const res = await fetch('/api/appointments');
-    if (res.ok) {
-      const json = await res.json();
-      if (json?.data && Array.isArray(json.data)) {
-        return json.data;
-      }
+    const res = await api.get('/api/appointments');
+    if (res.data?.success && Array.isArray(res.data?.data)) {
+      return res.data.data;
     }
   } catch (error) {
     console.warn('Cloud Sync fetch notice:', error?.message);
