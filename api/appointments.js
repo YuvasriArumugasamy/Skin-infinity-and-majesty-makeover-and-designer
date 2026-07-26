@@ -1,6 +1,3 @@
-const https = require('https');
-const http = require('http');
-
 let memoryCache = null;
 
 const JSONBLOB_URL = 'https://jsonblob.com/api/jsonBlob/1264879201948571024';
@@ -22,110 +19,58 @@ const defaultAppointments = [
   }
 ];
 
-function httpGet(urlStr) {
-  return new Promise((resolve) => {
-    try {
-      const urlObj = new URL(urlStr);
-      const client = urlObj.protocol === 'https:' ? https : http;
-      const req = client.get(urlStr, (res) => {
-        let data = '';
-        res.on('data', (chunk) => { data += chunk; });
-        res.on('end', () => {
-          resolve({ ok: res.statusCode >= 200 && res.statusCode < 300, status: res.statusCode, data });
-        });
-      });
-      req.on('error', () => resolve({ ok: false, status: 500, data: '' }));
-      req.setTimeout(4000, () => { req.destroy(); resolve({ ok: false, status: 408, data: '' }); });
-    } catch (e) {
-      resolve({ ok: false, status: 500, data: '' });
+async function fetchCloud(url, options = {}) {
+  try {
+    const res = await fetch(url, options);
+    if (res.ok) {
+      const text = await res.text();
+      try {
+        const data = JSON.parse(text);
+        if (Array.isArray(data) && data.length > 0) return data;
+      } catch (_) {}
     }
-  });
-}
-
-function httpPost(urlStr, bodyData, method = 'POST', headers = {}) {
-  return new Promise((resolve) => {
-    try {
-      const urlObj = new URL(urlStr);
-      const client = urlObj.protocol === 'https:' ? https : http;
-      const payload = typeof bodyData === 'string' ? bodyData : JSON.stringify(bodyData);
-
-      const reqOptions = {
-        hostname: urlObj.hostname,
-        port: urlObj.port || (urlObj.protocol === 'https:' ? 443 : 80),
-        path: urlObj.pathname + urlObj.search,
-        method: method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Content-Length': Buffer.byteLength(payload),
-          ...headers
-        }
-      };
-
-      const req = client.request(reqOptions, (res) => {
-        let data = '';
-        res.on('data', (chunk) => { data += chunk; });
-        res.on('end', () => {
-          resolve({ ok: res.statusCode >= 200 && res.statusCode < 300, status: res.statusCode, data });
-        });
-      });
-
-      req.on('error', () => resolve({ ok: false, status: 500, data: '' }));
-      req.setTimeout(4000, () => { req.destroy(); resolve({ ok: false, status: 408, data: '' }); });
-      req.write(payload);
-      req.end();
-    } catch (e) {
-      resolve({ ok: false, status: 500, data: '' });
-    }
-  });
+  } catch (_) {}
+  return null;
 }
 
 async function getAppointments() {
-  // 1. Try KeyValue store
-  try {
-    const res = await httpGet(KEYVALUE_URL);
-    if (res.ok && res.data && res.data.trim().startsWith('[')) {
-      const data = JSON.parse(res.data);
-      if (Array.isArray(data) && data.length > 0) {
-        memoryCache = data;
-        return data;
-      }
-    }
-  } catch (_) {}
+  const data1 = await fetchCloud(KEYVALUE_URL);
+  if (data1) { memoryCache = data1; return data1; }
 
-  // 2. Try JSONBlob store
-  try {
-    const res = await httpGet(JSONBLOB_URL);
-    if (res.ok && res.data && res.data.trim().startsWith('[')) {
-      const data = JSON.parse(res.data);
-      if (Array.isArray(data) && data.length > 0) {
-        memoryCache = data;
-        return data;
-      }
-    }
-  } catch (_) {}
+  const data2 = await fetchCloud(JSONBLOB_URL, { headers: { 'Accept': 'application/json' } });
+  if (data2) { memoryCache = data2; return data2; }
 
-  if (Array.isArray(memoryCache) && memoryCache.length > 0) {
-    return memoryCache;
-  }
+  if (Array.isArray(memoryCache) && memoryCache.length > 0) return memoryCache;
 
   return defaultAppointments;
 }
 
 async function saveAppointments(list) {
   memoryCache = list;
+  const payload = JSON.stringify(list);
   let saved = false;
 
-  // 1. Save to KeyValue store
   try {
-    const res = await httpPost(KEYVALUE_URL, list, 'POST', { 'Content-Type': 'text/plain' });
+    const res = await fetch(KEYVALUE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: payload
+    });
     if (res.ok) saved = true;
   } catch (_) {}
 
-  // 2. Save to JSONBlob store
   try {
-    let res = await httpPost(JSONBLOB_URL, list, 'PUT', { 'Content-Type': 'application/json' });
-    if (!res.ok && res.status === 404) {
-      res = await httpPost('https://jsonblob.com/api/jsonBlob', list, 'POST', { 'Content-Type': 'application/json' });
+    let res = await fetch(JSONBLOB_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: payload
+    });
+    if (res.status === 404) {
+      res = await fetch('https://jsonblob.com/api/jsonBlob', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: payload
+      });
     }
     if (res.ok) saved = true;
   } catch (_) {}
@@ -148,9 +93,7 @@ module.exports = async (req, res) => {
     if (req.query && req.query.id) return String(req.query.id);
     const rawUrl = req.url || '';
     const match = rawUrl.match(/\/api\/appointments\/([^\/?#]+)/);
-    if (match && match[1] && match[1] !== 'status') {
-      return match[1];
-    }
+    if (match && match[1] && match[1] !== 'status') return match[1];
     return null;
   };
 
