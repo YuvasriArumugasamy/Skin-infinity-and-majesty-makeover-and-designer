@@ -88,19 +88,23 @@ const BookAppointment = () => {
 
     try {
       const res = await api.post('/api/appointments', aptPayload);
+      console.log('📤 Booking POST response:', res.status, res.data?.message, 'ID:', res.data?.data?._id);
 
       if (res.data?.data) {
         try {
           const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
           localStorage.setItem('appointments', JSON.stringify([res.data.data, ...existing]));
+          console.log('💾 Booking saved to localStorage');
         } catch (_) {}
       }
-    } catch (_) {
+    } catch (err) {
+      console.error('❌ Booking POST failed:', err?.response?.status, err?.response?.data?.message || err?.message);
       // Offline fallback — save locally with temp id
       try {
         const tempApt = { _id: 'temp-' + Date.now(), ...aptPayload, status: 'Pending', createdAt: new Date().toISOString() };
         const existing = JSON.parse(localStorage.getItem('appointments') || '[]');
         localStorage.setItem('appointments', JSON.stringify([tempApt, ...existing]));
+        console.log('📝 Temp booking saved to localStorage (offline fallback)');
       } catch (_) {}
     }
 

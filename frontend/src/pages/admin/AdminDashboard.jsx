@@ -209,16 +209,21 @@ const AdminDashboard = () => {
     // Fetch Appointments from API & Cloud Sync
     try {
       const cloudData = await fetchAppointmentsFromCloud();
+      console.log('☁️ Cloud data fetched:', cloudData?.length || 0, 'appointments');
+      
       let apiData = [];
       try {
         const res = await api.get('/api/appointments');
+        console.log('🔗 API Response Status:', res.status, 'Data count:', res.data?.data?.length || 0);
         if (res.data?.success && Array.isArray(res.data?.data)) {
           apiData = res.data.data;
+          console.log('✅ API appointments loaded:', apiData.length);
         }
       } catch (apiErr) {
-        console.warn('Admin API fetch failed:', apiErr?.response?.status, apiErr?.message);
+        console.warn('❌ Admin API fetch failed - Status:', apiErr?.response?.status, 'Message:', apiErr?.message);
       }
 
+      console.log('📊 Merge sources - API:', apiData.length, 'Cloud:', cloudData.length, 'Local:', localData.length);
       const combined = [...apiData, ...cloudData, ...localData];
       const map = new Map();
 
@@ -240,6 +245,7 @@ const AdminDashboard = () => {
       });
 
       const unique = Array.from(map.values());
+      console.log('🎯 Final unique appointments after dedup:', unique.length);
 
       if (unique.length > 0) {
         setAppointments(unique);
@@ -248,7 +254,7 @@ const AdminDashboard = () => {
         setAppointments(localData);
       }
     } catch (e) {
-      console.warn('Admin fetch data error:', e?.message);
+      console.error('💥 Admin fetch data error:', e?.message);
       if (localData.length > 0) setAppointments(localData);
     }
 
@@ -286,10 +292,10 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchData();
 
-    // 10-second automatic background live polling (No need to click Sync Live!)
+    // 5-second automatic background live polling for real-time updates
     const liveInterval = setInterval(() => {
       fetchData();
-    }, 10000);
+    }, 5000);
 
     const handleStorageChange = () => {
       try {
