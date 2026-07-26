@@ -19,7 +19,8 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'rec
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('Overview');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [appointmentSearchQuery, setAppointmentSearchQuery] = useState('');
+  const [messageSearchQuery, setMessageSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [loading, setLoading] = useState(false);
@@ -452,9 +453,9 @@ const AdminDashboard = () => {
     const name = a.customerName || a.name || '';
     const service = a.service || '';
     const phone = a.phone || '';
-    const matchesSearch = name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          service.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          phone.includes(searchQuery);
+    const matchesSearch = name.toLowerCase().includes(appointmentSearchQuery.toLowerCase()) || 
+                          service.toLowerCase().includes(appointmentSearchQuery.toLowerCase()) ||
+                          phone.includes(appointmentSearchQuery);
     const matchesStatus = statusFilter === 'All' ? true : a.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -1302,8 +1303,8 @@ const AdminDashboard = () => {
                       <input
                         type="text"
                         placeholder="Search client or phone..."
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)}
+                        value={appointmentSearchQuery}
+                        onChange={e => setAppointmentSearchQuery(e.target.value)}
                         className="w-full pl-9 pr-4 py-2 rounded-xl bg-pink-50/50 border border-pink-200 text-xs text-gray-700 focus:outline-none focus:border-[#B76E79]"
                       />
                     </div>
@@ -1675,18 +1676,18 @@ const AdminDashboard = () => {
                 <input
                   type="text"
                   placeholder="Search messages by name, phone, or subject..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
+                  value={messageSearchQuery}
+                  onChange={e => setMessageSearchQuery(e.target.value)}
                   className="w-full pl-11 pr-4 py-3 rounded-2xl border border-pink-200 bg-white text-xs text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#B76E79] shadow-xs"
                 />
               </div>
 
               {/* Messages Grid */}
               {contactMessages.filter(m => 
-                !searchQuery || 
-                (m.fullName && m.fullName.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                (m.phone && m.phone.includes(searchQuery)) ||
-                (m.subject && m.subject.toLowerCase().includes(searchQuery.toLowerCase()))
+                !messageSearchQuery || 
+                (m.fullName && m.fullName.toLowerCase().includes(messageSearchQuery.toLowerCase())) ||
+                (m.phone && m.phone.includes(messageSearchQuery)) ||
+                (m.subject && m.subject.toLowerCase().includes(messageSearchQuery.toLowerCase()))
               ).length === 0 ? (
                 <div className="bg-white rounded-3xl p-12 text-center border border-pink-100 space-y-3">
                   <div className="w-14 h-14 rounded-full bg-pink-50 text-[#B76E79] flex items-center justify-center text-2xl mx-auto">
@@ -1701,85 +1702,89 @@ const AdminDashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {contactMessages
                     .filter(m => 
-                      !searchQuery || 
-                      (m.fullName && m.fullName.toLowerCase().includes(searchQuery.toLowerCase())) ||
-                      (m.phone && m.phone.includes(searchQuery)) ||
-                      (m.subject && m.subject.toLowerCase().includes(searchQuery.toLowerCase()))
+                      !messageSearchQuery || 
+                      (m.fullName && m.fullName.toLowerCase().includes(messageSearchQuery.toLowerCase())) ||
+                      (m.phone && m.phone.includes(messageSearchQuery)) ||
+                      (m.subject && m.subject.toLowerCase().includes(messageSearchQuery.toLowerCase()))
                     )
-                    .map((msg, i) => (
-                      <div key={msg._id || i} className="bg-white rounded-3xl p-6 border border-pink-100/90 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between">
-                        <div className="space-y-3">
-                          
-                          {/* Header row: Name & Date */}
-                          <div className="flex items-start justify-between gap-3 border-b border-pink-50 pb-3">
-                            <div>
-                              <h3 className="font-bold text-base text-gray-900 leading-tight">
-                                {msg.fullName || 'Client Inquiry'}
-                              </h3>
-                              <span className="text-[10px] font-semibold text-[#B76E79] bg-pink-50 px-2 py-0.5 rounded-md border border-pink-100 mt-1 inline-block">
-                                {msg.subject || 'General Inquiry'}
+                    .map((msg, i) => {
+                      const cleanPhone = (msg.phone || '').replace(/[^0-9]/g, '');
+                      const fullPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
+                      return (
+                        <div key={msg._id || i} className="bg-white rounded-3xl p-6 border border-pink-100/90 shadow-sm hover:shadow-md transition space-y-4 flex flex-col justify-between">
+                          <div className="space-y-3">
+                            
+                            {/* Header row: Name & Date */}
+                            <div className="flex items-start justify-between gap-3 border-b border-pink-50 pb-3">
+                              <div>
+                                <h3 className="font-bold text-base text-gray-900 leading-tight">
+                                  {msg.fullName || 'Client Inquiry'}
+                                </h3>
+                                <span className="text-[10px] font-semibold text-[#B76E79] bg-pink-50 px-2 py-0.5 rounded-md border border-pink-100 mt-1 inline-block">
+                                  {msg.subject || 'General Inquiry'}
+                                </span>
+                              </div>
+                              <span className="text-[10px] font-medium text-gray-400 shrink-0">
+                                {msg.createdAt ? new Date(msg.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Recent'}
                               </span>
                             </div>
-                            <span className="text-[10px] font-medium text-gray-400 shrink-0">
-                              {msg.createdAt ? new Date(msg.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Recent'}
-                            </span>
+
+                            {/* Contact Details */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-600 bg-pink-50/40 p-3 rounded-2xl border border-pink-100/60">
+                              <div>
+                                <span className="text-[10px] text-gray-400 block font-bold uppercase">Phone Number</span>
+                                <a href={`tel:${msg.phone}`} className="font-bold text-gray-800 hover:text-[#B76E79]">
+                                  📞 {msg.phone || 'N/A'}
+                                </a>
+                              </div>
+                              <div>
+                                <span className="text-[10px] text-gray-400 block font-bold uppercase">Email Address</span>
+                                <span className="font-semibold text-gray-700 truncate block">
+                                  ✉️ {msg.email || 'Not provided'}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Message Body */}
+                            <div className="space-y-1">
+                              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Client Message</span>
+                              <div className="p-3.5 rounded-2xl bg-gray-50 text-xs text-gray-700 leading-relaxed font-medium border border-gray-100">
+                                "{msg.message || 'No details provided.'}"
+                              </div>
+                            </div>
                           </div>
 
-                          {/* Contact Details */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-600 bg-pink-50/40 p-3 rounded-2xl border border-pink-100/60">
-                            <div>
-                              <span className="text-[10px] text-gray-400 block font-bold uppercase">Phone Number</span>
-                              <a href={`tel:${msg.phone}`} className="font-bold text-gray-800 hover:text-[#B76E79]">
-                                📞 {msg.phone || 'N/A'}
-                              </a>
-                            </div>
-                            <div>
-                              <span className="text-[10px] text-gray-400 block font-bold uppercase">Email Address</span>
-                              <span className="font-semibold text-gray-700 truncate block">
-                                ✉️ {msg.email || 'Not provided'}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Message Body */}
-                          <div className="space-y-1">
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Client Message</span>
-                            <div className="p-3.5 rounded-2xl bg-gray-50 text-xs text-gray-700 leading-relaxed font-medium border border-gray-100">
-                              "{msg.message || 'No details provided.'}"
-                            </div>
+                          {/* Action Buttons */}
+                          <div className="pt-3 border-t border-pink-50 flex items-center justify-between gap-3">
+                            <a
+                              href={`https://wa.me/${fullPhone}?text=Hello%20${encodeURIComponent(msg.fullName || '')},%20thank%20you%20for%20contacting%20Skin%20Infinity%20%26%20Majesty!%20How%20can%20we%20help%20you%3F`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition"
+                            >
+                              <FaWhatsapp className="text-sm" /> WhatsApp Reply
+                            </a>
+                            <button
+                              onClick={async () => {
+                                setContactMessages(prev => {
+                                  const updated = prev.filter(m => m._id !== msg._id);
+                                  localStorage.setItem('contactMessages', JSON.stringify(updated));
+                                  return updated;
+                                });
+                                try {
+                                  await api.delete(`/api/contact/${msg._id}`);
+                                } catch (_) {}
+                                toast.success('Message removed');
+                              }}
+                              className="p-2.5 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-100 transition"
+                              title="Delete Message"
+                            >
+                              <FiTrash2 size={15} />
+                            </button>
                           </div>
                         </div>
-
-                        {/* Action Buttons */}
-                        <div className="pt-3 border-t border-pink-50 flex items-center justify-between gap-3">
-                          <a
-                            href={`https://wa.me/91${(msg.phone || '').replace(/[^0-9]/g, '')}?text=Hello%20${encodeURIComponent(msg.fullName || '')},%20thank%20you%20for%20contacting%20Skin%20Infinity%20%26%20Majesty!%20How%20can%20we%20help%20you%3F`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="flex-1 py-2.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition"
-                          >
-                            <FaWhatsapp className="text-sm" /> WhatsApp Reply
-                          </a>
-                          <button
-                            onClick={async () => {
-                              setContactMessages(prev => {
-                                const updated = prev.filter(m => m._id !== msg._id);
-                                localStorage.setItem('contactMessages', JSON.stringify(updated));
-                                return updated;
-                              });
-                              try {
-                                await axios.delete(`/api/contact/${msg._id}`);
-                              } catch (_) {}
-                              toast.success('Message removed');
-                            }}
-                            className="p-2.5 rounded-xl bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-100 transition"
-                            title="Delete Message"
-                          >
-                            <FiTrash2 size={15} />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                 </div>
               )}
 

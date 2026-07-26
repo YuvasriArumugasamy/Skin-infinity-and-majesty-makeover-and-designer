@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const appointmentSchema = new mongoose.Schema({
   customerName: { type: String, required: true },
   phone: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String },
   gender: { type: String, enum: ['Female', 'Male', 'Other'], default: 'Female' },
   age: { type: Number },
   category: { type: String, required: true },
