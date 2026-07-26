@@ -88,13 +88,7 @@ const AdminDashboard = () => {
     { _id: 's4', name: 'Designer Blouse Embroidery & Saree Draping', category: 'Couture', price: '₹8,000', duration: '2 Hours', status: 'Active' }
   ];
 
-  const [appointments, setAppointments] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('appointments') || '[]');
-    } catch (_) {
-      return [];
-    }
-  });
+  const [appointments, setAppointments] = useState([]);
 
   const [bridalRecords, setBridalRecords] = useState(() => {
     try { return JSON.parse(localStorage.getItem('bridalRecords') || '[]'); } catch (_) { return []; }
