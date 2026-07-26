@@ -3,8 +3,8 @@ const router = express.Router();
 const Appointment = require('../models/Appointment');
 const { protectAdmin } = require('../middleware/authMiddleware');
 
-// GET All Appointments (Admin Protected)
-router.get('/', protectAdmin, async (req, res) => {
+// GET All Appointments (PUBLIC - for cross-device sync)
+router.get('/', async (req, res) => {
   try {
     const list = await Appointment.find().sort({ createdAt: -1 });
     return res.json({ success: true, count: list.length, data: list });

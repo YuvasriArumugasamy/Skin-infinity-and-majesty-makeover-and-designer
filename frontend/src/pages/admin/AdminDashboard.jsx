@@ -215,7 +215,9 @@ const AdminDashboard = () => {
         if (res.data?.success && Array.isArray(res.data?.data)) {
           apiData = res.data.data;
         }
-      } catch (_) {}
+      } catch (apiErr) {
+        console.warn('Admin API fetch failed:', apiErr?.response?.status, apiErr?.message);
+      }
 
       const combined = [...apiData, ...cloudData, ...localData];
       const map = new Map();
@@ -246,6 +248,7 @@ const AdminDashboard = () => {
         setAppointments(localData);
       }
     } catch (e) {
+      console.warn('Admin fetch data error:', e?.message);
       if (localData.length > 0) setAppointments(localData);
     }
 
