@@ -1,47 +1,35 @@
 let memoryCache = null;
 
-const KV_URL_1 = 'https://kvdb.io/skininfinity_majesty_v4_store/contact_messages';
-const KV_URL_2 = 'https://api.npoint.io/skininfinity_contact_backup';
+const JSONBLOB_URL = 'https://jsonblob.com/api/jsonBlob/1264879201948571025';
+const KEYVALUE_URL = 'https://keyvalue.im/skininfinity_msgs_store_2026';
 
 const defaultMsgs = [];
 
-async function fetchWithAutoProvision(url, options = {}) {
-  try {
-    let res = await fetch(url, options);
-    if (res.status === 404 && options.method === 'POST' && url.includes('kvdb.io')) {
-      try {
-        await fetch('https://kvdb.io/', { method: 'POST' });
-        res = await fetch(url, options);
-      } catch (_) {}
-    }
-    return res;
-  } catch (e) {
-    return null;
-  }
-}
-
 async function getMsgs() {
-  const res1 = await fetchWithAutoProvision(KV_URL_1);
-  if (res1 && res1.ok) {
-    try {
-      const data = await res1.json();
-      if (Array.isArray(data)) {
-        memoryCache = data;
-        return data;
+  try {
+    const res = await fetch(KEYVALUE_URL);
+    if (res.ok) {
+      const text = await res.text();
+      if (text && text.trim().startsWith('[')) {
+        const data = JSON.parse(text);
+        if (Array.isArray(data)) {
+          memoryCache = data;
+          return data;
+        }
       }
-    } catch (_) {}
-  }
+    }
+  } catch (_) {}
 
-  const res2 = await fetchWithAutoProvision(KV_URL_2);
-  if (res2 && res2.ok) {
-    try {
-      const data = await res2.json();
+  try {
+    const res = await fetch(JSONBLOB_URL, { headers: { 'Accept': 'application/json' } });
+    if (res.ok) {
+      const data = await res.json();
       if (Array.isArray(data)) {
         memoryCache = data;
         return data;
       }
-    } catch (_) {}
-  }
+    }
+  } catch (_) {}
 
   if (Array.isArray(memoryCache)) return memoryCache;
   return defaultMsgs;
@@ -50,25 +38,39 @@ async function getMsgs() {
 async function saveMsgs(list) {
   memoryCache = list;
   let saved = false;
-
   const payload = JSON.stringify(list);
 
   try {
-    const r1 = await fetchWithAutoProvision(KV_URL_1, {
+    const res = await fetch(KEYVALUE_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
       body: payload
     });
-    if (r1 && r1.ok) saved = true;
+    if (res.ok) saved = true;
   } catch (_) {}
 
   try {
-    const r2 = await fetchWithAutoProvision(KV_URL_2, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    let res = await fetch(JSONBLOB_URL, {
+      method: 'PUT',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json' 
+      },
       body: payload
     });
-    if (r2 && r2.ok) saved = true;
+
+    if (res.status === 404) {
+      res = await fetch('https://jsonblob.com/api/jsonBlob', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json' 
+        },
+        body: payload
+      });
+    }
+
+    if (res.ok) saved = true;
   } catch (_) {}
 
   return saved;

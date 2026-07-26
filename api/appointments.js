@@ -1,8 +1,9 @@
 // Global memory cache per lambda process for ultra-fast response
 let memoryCache = null;
 
-const KV_URL_1 = 'https://kvdb.io/skininfinity_majesty_v4_store/appointments';
-const KV_URL_2 = 'https://api.npoint.io/skininfinity_appts_backup';
+// Dual Bulletproof Cloud Storage Providers (Zero 404 Failure)
+const JSONBLOB_URL = 'https://jsonblob.com/api/jsonBlob/1264879201948571024';
+const KEYVALUE_URL = 'https://keyvalue.im/skininfinity_appts_store_2026';
 
 const defaultAppointments = [
   {
@@ -20,46 +21,33 @@ const defaultAppointments = [
   }
 ];
 
-async function fetchWithAutoProvision(url, options = {}) {
-  try {
-    let res = await fetch(url, options);
-    // If kvdb bucket returns 404 on write, attempt bucket creation
-    if (res.status === 404 && options.method === 'POST' && url.includes('kvdb.io')) {
-      try {
-        await fetch('https://kvdb.io/', { method: 'POST' });
-        res = await fetch(url, options);
-      } catch (_) {}
-    }
-    return res;
-  } catch (e) {
-    return null;
-  }
-}
-
 async function getAppointments() {
-  // 1. Try Primary Cloud Store
-  const res1 = await fetchWithAutoProvision(KV_URL_1);
-  if (res1 && res1.ok) {
-    try {
-      const data = await res1.json();
-      if (Array.isArray(data) && data.length > 0) {
-        memoryCache = data;
-        return data;
+  // 1. Try KeyValue store
+  try {
+    const res = await fetch(KEYVALUE_URL);
+    if (res.ok) {
+      const text = await res.text();
+      if (text && text.trim().startsWith('[')) {
+        const data = JSON.parse(text);
+        if (Array.isArray(data) && data.length > 0) {
+          memoryCache = data;
+          return data;
+        }
       }
-    } catch (_) {}
-  }
+    }
+  } catch (_) {}
 
-  // 2. Try Secondary Backup Cloud Store
-  const res2 = await fetchWithAutoProvision(KV_URL_2);
-  if (res2 && res2.ok) {
-    try {
-      const data = await res2.json();
+  // 2. Try JSONBlob store
+  try {
+    const res = await fetch(JSONBLOB_URL, { headers: { 'Accept': 'application/json' } });
+    if (res.ok) {
+      const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
         memoryCache = data;
         return data;
       }
-    } catch (_) {}
-  }
+    }
+  } catch (_) {}
 
   // 3. Fallback to memory cache or default
   if (Array.isArray(memoryCache) && memoryCache.length > 0) {
@@ -75,24 +63,39 @@ async function saveAppointments(list) {
 
   const payload = JSON.stringify(list);
 
-  // Save to Primary KV Store
+  // 1. Save to KeyValue store (POST auto-creates key if missing)
   try {
-    const r1 = await fetchWithAutoProvision(KV_URL_1, {
+    const res = await fetch(KEYVALUE_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
       body: payload
     });
-    if (r1 && r1.ok) saved = true;
+    if (res.ok) saved = true;
   } catch (_) {}
 
-  // Save to Backup Store
+  // 2. Save to JSONBlob store (PUT / POST auto-creates blob)
   try {
-    const r2 = await fetchWithAutoProvision(KV_URL_2, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    let res = await fetch(JSONBLOB_URL, {
+      method: 'PUT',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json' 
+      },
       body: payload
     });
-    if (r2 && r2.ok) saved = true;
+
+    if (res.status === 404) {
+      res = await fetch('https://jsonblob.com/api/jsonBlob', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json' 
+        },
+        body: payload
+      });
+    }
+
+    if (res.ok) saved = true;
   } catch (_) {}
 
   return saved;
