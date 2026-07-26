@@ -17,8 +17,9 @@ if (fs.existsSync(serviceAccountPath)) {
 const cleanPrivateKey = (key) => {
   if (!key) return '';
   
-  // 1. Remove wrapping quotes if any
   let cleaned = key.trim();
+  
+  // 1. Remove wrapping quotes if any
   if (cleaned.startsWith('"') && cleaned.endsWith('"')) {
     cleaned = cleaned.substring(1, cleaned.length - 1);
   }
@@ -26,22 +27,28 @@ const cleanPrivateKey = (key) => {
     cleaned = cleaned.substring(1, cleaned.length - 1);
   }
 
-  // 2. Replace escaped \n or \\n with actual newlines
+  // 2. Replace escaped \n or \\n with actual newlines, and remove carriage returns
   cleaned = cleaned.replace(/\\n/g, '\n').replace(/\\n/g, '\n');
+  cleaned = cleaned.replace(/\r/g, '');
 
-  // 3. Reconstruct ASN.1 structure if Render stripped newlines or joined with spaces
-  if (!cleaned.includes('\n')) {
-    const header = '-----BEGIN PRIVATE KEY-----';
-    const footer = '-----END PRIVATE KEY-----';
-    if (cleaned.startsWith(header) && cleaned.endsWith(footer)) {
-      let base64Part = cleaned.substring(header.length, cleaned.length - footer.length).trim();
-      base64Part = base64Part.replace(/\s+/g, '');
-      const chunks = [];
-      for (let i = 0; i < base64Part.length; i += 64) {
-        chunks.push(base64Part.substring(i, i + 64));
-      }
-      cleaned = `${header}\n${chunks.join('\n')}\n${footer}`;
+  const header = '-----BEGIN PRIVATE KEY-----';
+  const footer = '-----END PRIVATE KEY-----';
+  
+  // 3. Reconstruct ASN.1 structure by always chunking the base64 data to 64-char lines
+  if (cleaned.includes(header) && cleaned.includes(footer)) {
+    const startIndex = cleaned.indexOf(header) + header.length;
+    const endIndex = cleaned.indexOf(footer);
+    let base64Part = cleaned.substring(startIndex, endIndex).trim();
+    
+    // Remove ALL whitespace, tabs, and newlines from the base64 part
+    base64Part = base64Part.replace(/\s+/g, '');
+    
+    const chunks = [];
+    for (let i = 0; i < base64Part.length; i += 64) {
+      chunks.push(base64Part.substring(i, i + 64));
     }
+    
+    return `${header}\n${chunks.join('\n')}\n${footer}`;
   }
 
   return cleaned;
