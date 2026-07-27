@@ -7,8 +7,8 @@ const protectAdmin = (req, res, next) => {
     try {
       token = req.headers.authorization.split(' ')[1];
 
-      // Handle demo mode token if DB is disconnected in fallback dev mode
-      if (token === 'demo_admin_id' || token.startsWith('demo_')) {
+      // Handle demo mode token if DB is disconnected in fallback dev mode (DEVELOPMENT ONLY)
+      if (process.env.NODE_ENV === 'development' && (token === 'demo_admin_id' || token.startsWith('demo_'))) {
         req.admin = { id: 'demo_admin_id', role: 'super_admin' };
         return next();
       }

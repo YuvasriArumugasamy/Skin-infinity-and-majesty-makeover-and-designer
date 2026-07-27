@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://skininfinitymajesty_db_user:skin123@cluster0.ja74j9f.mongodb.net/skin_infinity_db?appName=Cluster0';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 let cachedDb = null;
 
 async function connectToDatabase() {
+  if (!MONGODB_URI) {
+    throw new Error('MONGODB_URI is not defined in environment variables');
+  }
   if (cachedDb && mongoose.connection.readyState === 1) {
     return cachedDb;
   }

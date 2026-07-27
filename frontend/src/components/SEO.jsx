@@ -17,6 +17,10 @@ const SEO = ({
     ? `${title} | Skin Infinity & Majesty - Tirunelveli`
     : 'Skin Infinity & Majesty | Best Beauty Salon & Designer Studio in Tirunelveli';
 
+  const absoluteOgImage = ogImage.startsWith('http')
+    ? ogImage
+    : `${BASE_URL}${ogImage.startsWith('/') ? '' : '/'}${ogImage}`;
+
   return (
     <Helmet>
       <title>{fullTitle}</title>
@@ -27,14 +31,14 @@ const SEO = ({
       {/* Open Graph */}
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={ogImage} />
+      <meta property="og:image" content={absoluteOgImage} />
       <meta property="og:url" content={`${BASE_URL}${canonical || '/'}`} />
       <meta property="og:type" content={ogType} />
 
       {/* Twitter */}
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:image" content={absoluteOgImage} />
 
       {/* Page-specific JSON-LD */}
       {schema && (
