@@ -5,7 +5,7 @@
   <!-- Home Page -->
   <url>
     <loc>https://skininfinityandmajesty.com/</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-07-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -17,39 +17,39 @@
   <!-- Services Page -->
   <url>
     <loc>https://skininfinityandmajesty.com/services</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.95</priority>
   </url>
 
   <!-- Bridal Makeover & Designer Studio -->
   <url>
     <loc>https://skininfinityandmajesty.com/bridal</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.95</priority>
   </url>
 
   <!-- Book Appointment -->
   <url>
     <loc>https://skininfinityandmajesty.com/book-appointment</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.9</priority>
   </url>
 
   <!-- About Us Page -->
   <url>
     <loc>https://skininfinityandmajesty.com/about</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
 
   <!-- Gallery Page -->
   <url>
     <loc>https://skininfinityandmajesty.com/gallery</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -57,7 +57,7 @@
   <!-- Client Reviews Page -->
   <url>
     <loc>https://skininfinityandmajesty.com/reviews</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -65,9 +65,9 @@
   <!-- Contact Us Page -->
   <url>
     <loc>https://skininfinityandmajesty.com/contact</loc>
-    <lastmod>2026-07-25</lastmod>
+    <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
+    <priority>0.8</priority>
   </url>
 
 </urlset>
