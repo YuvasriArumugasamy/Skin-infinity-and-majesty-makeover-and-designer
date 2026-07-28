@@ -86,28 +86,32 @@ const BookAppointment = () => {
     };
 
     try {
-      await api.post('/api/appointments', aptPayload);
-    } catch (err) {
-      // Even if API fails, show success — admin can check later
-      console.warn('Booking API error:', err?.response?.data?.message || err?.message);
-    }
+      const response = await api.post('/api/appointments', aptPayload);
+      if (!response?.data?.success) {
+        throw new Error(response?.data?.message || 'Booking could not be saved.');
+      }
 
-    setSuccessModal(true);
-    toast.success('Appointment Request Submitted Successfully!');
-    setBookedInfo({ name: bookedName, service: bookedService, date: bookedDate, time: bookedTime });
-    setFormData({
-      customerName: '',
-      phone: '',
-      email: '',
-      gender: 'Female',
-      age: '',
-      category: 'Skin Care',
-      service: 'Advance Hydra Facial',
-      date: '',
-      time: '10:00 AM',
-      notes: ''
-    });
-    setLoading(false);
+      setSuccessModal(true);
+      toast.success('Appointment Request Submitted Successfully!');
+      setBookedInfo({ name: bookedName, service: bookedService, date: bookedDate, time: bookedTime });
+      setFormData({
+        customerName: '',
+        phone: '',
+        email: '',
+        gender: 'Female',
+        age: '',
+        category: 'Skin Care',
+        service: 'Advance Hydra Facial',
+        date: '',
+        time: '10:00 AM',
+        notes: ''
+      });
+    } catch (err) {
+      console.error('Booking API error:', err?.response?.data?.message || err?.message);
+      toast.error(err?.response?.data?.message || 'Booking failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

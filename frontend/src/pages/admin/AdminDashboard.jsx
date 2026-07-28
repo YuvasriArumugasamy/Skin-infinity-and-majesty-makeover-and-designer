@@ -322,6 +322,7 @@ const AdminDashboard = () => {
       toast.error('Please enter Client Name and Phone number');
       return;
     }
+
     try {
       const res = await api.post('/api/appointments', {
         customerName: newBooking.customerName,
@@ -332,25 +333,30 @@ const AdminDashboard = () => {
         category: 'Bridal Suite',
         notes: `Staff: ${newBooking.staff}`
       });
+
+      if (!res?.data?.success) {
+        throw new Error(res?.data?.message || 'Booking could not be saved.');
+      }
+
       if (res.data?.data) {
         setAppointments(prev => [res.data.data, ...prev]);
       }
-    } catch (_) {
-      // Show optimistic UI
-      const temp = { _id: 'temp-' + Date.now(), ...newBooking, status: 'Confirmed', createdAt: new Date().toISOString() };
-      setAppointments(prev => [temp, ...prev]);
+
+      toast.success(`Booking created for ${newBooking.customerName}! ✨`);
+      setBookingModalOpen(false);
+      setNewBooking({
+        customerName: '',
+        phone: '',
+        service: 'Bespoke Royal Bridal HD Makeup',
+        date: new Date().toISOString().split('T')[0],
+        time: '10:00 AM',
+        amount: '₹18,500',
+        staff: 'Yuvasri A. (Master Artist)'
+      });
+    } catch (err) {
+      console.error('Admin booking create error:', err?.response?.data?.message || err?.message);
+      toast.error(err?.response?.data?.message || 'Booking failed. Please try again.');
     }
-    toast.success(`Booking created for ${newBooking.customerName}! ✨`);
-    setBookingModalOpen(false);
-    setNewBooking({
-      customerName: '',
-      phone: '',
-      service: 'Bespoke Royal Bridal HD Makeup',
-      date: new Date().toISOString().split('T')[0],
-      time: '10:00 AM',
-      amount: '₹18,500',
-      staff: 'Yuvasri A. (Master Artist)'
-    });
   };
 
   const handleCreateBride = async (e) => {
