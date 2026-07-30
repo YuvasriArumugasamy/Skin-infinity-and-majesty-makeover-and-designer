@@ -71,6 +71,14 @@ function App() {
             />
 
             {/* Admin Routes */}
+            <Route 
+              path="/admin" 
+              element={
+                localStorage.getItem('adminToken') 
+                  ? <Navigate to="/admin/dashboard" replace /> 
+                  : <Navigate to="/admin/login" replace />
+              } 
+            />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route
               path="/admin/dashboard"

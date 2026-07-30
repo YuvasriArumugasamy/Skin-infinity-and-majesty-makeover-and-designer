@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../../api/axios';
 import toast from 'react-hot-toast';
@@ -11,6 +11,14 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Instagram-style Session Persistence: If already logged in on this browser, bypass login page directly to dashboard
+  useEffect(() => {
+    const existingToken = localStorage.getItem('adminToken');
+    if (existingToken) {
+      navigate('/admin/dashboard', { replace: true });
+    }
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     if (e) e.preventDefault();
