@@ -165,7 +165,53 @@ const AdminDashboard = () => {
 
     return result.length > 0 ? result : [{ name: 'Today', revenue: 0 }];
   }, [appointments]);
+  // Helper to request browser desktop notification permission when admin page opens
+  const requestNotificationPermission = () => {
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      if (Notification.permission === 'default') {
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            toast.success('Browser Push Notifications Enabled! 🔔', { icon: '👑' });
+          }
+        });
+      }
+    }
+  };
+
+  // Helper to trigger native desktop push notification
+  const triggerDesktopNotification = (title, body) => {
+    if (typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+      try {
+        const n = new Notification(title, {
+          body,
+          icon: '/favicon.ico',
+          badge: '/favicon.ico'
+        });
+        n.onclick = () => {
+          window.focus();
+          n.close();
+        };
+      } catch (e) {
+        console.error('Browser Notification error:', e);
+      }
+    }
+  };
+
   const handleTestNotification = () => {
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      if (Notification.permission !== 'granted') {
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            triggerDesktopNotification('👑 Skin Infinity & Majesty', 'Test Notification Active! Real-time alerts enabled.');
+          } else {
+            toast.error('Notification permission denied in browser settings.');
+          }
+        });
+      } else {
+        triggerDesktopNotification('👑 Skin Infinity & Majesty', 'Test Notification Active! Real-time alerts enabled.');
+      }
+    }
+
     toast.custom(
       (t) => (
         <div
@@ -246,6 +292,9 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchData();
 
+    // 🔔 Prompt browser notification permission popup when admin opens page
+    requestNotificationPermission();
+
     // 🔌 Socket.io — real-time live updates
     const socket = connectAdminSocket();
 
@@ -257,6 +306,13 @@ const AdminDashboard = () => {
         if (exists) return prev;
         return [newApt, ...prev];
       });
+
+      // 🔔 Trigger Native OS Desktop Push Notification
+      triggerDesktopNotification(
+        `👑 New Booking: ${newApt.customerName}`,
+        `${newApt.service} on ${newApt.date} at ${newApt.time}`
+      );
+
       // Toast notification
       toast.custom((t) => (
         <div className={`flex items-center gap-3 bg-white border border-pink-200 rounded-2xl px-4 py-3 shadow-lg ${t.visible ? 'animate-enter' : 'animate-leave'}`}>
@@ -290,6 +346,13 @@ const AdminDashboard = () => {
         if (exists) return prev;
         return [newMsg, ...prev];
       });
+
+      // 🔔 Trigger Native OS Desktop Push Notification
+      triggerDesktopNotification(
+        `📩 New Contact Message: ${newMsg.fullName}`,
+        `${newMsg.subject}: "${(newMsg.message || '').slice(0, 60)}..."`
+      );
+
       toast.custom((t) => (
         <div className={`flex items-center gap-3 bg-white border border-emerald-200 rounded-2xl px-4 py-3 shadow-lg ${t.visible ? 'animate-enter' : 'animate-leave'}`}>
           <span className="text-xl">📩</span>
