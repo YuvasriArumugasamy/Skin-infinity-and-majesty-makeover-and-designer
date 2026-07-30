@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Appointment = require('../models/Appointment');
 const { protectAdmin } = require('../middleware/authMiddleware');
+const { sendBookingNotification } = require('../utils/emailService');
 
 // GET All Appointments (PUBLIC - for cross-device sync)
 router.get('/', async (req, res) => {
@@ -42,11 +43,15 @@ router.post('/', async (req, res) => {
       status: 'Pending'
     });
 
-    // 🔔 Real-time push to admin dashboard instantly
+    // 🔔 Real-time push to all admin sockets instantly
     const io = req.app.get('io');
     if (io) {
+      io.emit('new_appointment', created);
       io.to('admin_room').emit('new_appointment', created);
     }
+
+    // 📧 Send email notification to Admin & Customer
+    sendBookingNotification(created).catch(err => console.error('Email error:', err.message));
 
     return res.status(201).json({ success: true, message: 'Appointment booked successfully!', data: created });
   } catch (err) {
