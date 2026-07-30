@@ -20,20 +20,9 @@ const app = express();
 app.set('trust proxy', 1);
 
 
-// CORS — only allow frontend URL
-const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5173',
-  'https://skininfinityandmajesty.com',
-  'https://www.skininfinityandmajesty.com'
-];
+// CORS — allow all origins for web & mobile clients
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
-      callback(null, true);
-    } else {
-      callback(new Error('CORS: Not allowed'));
-    }
-  },
+  origin: true,
   credentials: true
 }));
 

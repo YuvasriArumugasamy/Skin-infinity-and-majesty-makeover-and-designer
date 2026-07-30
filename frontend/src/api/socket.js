@@ -8,7 +8,7 @@ const getSocketURL = () => {
       return 'http://localhost:5000';
     }
   }
-  return window.location.origin;
+  return 'https://skin-infinity-and-majesty-makeover-and.onrender.com';
 };
 
 let socket = null;

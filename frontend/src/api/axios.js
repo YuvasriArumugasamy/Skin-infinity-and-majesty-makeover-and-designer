@@ -10,7 +10,7 @@ const getBaseURL = () => {
       return 'http://localhost:5000';
     }
   }
-  return '';
+  return 'https://skin-infinity-and-majesty-makeover-and.onrender.com';
 };
 
 const api = axios.create({
