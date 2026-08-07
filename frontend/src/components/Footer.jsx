@@ -167,7 +167,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-8 mt-10 pt-4 border-t border-pink-200/80 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-gray-500">
         <p>© 2026 Skin Infinity & Majesty Makeover & Designer. All Rights Reserved.</p>
         <p className="flex items-center gap-1">
-          Designed with <FiHeart className="text-rose-500 fill-rose-500 text-xs" /> by -Yuvasri Arumugasamy
+          Website Designed by <FiHeart className="text-rose-500 fill-rose-500 text-xs mx-0.5 inline" /> YuvaTech Solutions
         </p>
       </div>
     </footer>
